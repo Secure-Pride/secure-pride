@@ -1,4 +1,4 @@
-securepride-space/
+secure-pride/
 ├── README.md
 ├── index.html
 └── assets/
