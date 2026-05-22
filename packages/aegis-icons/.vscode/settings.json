@@ -1,0 +1,17 @@
+{
+  "// praxis-mode": "Security \u2014 Aegis Icons",
+  "// fg-tint": "security",
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#1d0d22",
+    "titleBar.inactiveBackground": "#1d0d22",
+    "titleBar.activeForeground": "#e6ecf5",
+    "titleBar.inactiveForeground": "#e6ecf5aa",
+    "titleBar.border": "#1d0d22",
+    "activityBar.background": "#1d0d22",
+    "activityBar.foreground": "#e6ecf5",
+    "activityBar.inactiveForeground": "#e6ecf5aa",
+    "activityBar.border": "#1d0d22",
+    "statusBar.background": "#1d0d22",
+    "statusBar.foreground": "#e6ecf5"
+  }
+}
