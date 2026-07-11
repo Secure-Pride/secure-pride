@@ -1,12 +1,14 @@
-# macos-privacy-dev-setup
+# macos-privacy
+
+> Status: maintained — last verified January 2026 on macOS Sequoia.
 
 A ready-to-deploy starter kit that bootstraps a privacy-first, ADHD-friendly macOS terminal + developer environment —
 includes Objective-See integration, AI-friendly CLI hooks, and a translational add-on for iPad Pro. Clone it, run `./install.sh`, and you’re set.
 
 ## Quick start (5 min)
 ```bash
-git clone <repo_url_or_zip> ~/macos-privacy-dev-setup
-cd ~/macos-privacy-dev-setup
+git clone https://github.com/mazze93/macos-privacy ~/macos-privacy
+cd ~/macos-privacy
 ./install.sh
 ```
 
@@ -37,8 +39,8 @@ cd ~/macos-privacy-dev-setup
 - `.zshrc`, `.p10k.zsh`: shell config
 - `verify-auth-plugins.sh`: quick security audit script
 - `ai.sh`: starter stub for AI CLI integrations
-- `config/`: config files & add-ons
-- `ipad-sync/`: folder for iPad code transfer
+- `a-shell-setup.sh`: iPad translational add-on (a-Shell companion setup)
+- `iterm.json`: iTerm2 profile with the kit's terminal defaults
 
 ## Security
 No telemetry. No data collection. AI API key usage is opt-in & local only.
