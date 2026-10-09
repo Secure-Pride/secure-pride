@@ -1,0 +1,119 @@
+---
+/**
+ * The Secure Pride heart-lock shield, inlined from the identity kit
+ * (Claude Design project 85c44a50, identity-kit/02_scaled/).
+ *
+ * Geometry, gradients, abrasion, and prism strokes are copied verbatim.
+ * The only change: the square #0B0F14 base field is omitted so the mark
+ * sits directly on charcoal ("any dark surface where brass reads clearly",
+ * identity-kit/06_guidelines/usage.md).
+ *
+ * Tier rules (scaling_rules.md): `small` for 32–64 px, `medium` for
+ * 128–256 px. Never animate, glow, rotate, or overlay text on the mark.
+ */
+interface Props {
+  variant: 'small' | 'medium';
+  size: number;
+  /** Prefix for gradient/clip ids so two marks on one page never collide. */
+  idPrefix: string;
+  class?: string;
+}
+
+const { variant, size, idPrefix, class: className } = Astro.props;
+const id = (name: string) => `${idPrefix}-${name}`;
+const url = (name: string) => `url(#${id(name)})`;
+const SHIELD_M =
+  'M 128,37 C 168,37 203,52 208,93 C 213,134 181,181 128,222 C 75,181 43,134 48,93 C 53,52 88,37 128,37 Z';
+const HEART_M =
+  'M 128,162 C 108,153 98,140 98,130 C 98,120 104,114 112,114 C 119,114 125,118 128,124 C 131,118 137,114 144,114 C 152,114 158,120 158,130 C 158,140 148,153 128,162 Z';
+const ABRASION_M: [number, number, number, number, number, number][] = [
+  [93, 146, 107, 154, 0.55, 0.08],
+  [89, 156, 103, 161, 0.45, 0.07],
+  [96, 165, 109, 167, 0.55, 0.09],
+  [85, 150, 92, 158, 0.55, 0.06],
+  [104, 171, 113, 176, 0.45, 0.08],
+  [91, 178, 105, 182, 0.55, 0.07],
+  [84, 143, 107, 157, 0.85, 0.05],
+];
+---
+
+{variant === 'small' ? (
+  <svg
+    class={className}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 64 64"
+    width={size}
+    height={size}
+    role="img"
+    aria-label="Secure Pride — Heart-Lock Shield (small)"
+  >
+    <defs>
+      <linearGradient id={id('brass')} x1="0%" y1="0%" x2="70%" y2="100%">
+        <stop offset="0%" stop-color="#D6B97A" />
+        <stop offset="45%" stop-color="#B08D57" />
+        <stop offset="100%" stop-color="#7A623A" />
+      </linearGradient>
+      <linearGradient id={id('lock')} x1="0%" y1="0%" x2="70%" y2="100%">
+        <stop offset="0%" stop-color="#DFC485" />
+        <stop offset="45%" stop-color="#C09862" />
+        <stop offset="100%" stop-color="#8A6E42" />
+      </linearGradient>
+    </defs>
+    <path d="M 32,9 C 42,9 51,13 52,23 C 53,33 45,45 32,56 C 19,45 11,33 12,23 C 13,13 22,9 32,9 Z" fill={url('brass')} />
+    <path d="M 29,30 L 29,25 C 29,22 35,22 35,25 L 35,30" fill="none" stroke={url('lock')} stroke-width="2.5" stroke-linecap="round" />
+    <path d="M 32,41 C 27,38 24,35 24,32 C 24,30 25,28 28,28 C 30,28 31,29 32,31 C 33,29 34,28 36,28 C 39,28 40,30 40,32 C 40,35 37,38 32,41 Z" fill={url('lock')} />
+    <circle cx="32" cy="33" r="1.5" fill="#0B0F14" />
+    <path d="M 31,35 L 32,39 L 33,35 Z" fill="#0B0F14" />
+  </svg>
+) : (
+  <svg
+    class={className}
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 256 256"
+    width={size}
+    height={size}
+    role="img"
+    aria-label="Secure Pride — Heart-Lock Shield (medium)"
+  >
+    <defs>
+      <linearGradient id={id('brass')} x1="0%" y1="0%" x2="70%" y2="100%">
+        <stop offset="0%" stop-color="#D6B97A" />
+        <stop offset="45%" stop-color="#B08D57" />
+        <stop offset="100%" stop-color="#7A623A" />
+      </linearGradient>
+      <linearGradient id={id('lock')} x1="0%" y1="0%" x2="70%" y2="100%">
+        <stop offset="0%" stop-color="#DFC485" />
+        <stop offset="45%" stop-color="#C09862" />
+        <stop offset="100%" stop-color="#8A6E42" />
+      </linearGradient>
+      <linearGradient id={id('prism')} x1="0%" y1="0%" x2="100%" y2="40%">
+        <stop offset="0%" stop-color="#6FE7FF" />
+        <stop offset="50%" stop-color="#8A6CFF" />
+        <stop offset="100%" stop-color="#C86BFF" />
+      </linearGradient>
+      <clipPath id={id('clip')}>
+        <path d={SHIELD_M} />
+      </clipPath>
+    </defs>
+    <path d={SHIELD_M} fill={url('brass')} />
+    <path
+      d="M 128,52 C 162,52 193,64 197,97 C 201,130 174,175 128,209 C 82,175 55,130 59,97 C 63,64 94,52 128,52 Z"
+      fill="none"
+      stroke="#C4A464"
+      stroke-width="0.5"
+      opacity="0.35"
+    />
+    <g clip-path={url('clip')}>
+      <path d="M 119,123 L 119,103 C 119,91 137,91 137,103 L 137,123" fill="none" stroke={url('lock')} stroke-width="9" stroke-linecap="round" />
+      <path d={HEART_M} fill={url('lock')} />
+      <ellipse cx="128" cy="134" rx="5" ry="5.5" fill="#0B0F14" />
+      <path d="M 125,139 L 128,152 L 131,139 Z" fill="#0B0F14" />
+    </g>
+    <g clip-path={url('clip')}>
+      {ABRASION_M.map(([x1, y1, x2, y2, w, o]) => (
+        <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="#E6C98A" stroke-width={w} opacity={o} />
+      ))}
+      <line x1="84" y1="150" x2="102" y2="144" stroke={url('prism')} stroke-width="1.3" opacity="0.14" />
+    </g>
+  </svg>
+)}

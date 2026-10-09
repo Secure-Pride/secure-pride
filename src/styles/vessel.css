@@ -1,0 +1,176 @@
+/* ═══════════════════════════════════════════════════════════════
+   Kintsugi vessel — the home statement on broken porcelain.
+
+   Layers inside .vessel__slab (z-order documented on purpose):
+     0  slab background   porcelain (no JS) / --crack-gap (JS)
+     1  .vessel__shards   aria-hidden porcelain copies, clipped + displaced
+     1  source surface    the real <h1>; transparent once shards exist
+     2  .vessel__seams    SVG seam segments: crack → lacquer → gold
+
+   States on .vessel:
+     (none)          server render: mended, gold seams, aligned text
+     .is-enhanced    JS built the shards; starts broken
+     .is-mended      every segment cured to gold
+   ═══════════════════════════════════════════════════════════════ */
+
+.vessel {
+  --vessel-pad: clamp(28px, 6vw, 88px);
+}
+
+.vessel__slab {
+  position: relative;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--porcelain);
+  isolation: isolate;
+}
+
+.vessel__surface {
+  position: relative;
+  z-index: 1;
+  padding: var(--vessel-pad);
+  padding-bottom: calc(var(--vessel-pad) * 1.1);
+  color: var(--ink); /* the statement inherits this (see .site heading rule) */
+  /* Glaze: a soft highlight upper-left, the way light pools on a glazed bowl. */
+  background:
+    radial-gradient(120% 90% at 18% 12%, var(--porcelain-glaze) 0%, transparent 60%),
+    var(--porcelain);
+}
+
+.vessel__statement {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--font-statement);
+  font-weight: 800;
+  font-size: clamp(2.35rem, 6.1vw, 6.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+  text-wrap: balance;
+}
+
+/* ── Seams ─────────────────────────────────────────────────── */
+.vessel__seams {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.seg {
+  fill: none;
+  stroke-linecap: round;
+  transition:
+    stroke var(--dur-cure) var(--ease-settle),
+    stroke-width var(--dur-lacquer) ease-out;
+}
+.seg.g1 { stroke: var(--gold-1); }
+.seg.g2 { stroke: var(--gold-2); }
+.seg.g3 { stroke: var(--gold-3); }
+
+/* Broken: hairline cracks. Applied before JS runs too (scripting media
+   query) so the gold seam never flashes before the shards are built. */
+.vessel.is-enhanced .seg:not(.is-lacquer) {
+  stroke: var(--crack);
+  stroke-width: 1.25px;
+}
+@media (scripting: enabled) {
+  .vessel:not(.is-enhanced) .seg {
+    stroke: var(--crack);
+    stroke-width: 1.25px;
+  }
+}
+
+/* Wet lacquer (iron-red under the gold), then cured gold. */
+.seg.is-lacquer { stroke: var(--opal); }
+.seg.is-lacquer.is-gold.g1 { stroke: var(--gold-1); }
+.seg.is-lacquer.is-gold.g2 { stroke: var(--gold-2); }
+.seg.is-lacquer.is-gold.g3 { stroke: var(--gold-3); }
+
+/* ── Shards ────────────────────────────────────────────────── */
+.vessel.is-enhanced .vessel__slab {
+  background: var(--crack-gap);
+  cursor: crosshair;
+  touch-action: manipulation;
+}
+
+.vessel__shards {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.vessel__shard {
+  position: absolute;
+  inset: 0;
+  transform: translate(var(--dx, 0px), var(--dy, 0px)) rotate(var(--rot, 0deg));
+  transform-origin: 50% 50%;
+  transition: transform var(--dur-settle) var(--ease-settle);
+  will-change: transform;
+}
+
+.vessel__surface--source {
+  background: transparent;
+}
+.vessel__surface--source .vessel__statement {
+  color: transparent;
+}
+
+/* ── Controls and caption ──────────────────────────────────
+   Hint and caption share one grid cell, so mending swaps the line in
+   place instead of reserving an empty band under the vessel. */
+.vessel__controls {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px 24px;
+  margin-top: 20px;
+  min-height: 48px;
+}
+.vessel__message { display: grid; }
+.vessel__message > * { grid-area: 1 / 1; align-self: center; }
+
+.vessel__hint {
+  display: none;
+  margin: 0;
+  font: 500 0.92rem/1.5 var(--font-reading);
+  color: var(--porcelain-dim);
+}
+.vessel.is-enhanced .vessel__hint { display: block; }
+.vessel.is-mended .vessel__hint { visibility: hidden; }
+
+.vessel__caption {
+  max-width: 64ch;
+  margin: 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--gold-2);
+  font: 400 0.98rem/1.6 var(--font-reading);
+  color: var(--porcelain);
+  transition: opacity var(--dur-cure) ease;
+}
+.vessel.is-enhanced:not(.is-mended) .vessel__caption {
+  opacity: 0;
+  visibility: hidden;
+}
+
+@media (max-width: 640px) {
+  .vessel__controls { grid-template-columns: 1fr; }
+  .vessel__message > * { align-self: start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seg,
+  .vessel__shard,
+  .vessel__caption {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .vessel__statement { max-width: none; }
+}

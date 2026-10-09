@@ -1,0 +1,79 @@
+---
+/**
+ * The home statement, set on a porcelain vessel that is broken and can be
+ * mended in gold. Behavior lives in src/lib/kintsugi/vessel-controller.ts;
+ * geometry in src/lib/kintsugi/fracture.ts.
+ *
+ * Server output is the *mended* vessel (gold seams, aligned text), so the
+ * page is complete without JavaScript. The heading stays real text for
+ * assistive technology; the shard layers the controller adds are
+ * aria-hidden copies.
+ */
+import { allSegments } from '../../lib/kintsugi/fracture';
+import '../../styles/vessel.css';
+
+interface Props {
+  headingId: string;
+}
+
+const { headingId } = Astro.props;
+const segments = allSegments();
+---
+
+<div class="vessel" data-vessel>
+  <div class="vessel__slab" data-vessel-slab>
+    <div class="vessel__surface" data-vessel-surface>
+      <h1 class="vessel__statement" id={headingId}><slot /></h1>
+    </div>
+    <svg
+      class="vessel__seams"
+      viewBox="0 0 1000 1000"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+      focusable="false"
+    >
+      {segments.map((s) => (
+        <line
+          class={`seg g${s.shade}`}
+          data-seam={s.seam}
+          data-i={s.index}
+          x1={s.x1}
+          y1={s.y1}
+          x2={s.x2}
+          y2={s.y2}
+          stroke-width={s.width}
+          vector-effect="non-scaling-stroke"
+        />
+      ))}
+    </svg>
+  </div>
+
+  <div class="vessel__controls">
+    <button
+      type="button"
+      class="k-button k-button--ghost-dark"
+      data-vessel-toggle
+      aria-pressed="false"
+      aria-describedby={`${headingId}-hint`}
+      hidden
+    >
+      Mend the break
+    </button>
+    <div class="vessel__message">
+      <p class="vessel__hint" id={`${headingId}-hint`}>
+        Or trace a crack with your pointer. On a touch screen, tap one.
+      </p>
+      <p class="vessel__caption" data-vessel-caption>
+        Kintsugi repairs a break with lacquer and gold and leaves the seam in
+        view. We work the same way: every tool ships with its limits on the
+        record.
+      </p>
+    </div>
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-vessel-live></p>
+</div>
+
+<script>
+  import { initVessels } from '../../lib/kintsugi/vessel-controller';
+  initVessels();
+</script>
