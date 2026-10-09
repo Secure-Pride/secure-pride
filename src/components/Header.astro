@@ -1,25 +1,39 @@
 ---
-import "../styles/community.css";
+/**
+ * Site header: brand mark + wordmark, then the four primary routes.
+ * Each route carries its own gem; the current route is marked with
+ * aria-current and a gem underline (never color alone — weight and
+ * brightness change too).
+ */
+import BrandMark from './site/BrandMark.astro';
+import { PRIMARY, isCurrent } from '../lib/site/nav';
+import '../styles/site.css';
+
+const pathname = Astro.url.pathname;
 ---
 
-<header class="community-header">
-  <nav class="community-nav page-wrap" aria-label="Main navigation">
-    <a class="wordmark" href="/" aria-label="Secure Pride home">
-      Secure Pride
+<header class="site-header">
+  <nav class="site-header__inner" aria-label="Main navigation">
+    <a class="site-header__home" href="/" aria-label="Secure Pride home">
+      <BrandMark variant="small" size={36} idPrefix="hdr" class="site-header__mark" />
+      <span class="site-header__wordmark" aria-hidden="true">Secure Pride</span>
     </a>
-    <ul role="list">
-      <li>
-        <a href="/#tools">Tools</a>
-      </li>
-      <li>
-        <a href="/#stakes">The stakes</a>
-      </li>
-      <li>
-        <a href="/#about">Founder</a>
-      </li>
-      <li>
-        <a href="/#get-involved">Contact</a>
-      </li>
+    <ul class="site-nav" role="list">
+      {PRIMARY.map((route) => {
+        const current = isCurrent(route, pathname);
+        return (
+          <li class="site-nav__item" data-gem={route.gem}>
+            <a
+              class="site-nav__link"
+              href={route.href}
+              aria-current={current ? 'page' : undefined}
+            >
+              <span class="site-nav__shard" aria-hidden="true" />
+              {route.label}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   </nav>
 </header>

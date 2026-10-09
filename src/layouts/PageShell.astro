@@ -1,0 +1,59 @@
+---
+/**
+ * Shell for every public page except the scanner tool: header, porcelain
+ * page head with the route's gem and vertical index, content slot, footer.
+ *
+ * Pass a Route from src/lib/site/nav.ts so the gem, index, and label match
+ * the navigation. The title can be overridden with the "title" slot when it
+ * needs a line break.
+ */
+import Layout from './Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import type { Route } from '../lib/site/nav';
+import '../styles/site.css';
+
+interface Props {
+  route: Route;
+  /** <title> element text. */
+  documentTitle: string;
+  description: string;
+  eyebrow: string;
+  heading: string;
+  lede?: string;
+  noindex?: boolean;
+}
+
+const { route, documentTitle, description, eyebrow, heading, lede, noindex } = Astro.props;
+const canonicalUrl = new URL(route.href, 'https://securepride.org').href;
+---
+
+<Layout
+  title={documentTitle}
+  description={description}
+  canonicalUrl={noindex ? undefined : canonicalUrl}
+  noindex={noindex}
+  bodyClass="site-body"
+>
+  <div class="site" data-gem={route.gem}>
+    <Header />
+    <main id="main-content" class="surface-porcelain">
+      <div class="wrap">
+        <header class="page-head">
+          <p class="page-index" aria-hidden="true">
+            <span>{route.index}</span><span>{route.label}</span>
+          </p>
+          <div>
+            <p class="eyebrow"><span class="shard" aria-hidden="true"></span>{eyebrow}</p>
+            <h1 class="page-title">
+              <slot name="title">{heading}</slot>
+            </h1>
+            {lede && <p class="page-lede">{lede}</p>}
+          </div>
+        </header>
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </div>
+</Layout>

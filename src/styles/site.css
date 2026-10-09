@@ -1,0 +1,261 @@
+/* ═══════════════════════════════════════════════════════════════
+   Site shell — public pages (header, footer, surfaces, controls).
+   Page content patterns live in site-content.css; the home vessel in
+   vessel.css. Tokens: site-tokens.css. Scoped under .site so the
+   scanner tool's existing styles are untouched.
+   ═══════════════════════════════════════════════════════════════ */
+@import '@fontsource/shippori-mincho-b1/latin-800.css';
+@import './site-tokens.css';
+@import './site-content.css';
+
+body.site-body {
+  background: var(--charcoal);
+}
+
+.site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--porcelain);
+  color: var(--ink);
+  font-family: var(--font-reading);
+}
+.site > main { flex: 1; }
+/* global.css styles headings for the dark tool UI (light text, Orbitron
+   h1). On site pages headings take the color of the surface they sit on. */
+.site :is(h1, h2, h3, h4, h5, h6) { color: inherit; text-transform: none; }
+
+/* Surfaces set the focus color that contrasts with them (≥ 3:1). */
+.surface-charcoal { --focus: var(--opal-ember); background: var(--charcoal); color: var(--porcelain); }
+.surface-porcelain { --focus: var(--indigo); background: var(--porcelain); color: var(--ink); }
+
+.site :focus-visible,
+.site a:focus-visible,
+.site button:focus-visible {
+  outline: 3px solid var(--focus, var(--indigo));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.site a:hover { text-shadow: none; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: clamp(20px, 4vw, 40px);
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.site-header {
+  --focus: var(--opal-ember);
+  position: sticky;
+  top: 0;
+  z-index: 50; /* above page content; below nothing — no overlays on these pages */
+  background: var(--charcoal);
+  border-bottom: 1px solid var(--charcoal-line);
+}
+.site-header__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 24px;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: 10px clamp(20px, 4vw, 40px);
+}
+.site-header__home {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  color: var(--porcelain);
+  text-decoration: none;
+}
+.site-header__mark { flex: none; }
+.site-header__wordmark {
+  font: 600 0.95rem/1 var(--font-interface);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.site-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 48px;
+  padding: 0 14px;
+  font: 600 0.92rem/1 var(--font-interface);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--porcelain-dim);
+}
+.site-nav__link:hover { color: var(--porcelain); }
+.site-nav__link[aria-current="page"] { color: var(--porcelain); }
+.site-nav__link::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+  height: 2px;
+  background: var(--gem);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 240ms var(--ease-settle);
+}
+.site-nav__link:hover::after { transform: scaleX(0.4); }
+.site-nav__link[aria-current="page"]::after { transform: scaleX(1); }
+
+/* A shard, not a dot: irregular quadrilateral in the route's gem. */
+.site-nav__shard,
+.shard {
+  display: inline-block;
+  flex: none;
+  width: 9px;
+  height: 11px;
+  background: var(--gem);
+  clip-path: polygon(18% 0, 100% 22%, 74% 100%, 0 70%);
+}
+
+/* ── Buttons and links ─────────────────────────────────────── */
+.k-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  font: 600 0.98rem/1 var(--font-interface);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+.k-button--opal { background: var(--opal); color: var(--charcoal); }
+.k-button--opal:hover { background: var(--opal-ember); color: var(--charcoal); }
+.k-button--ghost-dark { background: transparent; color: var(--porcelain); border-color: var(--porcelain-dim); }
+.k-button--ghost-dark:hover { border-color: var(--porcelain); background: var(--charcoal-line); }
+.k-button--ghost-light { background: transparent; color: var(--ink); border-color: var(--ink); }
+.k-button--ghost-light:hover { background: var(--porcelain-glaze); }
+.k-button[hidden] { display: none; }
+
+.k-link {
+  color: var(--indigo);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.k-link:hover { text-decoration-thickness: 2px; color: var(--opal-on-light); }
+.surface-charcoal .k-link,
+.site-footer a {
+  color: var(--porcelain);
+  text-decoration-color: var(--opal);
+}
+.surface-charcoal .k-link:hover,
+.site-footer a:hover { color: var(--opal-ember); }
+
+/* ── Footer ────────────────────────────────────────────────── */
+.site-footer {
+  --focus: var(--opal-ember);
+  background: var(--charcoal-deep);
+  color: var(--porcelain-dim);
+  border-top: 1px solid var(--charcoal-line);
+}
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 40px 56px;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding: 64px clamp(20px, 4vw, 40px) 40px;
+}
+.site-footer__sign { display: flex; align-items: center; gap: 24px; }
+.site-footer__mark { flex: none; width: clamp(88px, 10vw, 128px); height: auto; }
+.site-footer__line {
+  margin: 0;
+  max-width: 18ch;
+  font: 800 clamp(1.3rem, 2vw, 1.6rem)/1.25 var(--font-statement);
+  color: var(--porcelain);
+}
+.site-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.site-footer__nav ul { margin: 0; padding: 0; list-style: none; }
+.site-footer__nav li { margin: 0 0 4px; }
+.site-footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font: 400 0.95rem/1.4 var(--font-reading);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.site-footer__legal {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--charcoal-line);
+  font: 400 0.8rem/1.5 var(--font-record);
+  color: var(--porcelain-dim);
+}
+
+@media (max-width: 860px) {
+  .site-footer__inner { grid-template-columns: 1fr; }
+  .site-footer__nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  /* Two rows on phones: a sticky header would eat an eighth of the screen. */
+  .site-header { position: static; }
+  .site-header__inner { padding-block: 4px 0; }
+  .site-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    border-top: 1px solid var(--charcoal-line);
+  }
+  .site-nav__link {
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+    min-height: 56px;
+    padding: 6px 2px 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-align: center;
+  }
+  .site-nav__link::after { left: 20%; right: 20%; bottom: 2px; }
+  .site-footer__nav { grid-template-columns: 1fr; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav__link::after, .k-button { transition: none; }
+}

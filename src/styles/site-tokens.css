@@ -1,0 +1,120 @@
+/* ═══════════════════════════════════════════════════════════════
+   Site composition tokens — public pages only.
+   See docs/brand/kintsugi-direction.md and DECISION-007.
+
+   This layer *references* the shared catalog in tokens.css (validated
+   against design.securepride.org by scripts/check-design-tokens.mjs).
+   It never redefines an --sp-* value. The one raw value here, charcoal,
+   is not in the catalog yet — propose it upstream before reusing it.
+
+   Palette logic (Imari porcelain): white porcelain, underglaze indigo,
+   iron-red lacquer (fire opal), gold, black outline (charcoal).
+   ═══════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Surfaces ─────────────────────────────────────────────── */
+  --charcoal: #1a191d;                         /* sumi — new, not upstream */
+  --charcoal-deep: color-mix(in srgb, var(--charcoal) 70%, #000);
+  --charcoal-line: color-mix(in srgb, var(--charcoal) 82%, var(--sp-light-border));
+  --charcoal-raised: color-mix(in srgb, var(--charcoal) 93%, var(--sp-light-border));
+  --porcelain: var(--sp-light-elevated);        /* #f0ede8 */
+  --porcelain-glaze: var(--sp-light-bg);        /* #faf8f5 */
+  --porcelain-line: var(--sp-light-border);     /* #d4cfc7 */
+
+  /* ── Ink (text) ─────────────────────────────────────────────
+     Contrast on --porcelain: ink 15.0, ink-soft 7.8, ink-muted 4.7.
+     Contrast on --charcoal: porcelain 15.0, porcelain-dim 10.1.  */
+  --ink: var(--charcoal);
+  --ink-soft: color-mix(in srgb, var(--charcoal) 78%, var(--porcelain));
+  --ink-muted: color-mix(in srgb, var(--charcoal) 62%, var(--porcelain));
+  --porcelain-dim: color-mix(in srgb, var(--porcelain) 80%, var(--charcoal));
+
+  /* ── Accents ────────────────────────────────────────────────
+     Fire opal never sets text on porcelain (2.6:1). It fills buttons
+     under charcoal text (5.75:1) and sets text on charcoal (5.75:1). */
+  --indigo: var(--sp-indigo-hero);              /* 12.6:1 on porcelain */
+  --indigo-on-dark: var(--sp-indigo-highlight); /* 11.7:1 on charcoal */
+  --opal: var(--sp-opal);
+  --opal-ember: var(--sp-opal-ember);
+  --opal-on-light: color-mix(in srgb, var(--sp-opal) 60%, var(--charcoal));
+
+  /* ── Gold seam ──────────────────────────────────────────────── */
+  /* Ordered dark → bright so the seam's grain shifts smoothly. */
+  --gold-1: var(--sp-brass);
+  --gold-2: var(--sp-brass-light);
+  --gold-3: var(--sp-brass-highlight);
+  /* Cracks read as glaze hairlines, not black bars: the statement's ink
+     must stay the darkest thing on the vessel. */
+  --crack: color-mix(in srgb, var(--charcoal) 46%, var(--porcelain));
+  --crack-gap: color-mix(in srgb, var(--charcoal) 58%, var(--porcelain));
+
+  /* ── Gems (raw) ───────────────────────────────────────────────
+     Upstream names garnet and lapis as --sp-neon-red / --sp-neon-blue;
+     the values are the kintsugi gem values. */
+  --gem-gold: var(--sp-brass-light);
+  --gem-sapphire: var(--sp-gem-sapphire);
+  --gem-garnet: var(--sp-neon-red);
+  --gem-tourmaline: var(--sp-gem-tourmaline);
+  --gem-emerald: var(--sp-gem-emerald);
+  --gem-amethyst: var(--sp-gem-amethyst);
+  --gem-lapis: var(--sp-neon-blue);
+  --gem-amber: var(--sp-neon-orange);
+
+  /* ── Type ─────────────────────────────────────────────────── */
+  --font-statement: "Shippori Mincho B1", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
+  --font-interface: "Rajdhani", "DM Sans", system-ui, sans-serif;
+  --font-reading: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-record: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+  /* ── Motion ───────────────────────────────────────────────── */
+  --ease-settle: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-lacquer: 260ms;
+  --dur-cure: 900ms;
+  --dur-settle: 1100ms;
+}
+
+/* ── Page gem ─────────────────────────────────────────────────
+   One gem per page, set with data-gem on the .site root.
+   --gem is the raw tone for rules and shapes; the -on-light / -on-dark
+   variants are contrast-safe for text (≥ 4.5:1, verified in QA). Mix
+   ratios come from the contrast table in kintsugi-direction.md. */
+[data-gem] {
+  --gem: var(--gem-gold);
+  --gem-on-light: var(--sp-brass-mid);
+  --gem-on-dark: var(--gem-gold);
+}
+[data-gem="sapphire"] {
+  --gem: var(--gem-sapphire);
+  --gem-on-light: color-mix(in srgb, var(--gem-sapphire) 50%, var(--charcoal));
+  --gem-on-dark: var(--gem-sapphire);
+}
+[data-gem="garnet"] {
+  --gem: var(--gem-garnet);
+  --gem-on-light: color-mix(in srgb, var(--gem-garnet) 90%, var(--charcoal));
+  --gem-on-dark: color-mix(in srgb, var(--gem-garnet) 70%, var(--porcelain));
+}
+[data-gem="tourmaline"] {
+  --gem: var(--gem-tourmaline);
+  --gem-on-light: color-mix(in srgb, var(--gem-tourmaline) 90%, var(--charcoal));
+  --gem-on-dark: color-mix(in srgb, var(--gem-tourmaline) 65%, var(--porcelain));
+}
+[data-gem="emerald"] {
+  --gem: var(--gem-emerald);
+  --gem-on-light: color-mix(in srgb, var(--gem-emerald) 50%, var(--charcoal));
+  --gem-on-dark: var(--gem-emerald);
+}
+[data-gem="amethyst"] {
+  --gem: var(--gem-amethyst);
+  --gem-on-light: color-mix(in srgb, var(--gem-amethyst) 92%, var(--charcoal));
+  --gem-on-dark: color-mix(in srgb, var(--gem-amethyst) 65%, var(--porcelain));
+}
+[data-gem="lapis"] {
+  --gem: var(--gem-lapis);
+  --gem-on-light: color-mix(in srgb, var(--gem-lapis) 88%, var(--charcoal));
+  --gem-on-dark: color-mix(in srgb, var(--gem-lapis) 75%, var(--porcelain));
+}
+[data-gem="amber"] {
+  --gem: var(--gem-amber);
+  --gem-on-light: color-mix(in srgb, var(--gem-amber) 55%, var(--charcoal));
+  --gem-on-dark: var(--gem-amber);
+}

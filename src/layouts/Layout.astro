@@ -7,6 +7,8 @@ interface Props {
   canonicalUrl?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Extra class for <body>; site pages pass 'site-body' (charcoal overscroll). */
+  bodyClass?: string;
 }
 
 const {
@@ -15,6 +17,7 @@ const {
   canonicalUrl,
   ogImage = 'https://securepride.org/sp-og-preview.png',
   noindex = false,
+  bodyClass,
 } = Astro.props;
 
 const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepride.org').href;
@@ -26,7 +29,7 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0a0a1a" />
+    <meta name="theme-color" content="#1a191d" />
     {noindex && <meta name="robots" content="noindex" />}
 
     <!-- Open Graph -->
@@ -48,7 +51,7 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
     <link rel="icon" href="/favicons/favicon-16.png" sizes="16x16" type="image/png" />
     <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/favicons/site.webmanifest" />
-    <meta name="msapplication-TileColor" content="#0a0a1a" />
+    <meta name="msapplication-TileColor" content="#1a191d" />
 
     <title>{title}</title>
 
@@ -56,23 +59,8 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
       html { color-scheme: dark; }
     </style>
   </head>
-  <body>
+  <body class={bodyClass}>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
     <slot />
-    <script>
-      const reveals = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-      );
-      reveals.forEach((el) => observer.observe(el));
-    </script>
   </body>
 </html>
