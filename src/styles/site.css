@@ -173,6 +173,13 @@ body.site-body {
   text-underline-offset: 4px;
 }
 .k-link:hover { text-decoration-thickness: 2px; color: var(--opal-on-light); }
+/* Standalone links (not inside a sentence) meet the 44 px target floor. */
+.actions .k-link,
+.cell__link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .surface-charcoal .k-link,
 .site-footer a {
   color: var(--porcelain);
@@ -215,6 +222,7 @@ body.site-body {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+  min-width: 44px;
   font: 400 0.95rem/1.4 var(--font-reading);
   text-decoration: underline;
   text-decoration-thickness: 1px;
