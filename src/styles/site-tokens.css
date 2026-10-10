@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    Site composition tokens — public pages only.
-   See docs/brand/kintsugi-direction.md and DECISION-007.
+   See docs/brand/kintsugi-direction.md and DECISION-008.
 
    This layer *references* the shared catalog in tokens.css (validated
    against design.securepride.org by scripts/check-design-tokens.mjs).

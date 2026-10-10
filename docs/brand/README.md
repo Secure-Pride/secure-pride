@@ -22,10 +22,10 @@ Five principles govern all Secure Pride communications:
 
 ## Design System
 
-- **Typography**: Orbitron (display), Rajdhani (headings), Inter (body), JetBrains Mono (code)
-- **Core palette (Kintsugi, live as of PR #44)**: Teal `#0a7e74`, Deep Purple `#2a1f54`, Cyan `#0fb5c9`, Hot Pink `#c81e6c`, plus a brass/gem accent set — see `secure-pride/src/styles/tokens.css` (mirrors `secure-pride-design/colors_and_type.css`, the tracked source of truth) for the full token list. This replaces the earlier neon-cyberpunk palette (Cyan `#06d6e0`, Pink `#ff2d95`, Purple `#3a2a5e`), retired 2026-08-14.
-- **Primary mark**: Shield-padlock (point-down orientation)
-- **Screen surface**: Dark-first (`#0a0a1a` background)
+- **Public site direction**: [`kintsugi-direction.md`](kintsugi-direction.md) — charcoal and porcelain surfaces, indigo and fire-opal accents, one gem per page, the mending interaction, and mark usage. Decision record: `docs/decisions/DECISION-008.md`.
+- **Shared tokens**: `src/styles/tokens.css`, validated against the dated `design.securepride.org` snapshot in `upstream/` by `scripts/check-design-tokens.mjs`. Site-only composition tokens live in `src/styles/site-tokens.css` and reference the shared ones.
+- **Typography (public site)**: Shippori Mincho B1 (statement), Rajdhani (interface), Inter (reading), JetBrains Mono (record). Orbitron remains only in the scanner tool UI.
+- **Primary mark**: heart-lock shield, from the Claude Design identity kit (`identity-kit/`), inlined by `src/components/site/BrandMark.astro` at the correct tier per size.
 - **Print surface**: White backgrounds with teal/purple accents only
 
 ## Document Engine
