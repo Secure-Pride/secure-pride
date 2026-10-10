@@ -29,6 +29,7 @@ The founder prefers the kintsugi visual work, values the honesty of the live cop
 - Public pages use charcoal and porcelain surfaces, indigo and fire-opal accents, and one gem per route, following the Imari porcelain palette (underglaze blue, overglaze iron red and gold on white porcelain). Full spec: `docs/brand/kintsugi-direction.md`.
 - The home page carries one statement, set on a porcelain vessel that starts broken and can be mended in gold by tracing, tapping, or a button.
 - Content from the single page moves, near-verbatim, to `/tools`, `/stakes`, `/founder`, and `/contact`. Legacy anchors forward to them.
+- Pages follow an editorial grid (v1.1.0): running head and folio, hairline-ruled cells, a giant cropped route word, the stakes as a comparison table, and slash-titled doorways. Spec: `kintsugi-direction.md`, "Editorial grid".
 - The identity-kit mark appears in the header (Tier 3 file, 36 px) and footer (Tier 2 file, 128 px), per the kit's scaling rules.
 - Astro no longer inlines scripts or stylesheets (`build.inlineStylesheets: 'never'`, `vite.build.assetsInlineLimit: 0`), keeping pages compatible with the CSP in `_headers`.
 
@@ -36,7 +37,7 @@ The founder prefers the kintsugi visual work, values the honesty of the live cop
 
 - **Values**: kintsugi leaves the repair visible; #67 leaves the tool's limits visible. The design now says what the copy already said. The caption under the vessel makes the link explicit.
 - **Privacy**: no new third parties, requests, or storage. The new typeface (Shippori Mincho B1, OFL) is self-hosted through `@fontsource`, Latin subset only (32 KB woff2). The vessel stores nothing.
-- **Accessibility**: all text measured in a browser at WCAG 2.1 AA or better on every page (lowest 4.63:1). The heading stays real text; the shard copies are `aria-hidden` and demoted from headings, so the page keeps one `h1`. The Mend button is keyboard reachable, toggles `aria-pressed`, and a polite live region announces the result. `prefers-reduced-motion` removes transitions. Without JavaScript the vessel renders already mended. Navigation targets are at least 44 px; phones get a four-cell nav instead of a wrapped list.
+- **Accessibility**: all text measured in a browser at WCAG 2.1 AA or better on every page (lowest 4.96:1 after v1.1.0). The heading stays real text; the shard copies are `aria-hidden` and demoted from headings, so the page keeps one `h1`. The Mend button is keyboard reachable, toggles `aria-pressed`, and a polite live region announces the result. `prefers-reduced-motion` removes transitions. Without JavaScript the vessel renders already mended. Navigation targets are at least 44 px; phones get a four-cell nav instead of a wrapped list.
 - **Trade-offs accepted**: the broken state draws hairline cracks through the statement. Cracks use a mid-tone so the ink stays the darkest thing on the vessel, and the real text is unaffected for assistive technology. Fire opal cannot set text on porcelain (2.6:1), so it is limited to button fills and charcoal surfaces.
 
 ## Implementation
@@ -46,7 +47,8 @@ The founder prefers the kintsugi visual work, values the honesty of the live cop
 - Components: `src/components/site/KintsugiVessel.astro`, `BrandMark.astro`; `Header.astro`, `Footer.astro`, `ToolTopBar.astro` updated.
 - Site map: `src/lib/site/nav.ts` (unit-tested), read by header, footer, home doorways, and page indexes.
 - Layout: `src/layouts/PageShell.astro`; `Layout.astro` gains `bodyClass`, a charcoal theme color, and loses an unused inline scroll-reveal script.
-- Styles: `site-tokens.css` (composition tokens that reference `tokens.css`; charcoal is the one new raw value), `site.css`, `site-content.css`, `vessel.css`. `community.css` and `Contact.astro` removed.
+- Styles: `site-tokens.css` (composition tokens that reference `tokens.css`; charcoal is the one new raw value), `site.css`, `site-content.css`, `site-editorial.css`, `vessel.css`.
+- Editorial components: `src/components/site/RunningHead.astro`; the stakes scenarios render as a `<table>` with explicit roles so phones can restack rows without losing table semantics. `community.css` and `Contact.astro` removed.
 - `tokens.css` is untouched; `check-design-tokens.mjs` still passes against the upstream snapshot.
 
 ## Validation

@@ -89,6 +89,21 @@ The home statement is set on a porcelain vessel that is already broken: four sha
 
 The heading stays real text for assistive technology; the shards are decorative copies.
 
+## Editorial grid (v1.1.0)
+
+Four references from the founder (a magazine cover, a two-page temple-garden spread, a Korean exhibition poster, and an agency work index) share one discipline: a strict grid where every structural mark carries information. Borrowed conventions, each tied to something true:
+
+| Convention | Source | On the site |
+|---|---|---|
+| Running head + folio over a hairline | Magazine spread | Publication line left, page position right (`01 / 04`; appendix pages show their own number) |
+| Hairline-ruled info cells | Exhibition poster | Home facts sheet, the Tools scanner block, the security note |
+| Giant route word cropped at the page edge | Agency index | Outlined route name in the page gem, in its own band under the title |
+| Comparison grid | Poster info grid | The stakes as a real table: scenario × what happens × who pays × what the tool changes |
+| `Title / descriptor` with a corner arrow | Agency index | Home doorways |
+| Vertical type | Cover and spread | The tategaki route index (already in v1.0.0) |
+
+Not borrowed: decorative CJK characters or seasonal motifs. The site is English-only and kintsugi is the one Japanese concept it names; set type in other scripts only when the content is in them.
+
 ## Brand mark
 
 Per `identity-kit/06_guidelines`:

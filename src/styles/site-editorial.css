@@ -1,0 +1,263 @@
+/* ═══════════════════════════════════════════════════════════════
+   Editorial grid — the print conventions the site borrows:
+   running head + folio (magazine spread), hairline-ruled cells
+   (exhibition poster info grid), a giant cropped route word
+   (agency index page), and slash-titled doorways with a corner arrow.
+   Every device here encodes something true: page position, the
+   route's name, a fact, a destination.
+   ═══════════════════════════════════════════════════════════════ */
+
+.surface-porcelain { --rule: color-mix(in srgb, var(--ink) 26%, var(--porcelain)); }
+.surface-charcoal { --rule: color-mix(in srgb, var(--porcelain) 20%, var(--charcoal)); }
+.site > main { overflow-x: clip; }
+
+/* ── Running head and folio ────────────────────────────────── */
+.running-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 24px;
+  padding: 18px 0 10px;
+  border-bottom: 1px solid var(--rule);
+  font: 500 0.72rem/1.4 var(--font-record);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.surface-charcoal .running-head { color: var(--porcelain-dim); }
+.home .running-head + * , .home > .wrap + .home__grid { margin-top: clamp(20px, 3vw, 32px); }
+.running-head__title {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.running-head__folio {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--gem-on-light);
+}
+.surface-charcoal .running-head__folio { color: var(--gem-on-dark); }
+
+/* ── Giant route word, cropped at the right edge ──────────────
+   Sits on the page head's bottom rule and runs off the viewport,
+   behind the title (z-index 0 here, 1 on the head body). */
+/* The head reserves a band for the word so it never sits under text. */
+.page-head {
+  position: relative;
+  --word-size: clamp(4.5rem, 12.5vw, 12.5rem);
+  padding-bottom: calc(var(--word-size) * 0.78);
+}
+.page-head > :not(.page-word) { position: relative; z-index: 1; }
+.page-word {
+  position: absolute;
+  z-index: 0;
+  right: calc((100% - 100vw) / 2 - 0.06em);
+  bottom: -0.17em;
+  margin: 0;
+  font: 700 var(--word-size)/1 var(--font-interface);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: transparent;
+  -webkit-text-stroke: 1.25px color-mix(in srgb, var(--gem-on-light) 62%, var(--porcelain));
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Ledger: hairline-ruled cells ──────────────────────────── */
+.ledger {
+  display: grid;
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+.ledger--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ledger--home {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  margin-top: clamp(40px, 6vw, 72px);
+}
+.ledger--home .cell--lede { grid-column: span 7; }
+.ledger--home .cell--now { grid-column: span 5; }
+.ledger--home .cell--fact { grid-column: span 4; }
+
+.cell,
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: clamp(22px, 2.6vw, 34px);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.tile { border: 1px solid var(--rule); }
+/* The gem seal: a short bar on each cell's top-left corner. */
+.cell::before,
+.tile::before,
+.doorway::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 44px;
+  height: 3px;
+  background: var(--gem);
+}
+.tile p { margin: 0; color: var(--ink-soft); line-height: 1.7; }
+
+/* Doubled class: labels are real headings, and the .site heading reset
+   (0,1,1) would otherwise strip their case and color. */
+.cell .cell__label {
+  margin: 0;
+  font: 600 0.78rem/1.4 var(--font-interface);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gem-on-light);
+}
+.surface-charcoal .cell .cell__label { color: var(--gem-on-dark); }
+.cell__value {
+  font: 800 clamp(1.45rem, 2.3vw, 2rem)/1.12 var(--font-statement);
+  color: var(--ink);
+}
+.surface-charcoal .cell__value { color: var(--porcelain); }
+.cell__note {
+  margin: 0;
+  max-width: 46ch;
+  font: 400 0.96rem/1.6 var(--font-reading);
+  color: var(--ink-soft);
+}
+.surface-charcoal .cell__note { color: var(--porcelain-dim); }
+.cell .actions,
+.cell__link { margin-top: auto; padding-top: 6px; }
+.cell .section-title { margin-top: -4px; }
+
+/* ── Matrix (stakes) ───────────────────────────────────────── */
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+.matrix th,
+.matrix td {
+  padding: clamp(16px, 2vw, 26px);
+  border: 1px solid var(--rule);
+  vertical-align: top;
+}
+.matrix thead th {
+  padding-block: 14px;
+  border-top: 3px solid var(--gem);
+  font: 600 0.78rem/1.4 var(--font-interface);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gem-on-light);
+}
+.matrix tbody th {
+  width: 24%;
+  font: 800 clamp(1.15rem, 1.6vw, 1.35rem)/1.3 var(--font-statement);
+  color: var(--ink);
+}
+.matrix td {
+  font: 400 1rem/1.7 var(--font-reading);
+  color: var(--ink-soft);
+}
+
+/* ── Doorways: a ruled band, one gem per route ─────────────── */
+.doorways {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: clamp(32px, 5vw, 56px) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--rule);
+  border-left: 1px solid var(--rule);
+}
+.doorways > li { display: flex; margin: 0; }
+.doorway {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  min-height: 188px;
+  padding: 22px 22px 26px;
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  color: var(--porcelain);
+  text-decoration: none;
+  transition: background-color 220ms ease;
+}
+.doorway:hover { background: color-mix(in srgb, var(--charcoal) 86%, var(--gem)); }
+.doorway__index {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 500 0.78rem/1 var(--font-record);
+  font-variant-numeric: tabular-nums;
+  color: var(--gem-on-dark);
+}
+.doorway__title {
+  font: 400 0.98rem/1.5 var(--font-reading);
+  color: var(--porcelain-dim);
+}
+.doorway__label {
+  font: 700 1.35rem/1.15 var(--font-interface);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--porcelain);
+}
+.doorway__slash { color: var(--gem-on-dark); }
+.doorway__arrow {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  color: var(--porcelain-dim);
+  transition: transform 220ms var(--ease-settle), color 220ms ease;
+}
+.doorway:hover .doorway__arrow { color: var(--gem-on-dark); transform: translate(3px, -3px); }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 960px) {
+  .ledger--home .cell--lede,
+  .ledger--home .cell--now { grid-column: span 12; }
+  .doorways { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .ledger--two { grid-template-columns: 1fr; }
+  .ledger--home .cell--fact { grid-column: span 12; }
+  .running-head__title { display: none; }
+  .running-head { justify-content: flex-end; }
+
+  /* Matrix restacks: one ruled block per scenario, labels inline. */
+  .matrix,
+  .matrix tbody,
+  .matrix tr,
+  .matrix th,
+  .matrix td { display: block; width: 100%; }
+  .matrix thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  .matrix tr { margin-bottom: 20px; border-top: 3px solid var(--gem); }
+  .matrix tbody th { width: 100%; }
+  .matrix td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 6px;
+    font: 600 0.76rem/1.4 var(--font-interface);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gem-on-light);
+  }
+}
+@media (max-width: 520px) {
+  .doorways { grid-template-columns: 1fr; }
+  .doorway { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .doorway,
+  .doorway__arrow { transition: none; }
+}
