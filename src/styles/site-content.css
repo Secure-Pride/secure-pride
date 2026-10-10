@@ -97,7 +97,12 @@
 .k-prose p + ul,
 .k-prose ul + p { margin-top: 18px; }
 .k-prose ul { padding-left: 20px; list-style: disc; }
-.section-title + .k-prose { margin-top: 18px; }
+/* Stacked title + body (inside one column). In the two-column section
+   grid they are separate cells and must stay top-aligned. */
+:not(.section) > .section-title + .k-prose { margin-top: 18px; }
+.k-prose > .actions:first-child { margin-top: 0; }
+.k-prose .actions + p { margin-top: 18px; }
+.k-prose > * + .tile { margin-top: 20px; }
 .k-prose li { margin-block: 10px; }
 .k-prose li::marker { color: var(--gem-on-light); }
 .k-prose h3,

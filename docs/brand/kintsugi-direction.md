@@ -1,7 +1,7 @@
 # Kintsugi direction — public site
 
 **Status**: Active (2026-10-09). Supersedes the visual layer of the 2026-10-02 homepage; keeps its copy and privacy boundaries.
-**Decision record**: `docs/decisions/DECISION-007.md`
+**Decision record**: `docs/decisions/DECISION-008.md`
 
 ## Why this exists
 

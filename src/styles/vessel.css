@@ -161,6 +161,9 @@
 @media (max-width: 640px) {
   .vessel__controls { grid-template-columns: 1fr; }
   .vessel__message > * { align-self: start; }
+  /* Stacked, the hidden caption would hold open several empty lines.
+     The shift on mending is user-initiated, so it is not unexpected. */
+  .vessel.is-enhanced:not(.is-mended) .vessel__caption { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
