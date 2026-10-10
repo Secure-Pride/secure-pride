@@ -139,22 +139,6 @@
   color: var(--ink-muted);
 }
 
-/* ── Tiles ─────────────────────────────────────────────────── */
-.tiles {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
-  gap: 20px;
-}
-.tile {
-  padding: clamp(22px, 3vw, 32px);
-  background: var(--porcelain-glaze);
-  border: 1px solid var(--porcelain-line);
-  border-top: 3px solid var(--gem);
-  border-radius: 2px;
-}
-.tile p { margin: 0 0 12px; color: var(--ink-soft); line-height: 1.7; }
-.tile p:last-child { margin-bottom: 0; }
-
 .actions {
   display: flex;
   flex-wrap: wrap;
@@ -173,58 +157,13 @@
   grid-template-columns: 56px minmax(0, 1fr);
   gap: 0 clamp(16px, 3vw, 40px);
 }
-.home__intro {
-  display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 28px 48px;
-  align-items: end;
-  margin-top: clamp(40px, 6vw, 72px);
-}
 .home__lede {
   margin: 0;
   max-width: 54ch;
   font: 400 clamp(1.08rem, 1.5vw, 1.3rem)/1.65 var(--font-reading);
   color: var(--porcelain);
 }
-.home__note {
-  margin: 14px 0 0;
-  font: 400 0.82rem/1.5 var(--font-record);
-  color: var(--porcelain-dim);
-}
-.home__intro .actions { margin-top: 0; justify-content: flex-start; }
 
-/* Doorways: one per primary route, each a shard of a different gem. */
-.doorways {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-  margin: clamp(48px, 7vw, 88px) 0 0;
-  padding: 0;
-  list-style: none;
-}
-.doorway {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  height: 100%;
-  min-height: 172px;
-  padding: 22px 22px 24px;
-  border-top: 2px solid var(--gem);
-  background: var(--charcoal-raised);
-  color: var(--porcelain);
-  text-decoration: none;
-  transition: background-color 200ms ease;
-}
-.doorway:hover { background: color-mix(in srgb, var(--charcoal-raised) 82%, var(--gem)); }
-.doorway__index { font: 500 0.78rem/1 var(--font-record); color: var(--gem-on-dark); }
-.doorway__label { font: 700 1.3rem/1.1 var(--font-interface); letter-spacing: 0.06em; text-transform: uppercase; }
-.doorway__blurb { margin: 0; font: 400 0.95rem/1.55 var(--font-reading); color: var(--porcelain-dim); }
-.doorway__go { margin-top: auto; font: 600 0.85rem/1 var(--font-interface); letter-spacing: 0.12em; text-transform: uppercase; }
-
-@media (max-width: 960px) {
-  .doorways { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .home__intro { grid-template-columns: 1fr; align-items: start; }
-}
 @media (max-width: 760px) {
   .page-head,
   .home__grid { grid-template-columns: 1fr; }
@@ -234,11 +173,4 @@
   .section > :first-child,
   .section > :nth-child(2),
   .section--wide > :first-child { grid-column: 1; }
-}
-@media (max-width: 520px) {
-  .doorways { grid-template-columns: 1fr; }
-  .doorway { min-height: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .doorway { transition: none; }
 }

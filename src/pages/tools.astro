@@ -13,42 +13,44 @@ const route = PRIMARY[0];
   eyebrow="Available today"
   heading="A bounded check before you share."
 >
-  <section class="section" aria-labelledby="scanner-title">
-    <div>
-      <span class="record">Available · Manual text check</span>
-      <h2 class="section-title" id="scanner-title">AI Safety Scanner</h2>
-      <div class="k-prose">
-        <p>
-          Checks text for known prompt-injection, credential, and
-          personal-data patterns. It returns findings and, when masking
-          applies, a redacted draft for you to review.
-        </p>
+  <section class="section section--wide" aria-labelledby="scanner-title">
+    <div class="ledger ledger--two">
+      <div class="cell">
+        <span class="cell__label">Available · Manual text check</span>
+        <h2 class="section-title" id="scanner-title">AI Safety Scanner</h2>
+        <div class="k-prose">
+          <p>
+            Checks text for known prompt-injection, credential, and
+            personal-data patterns. It returns findings and, when masking
+            applies, a redacted draft for you to review.
+          </p>
+        </div>
+        <div class="actions">
+          <a class="k-button k-button--opal" href="/tools/scanner/">Try with example text</a>
+        </div>
       </div>
-      <div class="actions">
-        <a class="k-button k-button--opal" href="/tools/scanner/">Try with example text</a>
-      </div>
-    </div>
-    <div class="tile">
-      <h3>Before you use it</h3>
-      <div class="k-prose">
-        <ul>
-          <li>Text is sent to our Cloudflare-hosted scanner.</li>
-          <li>
-            Do not submit real client records, passwords, health information,
-            or identity details.
-          </li>
-          <li>
-            No match means no matching pattern was found. It does not mean the
-            text is safe.
-          </li>
-          <li>
-            This checks one submission. It does not monitor your organization
-            or connect to your AI provider.
-          </li>
-        </ul>
-      </div>
-      <div class="actions">
-        <a class="k-link" href="/privacy/">Read how processing and logs work →</a>
+      <div class="cell">
+        <h3 class="cell__label">Before you use it</h3>
+        <div class="k-prose">
+          <ul>
+            <li>Text is sent to our Cloudflare-hosted scanner.</li>
+            <li>
+              Do not submit real client records, passwords, health information,
+              or identity details.
+            </li>
+            <li>
+              No match means no matching pattern was found. It does not mean the
+              text is safe.
+            </li>
+            <li>
+              This checks one submission. It does not monitor your organization
+              or connect to your AI provider.
+            </li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a class="k-link" href="/privacy/">Read how processing and logs work →</a>
+        </div>
       </div>
     </div>
   </section>

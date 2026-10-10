@@ -1,15 +1,38 @@
 ---
 /**
- * Home: one statement, one interaction, four doorways.
- * Copy below the statement is carried from the 2026-10-02 site (#67);
- * the statement itself is new and needs the founder's sign-off.
+ * Home: one statement, one interaction, then a ruled sheet of facts and the
+ * four doorways. Every fact cell restates something the 2026-10-02 site,
+ * the privacy notice, or the tools page already says; nothing is new claim.
+ * The statement itself is new and needs the founder's sign-off.
  */
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import KintsugiVessel from '../components/site/KintsugiVessel.astro';
+import RunningHead from '../components/site/RunningHead.astro';
 import { HOME, PRIMARY } from '../lib/site/nav';
 import '../styles/site.css';
+
+const facts = [
+  {
+    label: 'Where text goes',
+    value: 'Cloudflare-hosted API',
+    note: 'The app does not intentionally store submitted text. Hosting log retention is not yet verified.',
+    link: { href: '/privacy/', text: 'Privacy and processing' },
+  },
+  {
+    label: 'Inspect it',
+    value: 'Apache 2.0',
+    note: 'The code is open. The Docker image serves the interface, not the scanner API.',
+    link: { href: 'https://github.com/mazze93/secure-pride', text: 'Source on GitHub' },
+  },
+  {
+    label: 'In development',
+    value: 'Rust/WASM scanner',
+    note: 'Built, not deployed to the public scanner route.',
+    link: { href: 'https://github.com/mazze93/secure-pride/tree/main/scanner-rs', text: 'Inspect the next scanner' },
+  },
+];
 ---
 
 <Layout
@@ -21,6 +44,9 @@ import '../styles/site.css';
   <div class="site" data-gem={HOME.gem}>
     <Header />
     <main id="main-content" class="surface-charcoal home">
+      <div class="wrap">
+        <RunningHead route={HOME} />
+      </div>
       <div class="wrap home__grid">
         <p class="page-index" aria-hidden="true">
           <span>{HOME.index}</span><span>The statement</span>
@@ -31,23 +57,34 @@ import '../styles/site.css';
             Most security is built for people who can afford to fail.
           </KintsugiVessel>
 
-          <div class="home__intro">
-            <div>
+          <div class="ledger ledger--home" role="group" aria-label="What is available and where its limits are">
+            <div class="cell cell--lede">
               <p class="home__lede">
                 Secure Pride builds open-source tools for LGBTQ+ organizations,
                 where a privacy failure can become someone else’s personal
                 risk. Start with what is available today, understand its
                 limits, and decide whether it fits your work.
               </p>
-              <p class="home__note">
-                No account or payment needed for the text scanner. Hosted
-                processing on Cloudflare.
-              </p>
+              <div class="actions">
+                <a class="k-link" href="/stakes/">Who pays when a control fails →</a>
+              </div>
             </div>
-            <div class="actions">
-              <a class="k-button k-button--opal" href="/tools/">See the available tool</a>
-              <a class="k-link" href="/stakes/">Who pays when a control fails →</a>
+            <div class="cell cell--now" data-gem="sapphire">
+              <h2 class="cell__label">Available now</h2>
+              <span class="cell__value">AI Safety Scanner</span>
+              <p class="cell__note">Manual text check. No account or payment needed.</p>
+              <div class="actions">
+                <a class="k-button k-button--opal" href="/tools/">See the available tool</a>
+              </div>
             </div>
+            {facts.map((fact) => (
+              <div class="cell cell--fact">
+                <h2 class="cell__label">{fact.label}</h2>
+                <span class="cell__value">{fact.value}</span>
+                <p class="cell__note">{fact.note}</p>
+                <a class="k-link cell__link" href={fact.link.href}>{fact.link.text} →</a>
+              </div>
+            ))}
           </div>
 
           <nav aria-label="Sections">
@@ -55,10 +92,17 @@ import '../styles/site.css';
               {PRIMARY.map((route) => (
                 <li data-gem={route.gem}>
                   <a class="doorway" href={route.href}>
-                    <span class="doorway__index" aria-hidden="true">{route.index}</span>
-                    <span class="doorway__label">{route.label}</span>
-                    <span class="doorway__blurb">{route.blurb}</span>
-                    <span class="doorway__go" aria-hidden="true">Enter →</span>
+                    <span class="doorway__index" aria-hidden="true">
+                      <span class="shard"></span>{route.index}
+                    </span>
+                    <span class="doorway__title">
+                      <span class="doorway__label">{route.label}</span>
+                      <span class="doorway__slash" aria-hidden="true"> / </span>
+                      <span class="doorway__blurb">{route.blurb}</span>
+                    </span>
+                    <svg class="doorway__arrow" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                      <path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+                    </svg>
                   </a>
                 </li>
               ))}

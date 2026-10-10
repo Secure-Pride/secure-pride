@@ -40,19 +40,32 @@ const risks = [
   heading="Who pays when a control fails?"
   lede="These are scenarios to plan around, not claims about incidents at your organization. The person bearing the cost may never have chosen the tool."
 >
-  <section class="section section--wide" aria-label="Scenarios">
-    <div class="tiles">
-      {risks.map((risk) => (
-        <article class="tile">
-          <h3>{risk.exposure}</h3>
-          <p>{risk.mechanism}</p>
-          <span class="k-label">Who bears the cost</span>
-          <p>{risk.cost}</p>
-          <span class="k-label">What this tool can change</span>
-          <p>{risk.boundary}</p>
-        </article>
-      ))}
-    </div>
+  <section class="section section--wide" aria-labelledby="matrix-caption">
+    <!-- A comparison matrix is tabular data: a real table, with roles kept
+         explicit so phones can restack rows without losing semantics. -->
+    <table class="matrix" role="table">
+      <caption id="matrix-caption" class="visually-hidden">
+        Three scenarios: what happens, who bears the cost, and what a text scan can change
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col">Scenario</th>
+          <th role="columnheader" scope="col">What happens</th>
+          <th role="columnheader" scope="col">Who bears the cost</th>
+          <th role="columnheader" scope="col">What this tool can change</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {risks.map((risk) => (
+          <tr role="row">
+            <th role="rowheader" scope="row">{risk.exposure}</th>
+            <td role="cell" data-label="What happens">{risk.mechanism}</td>
+            <td role="cell" data-label="Who bears the cost">{risk.cost}</td>
+            <td role="cell" data-label="What this tool can change">{risk.boundary}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </section>
 
   <section class="section" aria-labelledby="conditions-title">

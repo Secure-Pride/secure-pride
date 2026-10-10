@@ -1,0 +1,22 @@
+---
+/**
+ * Running head and folio, set like a printed spread: the publication's
+ * line on the left, the page's position on the right, a hairline below.
+ * Folios count primary routes only ("01 / 04"); appendix pages show their
+ * own number. Decorative duplicate of the page index, so aria-hidden.
+ */
+import { PRIMARY, type Route } from '../../lib/site/nav';
+
+interface Props {
+  route: Route;
+}
+
+const { route } = Astro.props;
+const isPrimary = PRIMARY.some((r) => r.href === route.href);
+const folio = isPrimary ? `${route.index} / ${String(PRIMARY.length).padStart(2, '0')}` : route.index;
+---
+
+<div class="running-head" aria-hidden="true">
+  <span class="running-head__title">Secure Pride · Security infrastructure for people who cannot fail safely</span>
+  <span class="running-head__folio">{folio}</span>
+</div>
