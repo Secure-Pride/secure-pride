@@ -82,3 +82,37 @@ the guide's draft notice.
 
 Every command in the guide's command blocks was run in the order the guide
 presents them, with `ca.example.internal` mapped to `127.0.0.1`.
+
+## Browser verification (UI)
+
+Driver: `.claude/skills/run-secure-pride/wifi-enterprise/drive.mjs`
+(headless Chromium via Playwright, axe-core WCAG 2.1 AA rules). 27/27 passed:
+
+- Intake: empty submit raises an alert and focuses the first unanswered
+  question; six answers route to the expected path.
+- Paths: remote login server adds the tunnel stage; the not-yet path shows
+  only hardening.
+- Focus moves to the path heading and to each stage heading on navigation;
+  keyboard focus shows a solid 2–3 px outline on every control.
+- Toggling a step is announced in a polite live region.
+- Nothing is written to browser storage before opt-in. After opt-in, storage
+  holds only `{"v":1,"answers":{…option ids…},"done":[…step ids…]}`;
+  reload restores it; opting out clears it.
+- Markdown export downloads as
+  `YYYY-MM-DD_wifi-enterprise-checklist_vX.Y.Z.md` with frontmatter.
+- Copy buttons place the exact command text on the clipboard.
+- 375 px wide: no horizontal page scroll; every button, label, and summary
+  is at least 44 px tall.
+- axe-core: zero WCAG 2.1 AA violations on the intake, a guide stage, and
+  the not-yet path.
+- No network requests beyond the page's own assets; no console errors.
+
+### Pre-existing: the repo's `_headers` CSP would blank every tool page
+
+`_headers` sits at the repo root, but Pages serves only `dist/`, so its CSP
+is not live (confirmed against production response headers on 2026-10-11).
+Served with that CSP, both `/tools/scanner/` and `/tools/wifi-enterprise/`
+render nothing: Astro's inline island scripts, inline styles, and `data:`
+fonts all violate it. This guide behaves exactly like the existing scanner.
+Deploying `_headers` needs its own change (hashes or nonces, or Astro's
+external-script settings) and its own browser test.

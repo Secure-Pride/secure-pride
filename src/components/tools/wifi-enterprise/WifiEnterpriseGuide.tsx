@@ -197,7 +197,10 @@ export default function WifiEnterpriseGuide() {
             onChangeAnswers={() => setView("intake")}
           />
           <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-            <div className="space-y-6 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:self-start lg:overflow-y-auto">
+            {/* Not sticky: with every stage listed, a sticky column outgrows the
+                viewport and would hide later stages behind a nested scroll.
+                On phones it follows the steps, so each stage opens on content. */}
+            <div className="order-last space-y-6 lg:order-first lg:self-start">
               <ProgressPanel
                 completion={summary}
                 persist={persist}
