@@ -116,3 +116,8 @@ render nothing: Astro's inline island scripts, inline styles, and `data:`
 fonts all violate it. This guide behaves exactly like the existing scanner.
 Deploying `_headers` needs its own change (hashes or nonces, or Astro's
 external-script settings) and its own browser test.
+
+## Touchstone pass (2026-10-11)
+
+- Forged CRL (signed by a foreign CA) is rejected by `refresh-wifi-crl`'s signature gate. ✅
+- `ca_path_reload_interval` enforces a refreshed CRL without restart: revoked cert accepted at +0 s, rejected at +320 s with the interval at 300. ✅ FreeRADIUS clamps values below 300 to 300, so lab tests of this setting must wait more than 5 minutes.
