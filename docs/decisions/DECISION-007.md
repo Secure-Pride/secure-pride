@@ -130,8 +130,23 @@ layout, token, or API changed except one footer link.
 
 ## Outcome (updated later)
 
-- Recorded in the PR description: which commands were executed and their
-  results, test counts, and browser checks.
+- Implemented as planned. Full record:
+  [wifi-enterprise-lab-verification.md](../guides/wifi-enterprise-lab-verification.md).
+- Server lab (step-ca 0.30.2, FreeRADIUS 3.2.5, eapol_test): 21 checks.
+  It caught a lock-out bug before publishing — step-ca's CRL carries a
+  critical Issuing Distribution Point, and without a matching CRL
+  Distribution Point in each certificate OpenSSL rejects every login
+  ("different CRL scope"). Fixed by a provisioner template plus `idpURL`.
+- Lab also showed revocation is not enforced until FreeRADIUS restarts (a
+  HUP is not enough) and that an expired CRL blocks every login. Both are
+  now explicit steps and watch-outs.
+- Device certificate lifetime set to one year, not 90 days: with CRL
+  revocation proven, quarterly hand re-installs would cost small teams more
+  than the shorter window protects.
+- Tests: 123 across the repo (50 for this guide, covering all 1,440 intake
+  combinations). Browser driver: 27/27, zero axe WCAG 2.1 AA violations.
+- Found, not fixed (out of scope): the repo's `_headers` CSP is not
+  deployed, and would blank every tool page if it were.
 - Remaining: Secure Pride's own Phase 1 rollout is the real proof. Version
   `1.0.0` should wait until the internal cert lifecycle (issue → renew →
   revoke → CRL rejection) has been observed on real access points.
