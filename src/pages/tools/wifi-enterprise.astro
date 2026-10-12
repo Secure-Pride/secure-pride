@@ -1,0 +1,22 @@
+---
+import ToolLayout from '../../layouts/ToolLayout.astro';
+import ToolTopBar from '../../components/ToolTopBar.astro';
+import WifiEnterpriseGuide from '../../components/tools/wifi-enterprise/WifiEnterpriseGuide';
+---
+<ToolLayout
+  title="Wi-Fi Enterprise Guide — Secure Pride"
+  description="A guided, step-by-step path to per-device Wi-Fi certificates (802.1X) for small organizations. Runs entirely in your browser; nothing is sent anywhere."
+>
+  <ToolTopBar label="Wi-Fi Enterprise Guide" />
+  <WifiEnterpriseGuide client:only="react" />
+  <noscript>
+    <main class="mx-auto max-w-[1120px] px-6 py-12 text-text-primary">
+      <h1 class="font-heading text-4xl normal-case tracking-normal">Give every device its own Wi-Fi key.</h1>
+      <p class="mt-4 text-text-secondary">
+        This guide needs JavaScript to show only the steps that fit your organization.
+        It sends nothing anywhere. You can read the tested commands in the
+        <a class="underline underline-offset-4" href="https://github.com/mazze93/secure-pride/blob/main/docs/guides/wifi-enterprise-lab-verification.md">lab record</a>.
+      </p>
+    </main>
+  </noscript>
+</ToolLayout>

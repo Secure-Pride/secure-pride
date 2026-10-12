@@ -1,0 +1,10 @@
+# /etc/systemd/system/refresh-wifi-crl.service
+[Unit]
+Description=Refresh the Wi-Fi CA revocation list for FreeRADIUS
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=CA_URL=https://ca.example.internal:9443
+ExecStart=/usr/local/sbin/refresh-wifi-crl

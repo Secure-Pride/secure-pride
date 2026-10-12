@@ -1,0 +1,11 @@
+# /etc/systemd/system/refresh-wifi-crl.timer
+[Unit]
+Description=Refresh the Wi-Fi CA revocation list every hour
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=1h
+Persistent=true
+
+[Install]
+WantedBy=timers.target
