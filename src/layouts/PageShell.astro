@@ -2,8 +2,8 @@
 /**
  * Shell for every public page except the scanner tool: header, running
  * head and folio, porcelain page head with the route's gem, vertical index,
- * and a giant outlined route word cropped at the page edge; content slot;
- * footer.
+ * and a giant outlined route word cropped at the page edge; the gold seam
+ * between head and body; content slot; footer.
  *
  * Pass a Route from src/lib/site/nav.ts so the gem, index, and label match
  * the navigation. The title can be overridden with the "title" slot when it
@@ -13,6 +13,7 @@ import Layout from './Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import RunningHead from '../components/site/RunningHead.astro';
+import GoldSeam from '../components/site/GoldSeam.astro';
 import type { Route } from '../lib/site/nav';
 import '../styles/site.css';
 
@@ -44,9 +45,9 @@ const canonicalUrl = new URL(route.href, 'https://securepride.org').href;
       <div class="wrap">
         <RunningHead route={route} />
         <header class="page-head">
-          <p class="page-word" aria-hidden="true">{route.label}</p>
+          <p class="page-word" aria-hidden="true">{route.word ?? route.label}</p>
           <p class="page-index" aria-hidden="true">
-            <span>{route.index}</span><span>{route.label}</span>
+            <span>{route.index}</span><span>{route.word ?? route.label}</span>
           </p>
           <div class="page-head__body">
             <p class="eyebrow"><span class="shard" aria-hidden="true"></span>{eyebrow}</p>
@@ -56,6 +57,7 @@ const canonicalUrl = new URL(route.href, 'https://securepride.org').href;
             {lede && <p class="page-lede">{lede}</p>}
           </div>
         </header>
+        <GoldSeam id="page-seam" class="page-seam" />
         <slot />
       </div>
     </main>

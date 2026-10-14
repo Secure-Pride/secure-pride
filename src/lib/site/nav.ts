@@ -24,6 +24,8 @@ export interface Route {
   readonly index: string;
   /** One line used on the home doorways. Copy from the 2026-10-02 site. */
   readonly blurb: string;
+  /** Short word for the giant outlined page word, when the label is long. */
+  readonly word?: string;
 }
 
 export const HOME: Route = {
@@ -69,6 +71,7 @@ export const SECONDARY: readonly Route[] = [
   {
     href: '/privacy/',
     label: 'Privacy and processing',
+    word: 'Privacy',
     gem: 'amethyst',
     index: '05',
     blurb: 'Where scanner text goes and what is logged.',
@@ -76,11 +79,18 @@ export const SECONDARY: readonly Route[] = [
   {
     href: '/security/',
     label: 'Report a vulnerability',
+    word: 'Security',
     gem: 'lapis',
     index: '06',
     blurb: 'How to disclose a security issue.',
   },
 ];
+
+/** The tools themselves (under /tools/). Listed in the footer. */
+export const TOOL_LINKS = [
+  { href: '/tools/scanner/', label: 'Text scanner' },
+  { href: '/tools/wifi-enterprise/', label: 'Wi-Fi Enterprise guide' },
+] as const;
 
 export const EXTERNAL = [
   { href: 'https://github.com/mazze93/secure-pride', label: 'Source and documentation' },

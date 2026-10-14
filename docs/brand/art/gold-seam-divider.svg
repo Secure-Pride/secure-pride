@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="104" viewBox="0 0 1200 104" fill="none">
+  <!-- Extracted verbatim from secure-pride-editorial-source.svg (group #gold-seam-divider,
+       translate removed). Source asset only: the site draws it with brand tokens in
+       src/components/site/GoldSeam.astro. -->
+  <g id="gold-seam-divider" aria-label="Gold seam divider">
+    <path d="M48 94C245 80 318 48 488 60C671 73 713 23 891 31C1001 36 1083 21 1152 9"
+          stroke="url(#gold)" stroke-width="3" stroke-linecap="round"/>
+    <path d="M48 94C245 80 318 48 488 60C671 73 713 23 891 31C1001 36 1083 21 1152 9"
+          stroke="#F9EDBD" stroke-opacity=".33" stroke-width="1" stroke-linecap="round"/>
+    <defs>
+      <linearGradient id="gold" x1="78" y1="95" x2="1120" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#7A5A1F"/>
+        <stop offset=".38" stop-color="#D2A84B"/>
+        <stop offset=".62" stop-color="#F5DE91"/>
+        <stop offset="1" stop-color="#8F6926"/>
+      </linearGradient>
+    </defs>
+  </g>
+</svg>

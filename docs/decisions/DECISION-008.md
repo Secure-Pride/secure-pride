@@ -1,6 +1,7 @@
 # DECISION-008: Kintsugi porcelain — reconcile the honest site with a real kintsugi design
 
 **Status**: Proposed (awaiting founder review of copy items below)
+**Numbering**: filed as DECISION-007 on this branch; renumbered to 008 when #69 merged its own DECISION-007 (Wi-Fi Enterprise guide) to main.
 **Date**: 2026-10-10
 **Category**: UX / Accessibility / Brand
 **Authority**: Tier 2 (interface change — documented per `docs/COPILOT-INSTRUCTIONS.md`). Two items are Tier 3 and are flagged, not changed.
@@ -61,9 +62,9 @@ The founder prefers the kintsugi visual work, values the honesty of the live cop
 ## Open items for the founder
 
 1. **Statement copy (needs sign-off)**: "Most security is built for people who can afford to fail." New. Short section titles are also new: "Inspectable work.", "Write to a person.", "Other ways in."
-2. **Security page (Tier 3, unchanged)**: it shows a visible "This is a template security policy" note and promises acknowledgement within 48 hours, while `SECURITY.md` says an initial response within 5 business days. Content was moved into the new shell verbatim.
+2. **Security page** — *superseded by DECISION-009 (2026-10-14)*: the founder supplied the official policy; the template note and the 48-hour / 5-business-day conflict are gone. Was: a visible "This is a template security policy" note and a 48-hour acknowledgement, against `SECURITY.md`'s 5 business days.
 3. **CSP is not served (Tier 2/3, unchanged)**: `_headers` sits at the repo root, outside `public/`, so Cloudflare Pages does not deploy it. The live site returns no Content-Security-Policy header. Moving it into `public/` needs its own review, since `Cross-Origin-Embedder-Policy: require-corp` and `form-action 'none'` may break existing behavior.
-4. **Which shield is canonical**: the identity-kit vectors use a rounded heart-lock shield; the favicon raster uses a heraldic shield.
+4. **Which shield is canonical**: the identity-kit vectors use a rounded heart-lock shield; the favicon raster uses a heraldic shield. The obsidian shield artwork (2026-10-14) is heraldic with a carved heart — used as artwork only, not as the mark, so this stays open.
 5. **Charcoal upstream**: propose `#1a191d` to `design.securepride.org` if it should become shared.
 6. **Scanner tool**: still the indigo dark UI from #67. It now carries the mark and links back to `/tools/`; a porcelain pass is separate work.
 7. **Unshipped September branch**: superseded by this decision. Its bundle and patch can be discarded.

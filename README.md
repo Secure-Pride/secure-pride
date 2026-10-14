@@ -101,7 +101,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), the [AI Development Charter](docs/COPIL
 
 Do not open a public issue for a suspected vulnerability.
 
-Email [security@securepride.org](mailto:security@securepride.org) with reproduction details and allow time for responsible disclosure. See [SECURITY.md](SECURITY.md) for the disclosure process.
+Report privately through [GitHub Security Advisories](https://github.com/mazze93/secure-pride/security/advisories/new) (preferred) or email [security@securepride.org](mailto:security@securepride.org). You will get an acknowledgment within 72 hours; the default public disclosure deadline is 90 days. See [SECURITY.md](SECURITY.md) for the full policy.
 
 For non-security questions: [hello@securepride.org](mailto:hello@securepride.org).
 

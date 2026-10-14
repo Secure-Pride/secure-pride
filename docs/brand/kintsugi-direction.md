@@ -104,6 +104,18 @@ Four references from the founder (a magazine cover, a two-page temple-garden spr
 
 Not borrowed: decorative CJK characters or seasonal motifs. The site is English-only and kintsugi is the one Japanese concept it names; set type in other scripts only when the content is in them.
 
+## Seam, plate, and ledger (v1.2.0)
+
+Folded in from the founder's 2026-10-14 assets (sources and provenance: `docs/brand/art/README.md`; decision: DECISION-009).
+
+- **The gold seam** is the divider from the editorial source artwork, drawn with brass tokens. It appears once under every page head (`PageShell`) — the one mend between a page's claim and its body — and carries the disclosure timeline on `/security/`. It never animates. One seam per view; it is not a generic `<hr>`.
+- **The plate** is a full-bleed charcoal band that holds artwork beside the numbers a reader needs. First use: `/security/`, obsidian shield beside *72 hours* and *90 days*. Artwork is cropped to its subject, blended `lighten` over a dark spotlight so its own black ground disappears, and never carries text.
+- **Evidence grades** (borrowed from the founder's *MAESTRO in Practice* evidence ledger, where every headline number is graded by how it is sourced): a claim the site cannot fully stand behind gets a grade, not a softer sentence. Grades are words in square-cornered labels — *In the repository*, *Partly in place*, *Owner's statement*, *Not yet in place*; on `/tools/`, *Caught* / *Missed*. Colour and border style repeat the word; they never replace it. Every gradeable claim has a test that fails when reality changes.
+- **Long documents** get an *On this page* index and numbered sections (index in the 56 px margin column), ordered by what the reader needs first.
+- **Social card**: statement, mark, seam, shield — `public/og/securepride-og.png`, rendered by `docs/brand/art/build-og.mjs`.
+
+The obsidian shield is heraldic with a carved heart. It is artwork, not the mark; the canonical-shield question below is still open.
+
 ## Brand mark
 
 Per `identity-kit/06_guidelines`:
