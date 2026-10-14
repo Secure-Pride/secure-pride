@@ -1,0 +1,32 @@
+---
+/**
+ * The coordinated-disclosure timeline drawn along the gold seam: a report
+ * arrives as a break, and every station on the way to public disclosure is
+ * a point on the mend.
+ *
+ * The ordered list carries all the meaning (screen readers, phones, print);
+ * the seam above it is decorative and hidden below 760 px, where the list
+ * gets a vertical gold rule instead.
+ */
+import GoldSeam from './GoldSeam.astro';
+import { DISCLOSURE_TIMELINE } from '../../lib/site/security-policy';
+
+export interface Props {
+  /** id of the heading that labels the list. */
+  labelledBy: string;
+}
+
+const { labelledBy } = Astro.props;
+---
+
+<div class="seam-timeline">
+  <GoldSeam id="cvd-seam" stations={DISCLOSURE_TIMELINE.length} class="seam-timeline__seam" />
+  <ol class="seam-timeline__stations" aria-labelledby={labelledBy}>
+    {DISCLOSURE_TIMELINE.map((station) => (
+      <li class="seam-timeline__station">
+        <span class="seam-timeline__when">{station.when}</span>
+        <span class="seam-timeline__what">{station.action}</span>
+      </li>
+    ))}
+  </ol>
+</div>

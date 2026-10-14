@@ -1,0 +1,53 @@
+/* ═══════════════════════════════════════════════════════════════
+   Gold seam — the divider from the editorial source artwork.
+   Markup: src/components/site/GoldSeam.astro. Geometry: lib/kintsugi/seam.ts.
+
+   The source gradient (#7A5A1F → #D2A84B → #F5DE91 → #8F6926) was drawn
+   for a black ground. Mapped to brass tokens per surface: on charcoal the
+   ramp keeps its highlight; on porcelain it shifts one step darker so the
+   lightest stretch stays visible against the glaze.
+   ═══════════════════════════════════════════════════════════════ */
+
+.surface-charcoal {
+  --seam-deep: var(--sp-brass-mid);
+  --seam-warm: var(--sp-brass-light);
+  --seam-light: var(--sp-brass-highlight);
+  --seam-glint: color-mix(in srgb, var(--sp-brass-highlight) 33%, transparent);
+}
+.surface-porcelain {
+  --seam-deep: var(--sp-brass-mid);
+  --seam-warm: var(--sp-brass);
+  --seam-light: var(--sp-brass-light);
+  --seam-glint: color-mix(in srgb, var(--porcelain) 45%, transparent);
+}
+
+.gold-seam {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  pointer-events: none; /* decorative layer */
+}
+.gold-seam__stop--deep { stop-color: var(--seam-deep); }
+.gold-seam__stop--warm { stop-color: var(--seam-warm); }
+.gold-seam__stop--light { stop-color: var(--seam-light); }
+
+.gold-seam__lacquer,
+.gold-seam__glint,
+.gold-seam__node,
+.gold-seam__drop {
+  fill: none;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+.gold-seam__lacquer { stroke-width: 3px; }
+.gold-seam__glint { stroke: var(--seam-glint); stroke-width: 1px; }
+/* A zero-length path with a round cap draws a true circle at any stretch. */
+.gold-seam__node { stroke-width: 12px; }
+.gold-seam__drop { stroke: var(--rule); stroke-width: 1px; }
+
+/* ── The page seam: one mend between every page head and its body ── */
+.page-seam {
+  height: clamp(28px, 4vw, 52px);
+  margin-bottom: clamp(8px, 1.5vw, 16px);
+}
+.page-seam + .section { border-top: 0; }

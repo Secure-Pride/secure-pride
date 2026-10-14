@@ -8,6 +8,8 @@
 @import './site-tokens.css';
 @import './site-content.css';
 @import './site-editorial.css';
+@import './site-seam.css';
+@import './site-policy.css';
 
 body.site-body {
   background: var(--charcoal);
@@ -178,7 +180,9 @@ body.site-body {
 .cell__link {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 44px;
+  min-width: 44px;
 }
 .surface-charcoal .k-link,
 .site-footer a {

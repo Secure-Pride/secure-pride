@@ -15,7 +15,8 @@ const {
   title,
   description = 'Open-source security tools for LGBTQ+ organizations. Understand what is available, where information goes, and what each tool can miss.',
   canonicalUrl,
-  ogImage = 'https://securepride.org/sp-og-preview.png',
+  // Rendered by docs/brand/art/build-og.mjs from the statement and the obsidian shield artwork.
+  ogImage = 'https://securepride.org/og/securepride-og.png',
   noindex = false,
   bodyClass,
 } = Astro.props;
@@ -36,9 +37,12 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Most security is built for people who can afford to fail. A black stone shield with a heart, mended in gold." />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="SecurePride" />
+    <meta property="og:site_name" content="Secure Pride" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

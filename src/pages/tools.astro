@@ -1,7 +1,15 @@
 ---
-/** Tools — what is available today and where its boundary is. Copy from #67. */
+/**
+ * Tools — what is available today and where each boundary is.
+ * Scanner copy from #67; Wi-Fi guide copy from #69 (its page description and
+ * "Before you start" list); tested limits from src/lib/site/scanner-limits.ts.
+ */
 import PageShell from '../layouts/PageShell.astro';
 import { PRIMARY } from '../lib/site/nav';
+import { LIMIT_LABEL, SCANNER_LIMITS, SCANNER_LIMITS_TESTED } from '../lib/site/scanner-limits';
+import { GUIDE_UPDATED, GUIDE_VERSION } from '../components/tools/wifi-enterprise/content/meta';
+
+const LAB_RECORD = 'https://github.com/mazze93/secure-pride/blob/main/docs/guides/wifi-enterprise-lab-verification.md';
 
 const route = PRIMARY[0];
 ---
@@ -9,9 +17,9 @@ const route = PRIMARY[0];
 <PageShell
   route={route}
   documentTitle="Tools — Secure Pride"
-  description="The AI Safety Scanner: a manual text check for known prompt-injection, credential, and personal-data patterns, with its limits stated."
+  description="Two tools with their limits stated: a manual text check for known prompt-injection, credential, and personal-data patterns, and a guided path to per-device Wi-Fi certificates."
   eyebrow="Available today"
-  heading="A bounded check before you share."
+  heading="Bounded tools. Limits on the record."
 >
   <section class="section section--wide" aria-labelledby="scanner-title">
     <div class="ledger ledger--two">
@@ -50,6 +58,69 @@ const route = PRIMARY[0];
         </div>
         <div class="actions">
           <a class="k-link" href="/privacy/">Read how processing and logs work →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--wide" aria-labelledby="limits-title">
+    <h2 class="section-title" id="limits-title">What the scanner misses</h2>
+    <table class="matrix matrix--compact matrix--limits" role="table">
+      <caption class="matrix__caption">
+        Tested {SCANNER_LIMITS_TESTED} against the scanner’s pattern engine.
+        A miss returns no match, which is not the same as safe.
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col">Input</th>
+          <th role="columnheader" scope="col">Result</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {SCANNER_LIMITS.map((limit) => (
+          <tr role="row">
+            <th role="rowheader" scope="row">{limit.input}</th>
+            <td role="cell" data-label="Result">
+              <span class:list={['grade', limit.result === 'caught' ? 'grade--verified' : 'grade--gap']}>{LIMIT_LABEL[limit.result]}</span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section section--wide" aria-labelledby="wifi-title">
+    <div class="ledger ledger--two">
+      <div class="cell">
+        <span class="cell__label">Draft v{GUIDE_VERSION} · Field guide · Updated {GUIDE_UPDATED}</span>
+        <h2 class="section-title" id="wifi-title">Wi-Fi Enterprise guide</h2>
+        <div class="k-prose">
+          <p>
+            A guided, step-by-step path to per-device Wi-Fi certificates
+            (802.1X) for small organizations. Runs entirely in your browser;
+            nothing is sent anywhere.
+          </p>
+        </div>
+        <div class="actions">
+          <a class="k-button k-button--opal" href="/tools/wifi-enterprise/">Start the guide</a>
+        </div>
+      </div>
+      <div class="cell">
+        <h3 class="cell__label">Before you start</h3>
+        <div class="k-prose">
+          <ul>
+            <li>Six questions choose your path. Your answers stay in this browser. Nothing is sent anywhere.</li>
+            <li>This page never asks for passwords, secrets, or names. Keep those in your password manager.</li>
+            <li>
+              This is a draft. The server commands were tested in a lab with
+              step-ca and FreeRADIUS 3.2.5. Access-point and device steps
+              follow vendor documentation and are not yet tested on real
+              hardware.
+            </li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a class="k-link" href={LAB_RECORD}>Read the lab record →</a>
         </div>
       </div>
     </div>

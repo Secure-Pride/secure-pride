@@ -1,0 +1,57 @@
+---
+/**
+ * The gold seam — the divider from the founder's editorial source artwork,
+ * redrawn with brand tokens. Decorative (aria-hidden): anything it marks is
+ * also in the text next to it.
+ *
+ * - Stretches to its container (preserveAspectRatio="none"); strokes keep
+ *   their pixel width (vector-effect: non-scaling-stroke).
+ * - Colours come from CSS classes on the gradient stops (brass tokens), so
+ *   no hex lives here and no inline style is needed (CSP style-src 'self').
+ * - `stations` puts N nodes on the seam at equal column centres, each with a
+ *   hairline drop to the label row below (the disclosure timeline uses 6).
+ *
+ * `id` must be unique per page: it scopes the gradient reference.
+ */
+import { SEAM_BOX, SEAM_PATH, parseCubicPath, round2, stationPoints } from '../../lib/kintsugi/seam';
+
+export interface Props {
+  /** Unique per page; prefixes the gradient id. */
+  id: string;
+  /** Number of timeline stations to mark. 0 = plain divider. */
+  stations?: number;
+  class?: string;
+}
+
+const { id, stations = 0, class: className } = Astro.props;
+const gradientId = `${id}-gold`;
+const points = stationPoints(parseCubicPath(SEAM_PATH), stations).map((p) => ({
+  x: round2(p.x),
+  y: round2(p.y),
+}));
+---
+
+<svg
+  class:list={['gold-seam', className]}
+  viewBox={`0 0 ${SEAM_BOX.width} ${SEAM_BOX.height}`}
+  preserveAspectRatio="none"
+  aria-hidden="true"
+  focusable="false"
+>
+  <defs>
+    <linearGradient id={gradientId} x1="78" y1="95" x2="1120" y2="20" gradientUnits="userSpaceOnUse">
+      <stop class="gold-seam__stop gold-seam__stop--deep" offset="0" />
+      <stop class="gold-seam__stop gold-seam__stop--warm" offset="0.38" />
+      <stop class="gold-seam__stop gold-seam__stop--light" offset="0.62" />
+      <stop class="gold-seam__stop gold-seam__stop--deep" offset="1" />
+    </linearGradient>
+  </defs>
+  {points.map((p) => (
+    <line class="gold-seam__drop" x1={p.x} y1={p.y} x2={p.x} y2={SEAM_BOX.height} />
+  ))}
+  <path class="gold-seam__lacquer" d={SEAM_PATH} stroke={`url(#${gradientId})`} />
+  <path class="gold-seam__glint" d={SEAM_PATH} />
+  {points.map((p) => (
+    <path class="gold-seam__node" d={`M${p.x} ${p.y}h0`} stroke={`url(#${gradientId})`} />
+  ))}
+</svg>

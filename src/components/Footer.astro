@@ -4,7 +4,7 @@
  * from the 2026-10-02 site, and the secondary routes.
  */
 import BrandMark from './site/BrandMark.astro';
-import { PRIMARY, SECONDARY, EXTERNAL } from '../lib/site/nav';
+import { PRIMARY, SECONDARY, EXTERNAL, TOOL_LINKS } from '../lib/site/nav';
 import '../styles/site.css';
 ---
 
@@ -26,7 +26,9 @@ import '../styles/site.css';
         {SECONDARY.map((route) => (
           <li data-gem={route.gem}><a href={route.href}>{route.label}</a></li>
         ))}
-        <li><a href="/tools/scanner/">Text scanner</a></li>
+        {TOOL_LINKS.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
       </ul>
       <ul role="list">
         {EXTERNAL.map((link) => (
