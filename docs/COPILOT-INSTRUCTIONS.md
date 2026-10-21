@@ -1,6 +1,6 @@
 # Secure Pride: AI-Assisted Development Charter
 
-**Organization**: [Secure Pride](https://github.com/mazze93/secure-pride)
+**Organization**: [Secure Pride](https://github.com/Secure-Pride/secure-pride)
 **Purpose**: Operational framework for AI-assisted development and security work
 **Version**: 3.0 (Refined July 30, 2026)
 **Status**: Production-Ready

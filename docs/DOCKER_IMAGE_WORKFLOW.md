@@ -7,7 +7,7 @@ secure-pride Docker image on version tags.
 
 ## Where the image lives
 
-**`ghcr.io/mazze93/secure-pride`** — GitHub Container Registry, not Docker
+**`ghcr.io/secure-pride/secure-pride`** — GitHub Container Registry, not Docker
 Hub. Migrated 2026-09-11: GHCR authenticates with the `GITHUB_TOKEN` that
 Actions mints automatically for every workflow run and revokes when the run
 ends. There is no long-lived credential to create, store, rotate, or leak —
@@ -15,6 +15,10 @@ the entire class of "someone forgot to rotate the PAT" incident this doc used
 to walk through no longer has a way to happen. The `packages: write`
 permission on `GITHUB_TOKEN` (declared in `release.yml`) is all publishing
 needs.
+
+> **Moved 2026-10-21.** The workflow names the image after `github.repository`, so releases after the
+> transfer to the `Secure-Pride` org publish to `ghcr.io/secure-pride/secure-pride`. Images published
+> before the move stay at `ghcr.io/mazze93/secure-pride`.
 
 Because the package is attached to this GitHub repo (`org.opencontainers.image.source`
 label in the `Dockerfile`), the GHCR package page automatically shows this
@@ -39,9 +43,9 @@ pushes:
 
 | Tag | When |
 |-----|------|
-| `ghcr.io/mazze93/secure-pride:1.0.0` | always |
-| `ghcr.io/mazze93/secure-pride:1.0` | always |
-| `ghcr.io/mazze93/secure-pride:latest` | always (toggle `PUSH_LATEST` to disable) |
+| `ghcr.io/secure-pride/secure-pride:1.0.0` | always |
+| `ghcr.io/secure-pride/secure-pride:1.0` | always |
+| `ghcr.io/secure-pride/secure-pride:latest` | always (toggle `PUSH_LATEST` to disable) |
 
 Multi-platform: `linux/amd64` + `linux/arm64` (M-series Mac compatible).
 

@@ -20,8 +20,8 @@ export const POLICY_FACTS = {
   ackHours: 72,
   disclosureDays: 90,
   email: 'security@securepride.org',
-  advisoryUrl: 'https://github.com/mazze93/secure-pride/security/advisories/new',
-  repoUrl: 'https://github.com/mazze93/secure-pride',
+  advisoryUrl: 'https://github.com/Secure-Pride/secure-pride/security/advisories/new',
+  repoUrl: 'https://github.com/Secure-Pride/secure-pride',
 } as const;
 
 /* ─── Shared shapes ─────────────────────────────────────────────────── */

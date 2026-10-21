@@ -84,7 +84,7 @@ docker build -t secure-pride .
 docker run -p 8080:8080 secure-pride
 ```
 
-Published image: `ghcr.io/mazze93/secure-pride`. Release, scan-gate, and
+Published image: `ghcr.io/secure-pride/secure-pride` (releases before 2026-10-21: `ghcr.io/mazze93/secure-pride`). Release, scan-gate, and
 publish pipeline: [docs/DOCKER_IMAGE_WORKFLOW.md](docs/DOCKER_IMAGE_WORKFLOW.md).
 
 ## Contribution gate
@@ -101,7 +101,7 @@ Read [CONTRIBUTING.md](CONTRIBUTING.md), the [AI Development Charter](docs/COPIL
 
 Do not open a public issue for a suspected vulnerability.
 
-Report privately through [GitHub Security Advisories](https://github.com/mazze93/secure-pride/security/advisories/new) (preferred) or email [security@securepride.org](mailto:security@securepride.org). You will get an acknowledgment within 72 hours; the default public disclosure deadline is 90 days. See [SECURITY.md](SECURITY.md) for the full policy.
+Report privately through [GitHub Security Advisories](https://github.com/Secure-Pride/secure-pride/security/advisories/new) (preferred) or email [security@securepride.org](mailto:security@securepride.org). You will get an acknowledgment within 72 hours; the default public disclosure deadline is 90 days. See [SECURITY.md](SECURITY.md) for the full policy.
 
 For non-security questions: [hello@securepride.org](mailto:hello@securepride.org).
 
