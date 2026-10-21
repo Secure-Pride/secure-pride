@@ -93,8 +93,8 @@ export const TOOL_LINKS = [
 ] as const;
 
 export const EXTERNAL = [
-  { href: 'https://github.com/mazze93/secure-pride', label: 'Source and documentation' },
-  { href: 'https://github.com/mazze93/secure-pride/blob/main/CONTRIBUTING.md', label: 'Contribute' },
+  { href: 'https://github.com/Secure-Pride/secure-pride', label: 'Source and documentation' },
+  { href: 'https://github.com/Secure-Pride/secure-pride/blob/main/CONTRIBUTING.md', label: 'Contribute' },
   { href: 'https://design.securepride.org', label: 'Design system' },
 ] as const;
 

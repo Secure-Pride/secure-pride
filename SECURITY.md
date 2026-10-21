@@ -6,7 +6,7 @@ The same policy is published at <https://securepride.org/security/>.
 
 ## Overview
 
-This policy covers vulnerability disclosure, incident response, and security practices for Secure Pride: the securepride.org site and the code at [github.com/mazze93/secure-pride](https://github.com/mazze93/secure-pride). I maintain these projects with a commitment to security best practices, privacy-first design, and responsible disclosure.
+This policy covers vulnerability disclosure, incident response, and security practices for Secure Pride: the securepride.org site and the code at [github.com/Secure-Pride/secure-pride](https://github.com/Secure-Pride/secure-pride). I maintain these projects with a commitment to security best practices, privacy-first design, and responsible disclosure.
 
 As an individual open-source developer and security engineer, I welcome collaboration from the security research community to identify and address vulnerabilities.
 
@@ -36,7 +36,7 @@ For projects with specific version support policies, please refer to the individ
 
 Do **not** open a public issue for a suspected vulnerability.
 
-- **Primary contact — GitHub Security Advisory (private vulnerability reporting, preferred):** [report a vulnerability](https://github.com/mazze93/secure-pride/security/advisories/new) (repository Security tab → Advisories → Report a vulnerability).
+- **Primary contact — GitHub Security Advisory (private vulnerability reporting, preferred):** [report a vulnerability](https://github.com/Secure-Pride/secure-pride/security/advisories/new) (repository Security tab → Advisories → Report a vulnerability).
 - **Alternative contact — email:** [security@securepride.org](mailto:security@securepride.org)
 - **PGP encryption:** for sensitive disclosures, PGP-encrypted email is welcome (key available on request).
 

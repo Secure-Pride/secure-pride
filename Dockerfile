@@ -24,7 +24,7 @@ FROM nginxinc/nginx-unprivileged:1.30.4-alpine
 
 LABEL org.opencontainers.image.title="Secure Pride" \
       org.opencontainers.image.description="Privacy-first security tools and standards for LGBTQ+ and other high-risk groups — the securepride.org site, served static." \
-      org.opencontainers.image.source="https://github.com/mazze93/secure-pride" \
+      org.opencontainers.image.source="https://github.com/Secure-Pride/secure-pride" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.vendor="Secure Pride"
 
