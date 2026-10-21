@@ -114,7 +114,7 @@ Folded in from the founder's 2026-10-14 assets (sources and provenance: `docs/br
 - **Long documents** get an *On this page* index and numbered sections (index in the 56 px margin column), ordered by what the reader needs first.
 - **Social card**: statement, mark, seam, shield — `public/og/securepride-og.png`, rendered by `docs/brand/art/build-og.mjs`.
 
-The obsidian shield is heraldic with a carved heart. It is artwork, not the mark; the canonical-shield question below is still open.
+The obsidian shield is heraldic with a carved heart. It is artwork, not the mark (the mark is the heraldic heart-lock shield — DECISION-010).
 
 ## Brand mark
 
@@ -126,7 +126,7 @@ Per `identity-kit/06_guidelines`:
 - Favicons: the existing user-supplied set in `public/favicons/`, unchanged.
 - Never animate, glow, rotate, or overlay text on the mark. The kintsugi interaction never touches it.
 
-Open question for the founder: the identity-kit vectors use the rounded heart-lock shield, while the favicon raster uses a heraldic shield. Both are in use; pick one as canonical.
+**Resolved 2026-10-21 (DECISION-010):** the heraldic shield with the heart-lock is the canonical mark. `BrandMark.astro` draws it from the design system's heraldic vector; the rounded identity-kit shield is retired as the mark.
 
 ## Restraint rules
 
