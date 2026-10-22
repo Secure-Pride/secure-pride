@@ -38,7 +38,7 @@ Do **not** open a public issue for a suspected vulnerability.
 
 - **Primary contact — GitHub Security Advisory (private vulnerability reporting, preferred):** [report a vulnerability](https://github.com/Secure-Pride/secure-pride/security/advisories/new) (repository Security tab → Advisories → Report a vulnerability).
 - **Alternative contact — email:** [security@securepride.org](mailto:security@securepride.org)
-- **PGP encryption:** for sensitive disclosures, PGP-encrypted email is welcome (key available on request).
+- **Sensitive details:** use the private advisory above — only maintainers can read it. No PGP key is published yet, so encrypted email is not offered.
 
 ### What to include in your report
 

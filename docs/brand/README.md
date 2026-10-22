@@ -25,7 +25,7 @@ Five principles govern all Secure Pride communications:
 - **Public site direction**: [`kintsugi-direction.md`](kintsugi-direction.md) — charcoal and porcelain surfaces, indigo and fire-opal accents, one gem per page, the mending interaction, and mark usage. Decision record: `docs/decisions/DECISION-008.md`.
 - **Shared tokens**: `src/styles/tokens.css`, validated against the dated `design.securepride.org` snapshot in `upstream/` by `scripts/check-design-tokens.mjs`. Site-only composition tokens live in `src/styles/site-tokens.css` and reference the shared ones.
 - **Typography (public site)**: Shippori Mincho B1 (statement), Rajdhani (interface), Inter (reading), JetBrains Mono (record). Orbitron remains only in the scanner tool UI.
-- **Primary mark**: heart-lock shield, from the Claude Design identity kit (`identity-kit/`), inlined by `src/components/site/BrandMark.astro` at the correct tier per size.
+- **Primary mark**: the heraldic heart-lock shield (`docs/decisions/DECISION-010.md`). `src/components/site/BrandMark.astro` draws the vector from `favicon-simplified.svg`; one vector serves every size. The rounded identity-kit shield is retired as the mark.
 - **Print surface**: White backgrounds with teal/purple accents only
 
 ## Document Engine

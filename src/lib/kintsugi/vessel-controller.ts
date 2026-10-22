@@ -26,6 +26,8 @@ import {
 
 const TRACE_RADIUS_PX = 26;
 const TAP_RADIUS_PX = 72;
+/** A touch that travels further than this is a scroll, not a tap. */
+const TAP_SLOP_PX = 10;
 const FLOW_STEP_MS = 14;
 const CURE_DELAY_MS = 650;
 
@@ -117,9 +119,19 @@ function bindEvents(state: VesselState): void {
     if (event.pointerType === 'touch') return;
     traceAt(state, event);
   });
+  // Touch mends on a completed tap only: a scroll that starts near a crack
+  // moves past TAP_SLOP_PX or is cancelled by the browser, and mends nothing.
+  let tapStart: { id: number; x: number; y: number } | null = null;
   state.slab.addEventListener('pointerdown', (event) => {
     if (event.pointerType !== 'touch') return;
-    flowFromTap(state, event);
+    tapStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
+  });
+  state.slab.addEventListener('pointercancel', () => { tapStart = null; });
+  state.slab.addEventListener('pointerup', (event) => {
+    if (event.pointerType !== 'touch' || !tapStart || tapStart.id !== event.pointerId) return;
+    const moved = Math.hypot(event.clientX - tapStart.x, event.clientY - tapStart.y);
+    tapStart = null;
+    if (moved <= TAP_SLOP_PX) flowFromTap(state, event);
   });
   state.toggle.addEventListener('click', () => {
     if (isComplete(state)) breakVessel(state);

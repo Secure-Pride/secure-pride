@@ -1,7 +1,8 @@
 # Brand art — sources and provenance
 
-Artwork used on securepride.org that is not part of the identity kit. The
-identity-kit mark (`BrandMark.astro`) stays the logo; nothing here replaces it.
+Artwork used on securepride.org that is not the mark. The heraldic heart-lock
+shield drawn by `BrandMark.astro` (DECISION-010) is the logo; nothing here
+replaces it.
 
 ## Obsidian shield
 
