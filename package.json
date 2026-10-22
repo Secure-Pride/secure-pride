@@ -31,7 +31,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20241230.0",
-    "@types/node": "^20.12.12",
+    "@types/node": "^20.19.43",
     "@types/react": "^18.2.45",
     "typescript": "^5.4.5",
     "vitest": "^5.0.0",
