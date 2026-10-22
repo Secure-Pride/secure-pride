@@ -8,9 +8,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/build-headers.mjs",
     "preview": "astro preview",
-    "check": "npm run check:tokens && astro build && tsc --noEmit",
+    "check": "npm run check:tokens && npm run build && tsc --noEmit",
     "check:tokens": "node scripts/check-color-tokens.mjs && node scripts/check-design-tokens.mjs",
     "test": "vitest run",
     "astro": "astro"
