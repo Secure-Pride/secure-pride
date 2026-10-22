@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ── Stage 1: Build the Astro site ──────────────────────────────────────────
-FROM node:24.19.0-alpine AS builder
+FROM node:26.12.0-alpine AS builder
 WORKDIR /app
 
 # Install deps before copying source so layer is cached on dep changes only
@@ -20,7 +20,7 @@ RUN npm run build           # astro build → dist/
 # Unprivileged variant: runs as the `nginx` user (not root) out of the box,
 # listens on 8080 instead of 80. Removes the most common container-escape
 # escalation path for a static file server.
-FROM nginxinc/nginx-unprivileged:1.30.4-alpine
+FROM nginxinc/nginx-unprivileged:1.31.7-alpine
 
 LABEL org.opencontainers.image.title="Secure Pride" \
       org.opencontainers.image.description="Privacy-first security tools and standards for LGBTQ+ and other high-risk groups — the securepride.org site, served static." \
