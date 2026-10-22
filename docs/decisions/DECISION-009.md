@@ -76,3 +76,7 @@ Legal text (safe harbor conditions, CFAA/DMCA paragraph) is verbatim.
 ## Outcome (updated later)
 
 - _Pending founder review._
+
+## Update — 2026-10-22
+
+The posture baseline (PR #75) closed one gap and narrowed two: SHA-pinned actions are now *In the repository*; signing and provenance and SBOM are *Partly in place* (provenance and SBOM attestations are configured on tagged releases, none has run yet, and images are not signed). Licence checks remain *Not yet in place*. The ledger probes caught the change and failed until the grades were updated.

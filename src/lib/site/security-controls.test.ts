@@ -48,7 +48,8 @@ const PROBES: Record<WorkflowProbe, (c: Corpus) => boolean> = {
   'trivy-blocks-critical-high': ({ release }) =>
     /aquasecurity\/trivy-action/.test(release) && /severity:\s*CRITICAL,HIGH/.test(release) && /exit-code:\s*'1'/.test(release),
   'environment-protection': ({ all }) => /^\s+environment:/m.test(all),
-  'artifact-signing': ({ all }) => /cosign|attest-build-provenance|slsa-github-generator|provenance:\s*true/i.test(all),
+  'artifact-signing': ({ all }) => /cosign|attest-build-provenance|slsa-github-generator/i.test(all),
+  'provenance-attested': ({ release }) => /provenance:\s*(true|mode=max)/.test(release),
   'sbom-generated': ({ all }) => /sbom|syft|cyclonedx|spdx/i.test(all),
   'license-check': ({ all }) => /license-checker|licensee|license-compliance|licensed\b/i.test(all),
 };
@@ -104,6 +105,7 @@ describe('probes see what they claim to see', () => {
         '      - uses: actions/attest-build-provenance@1c608d11d69870c2092266b3f9a6f3abbf17002c',
         '      - uses: anchore/sbom-action@f325610c9f50a54015d37c8d16cb3b0e2c8f4de0',
         '      - run: npx license-checker --production',
+        '          provenance: mode=max',
       ].join('\n'),
     },
   ]);
@@ -111,6 +113,7 @@ describe('probes see what they claim to see', () => {
   it('flips every gap probe on a corpus that has the feature', () => {
     expect(PROBES['actions-sha-pinned'](seeded)).toBe(true);
     expect(PROBES['artifact-signing'](seeded)).toBe(true);
+    expect(PROBES['provenance-attested'](seeded)).toBe(true);
     expect(PROBES['sbom-generated'](seeded)).toBe(true);
     expect(PROBES['license-check'](seeded)).toBe(true);
     expect(PROBES['environment-protection'](seeded)).toBe(true);

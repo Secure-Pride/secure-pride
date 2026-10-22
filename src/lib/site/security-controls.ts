@@ -31,6 +31,7 @@ export type WorkflowProbe =
   | 'trivy-blocks-critical-high'
   | 'environment-protection'
   | 'artifact-signing'
+  | 'provenance-attested'
   | 'sbom-generated'
   | 'license-check';
 
@@ -52,7 +53,7 @@ export interface ControlGroup {
 
 /* ─── Grade labels (shown on the page) ──────────────────────────────── */
 
-export const CONTROLS_CHECKED = 'October 14, 2026';
+export const CONTROLS_CHECKED = 'October 22, 2026';
 
 export const GRADE_LABEL: Record<ControlGrade, string> = {
   verified: 'In the repository',
@@ -101,9 +102,9 @@ export const CONTROL_GROUPS: readonly ControlGroup[] = [
       {
         name: 'SHA-pinned actions',
         claim: 'SHA-pinned action versions for supply chain security',
-        grade: 'gap',
-        evidence: 'Workflows pin actions by version tag (for example actions/checkout@v4), not by commit SHA.',
-        probes: [{ id: 'actions-sha-pinned', expect: false }],
+        grade: 'verified',
+        evidence: 'Every uses: reference in .github/workflows pins a full commit SHA, with the version tag kept in a comment.',
+        probes: [{ id: 'actions-sha-pinned', expect: true }],
       },
       {
         name: 'Minimal permissions',
@@ -132,9 +133,12 @@ export const CONTROL_GROUPS: readonly ControlGroup[] = [
       {
         name: 'Signing and provenance',
         claim: 'Artifact signing and SLSA provenance where applicable',
-        grade: 'gap',
-        evidence: 'release.yml has no signing or provenance step.',
-        probes: [{ id: 'artifact-signing', expect: false }],
+        grade: 'partial',
+        evidence: 'release.yml asks the image build for SLSA provenance (provenance: mode=max). Images are not signed, and the step runs only on tagged releases; no release has run since it was added.',
+        probes: [
+          { id: 'provenance-attested', expect: true },
+          { id: 'artifact-signing', expect: false },
+        ],
       },
     ],
   },
@@ -157,9 +161,9 @@ export const CONTROL_GROUPS: readonly ControlGroup[] = [
       {
         name: 'SBOM',
         claim: 'SBOM (Software Bill of Materials) generation',
-        grade: 'gap',
-        evidence: 'No workflow generates an SBOM.',
-        probes: [{ id: 'sbom-generated', expect: false }],
+        grade: 'partial',
+        evidence: 'release.yml attaches an SBOM attestation to the image (sbom: true). It runs only on tagged releases; no published image carries one yet.',
+        probes: [{ id: 'sbom-generated', expect: true }],
       },
       {
         name: 'License compliance',
