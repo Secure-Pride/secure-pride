@@ -10,6 +10,31 @@
 
 ---
 
+## `PageShell` (active)
+
+**Source:** `src/layouts/PageShell.astro`
+**Usage context:** Shell for every public porcelain page except the scanner tool: header, running head, page head with the route's gem and vertical index, gold seam, content slot, footer.
+
+### Props
+
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `route` | `Route` (from `src/lib/site/nav.ts`) | Yes | Gem, index and label; get it with `routeFor(href)` |
+| `documentTitle` | `string` | Yes | `<title>` text |
+| `description` | `string` | Yes | Meta description |
+| `eyebrow` | `string` | Yes | Line above the title |
+| `heading` | `string` | Yes | `<h1>` text (override with the `title` slot for line breaks) |
+| `lede` | `string` | No | Paragraph under the title |
+| `noindex` | `boolean` | No | Omit the canonical link and mark `noindex` |
+| `path` | `string` | No | Canonical path for a page nested under its route (added 2026-10-22, DECISION-011). Defaults to `route.href` |
+
+### Constraints
+
+- Without `path`, the canonical URL is `route.href`. A nested page (e.g. `/threat-model/scenarios/sp-01/`) must pass `path`, or every nested page canonicalizes to its parent.
+- Slots: default (content) and `title`.
+
+---
+
 > **Deferred:** `BlogCard`, `PostMeta`, and `Triptych` were removed from the
 > repo on 2026-04-29 (`f9169df`, predating the Astro migration). The
 > contracts below are preserved — commented out, not deleted — for when the
