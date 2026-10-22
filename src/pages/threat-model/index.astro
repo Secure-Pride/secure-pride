@@ -1,0 +1,320 @@
+---
+/**
+ * Threat model — the shared basis for Secure Pride's tools, guidance and
+ * release review. Renders from the corpus (src/data/threat-model/corpus.json)
+ * and the model data (src/lib/threat-model/model.ts). Reading it needs no
+ * account and asks nothing. DECISION-011.
+ */
+import PageShell from '../../layouts/PageShell.astro';
+import { routeFor } from '../../lib/site/nav';
+import { CORPUS, SCENARIOS, VALIDATION_LABEL, scenarioHref } from '../../lib/threat-model/corpus';
+import {
+  ADVERSARIES,
+  BLOCKING_QUESTIONS,
+  CONTROL_CONTRACT,
+  DISTINCTIONS,
+  MODELING_UNIT,
+  MODEL_FACTS,
+  NOT_CLAIMED,
+  PRIOR_WORK,
+  PROTECTED,
+  RELEASE_REQUIREMENTS,
+  REQUIREMENT_GRADE,
+  REQUIREMENT_LABEL,
+  WALKTHROUGHS,
+} from '../../lib/threat-model/model';
+
+const route = routeFor('/threat-model/');
+const REPO = 'https://github.com/Secure-Pride/secure-pride';
+
+const SECTIONS = [
+  ['scope', 'What this is'],
+  ['unit', 'How a threat is written'],
+  ['register', 'The twelve scenarios'],
+  ['actors', 'Who could act'],
+  ['walkthroughs', 'Where the easy answer fails'],
+  ['deciding', 'Deciding without a score'],
+  ['readiness', 'Before any readiness claim'],
+  ['prior-work', 'Built on existing work'],
+  ['use', 'Use it, check it, challenge it'],
+] as const;
+const toc = SECTIONS.map(([id, title], i) => ({ id, title, index: String(i + 1).padStart(2, '0') }));
+const indexOf = (id: string): string => toc.find((s) => s.id === id)?.index ?? '';
+---
+
+<PageShell
+  route={route}
+  documentTitle="Threat model — Secure Pride"
+  description="Twelve synthetic threat scenarios for LGBTQ+ people, people living with HIV, and the services that support them: who is exposed, the control we propose, the harm that control could cause, and the test that would show it works."
+  eyebrow={`Working draft · v${MODEL_FACTS.version} · ${MODEL_FACTS.published}`}
+  heading="Who gets exposed, and what the fix might break."
+  lede="Disclosure, coercion, and lost access to care, written as twelve testable scenarios. Each names the person who bears the harm, the control we propose, the new harm that control could cause, and the test that would show whether it works."
+>
+  <Fragment slot="title">Who gets exposed,<br />and what the fix might break.</Fragment>
+
+  <section class="section section--wide" aria-label="Status of this model">
+    <dl class="tm-status">
+      <div><dt>Status</dt><dd>Working draft</dd></div>
+      <div><dt>Scenarios</dt><dd>{SCENARIOS.length}, all synthetic</dd></div>
+      <div><dt>Controls</dt><dd>All proposed, none deployed</dd></div>
+      <div><dt>Community review</dt><dd>Not yet conducted</dd></div>
+      <div><dt>Corpus</dt><dd><a class="k-link" href="/threat-model/corpus.json">v{CORPUS.corpus_version} JSON</a></dd></div>
+    </dl>
+  </section>
+
+  <nav class="toc" aria-labelledby="toc-title">
+    <h2 class="toc__title" id="toc-title">On this page</h2>
+    <ol class="toc__list">
+      {toc.map((s) => (
+        <li><a class="toc__link" href={`#${s.id}`}><span class="toc__index">{s.index}</span>{s.title}</a></li>
+      ))}
+    </ol>
+  </nav>
+
+  <section class="section" id="scope" data-index={indexOf('scope')} aria-labelledby="scope-title">
+    <h2 class="section-title" id="scope-title">Protect the person who never chose the software.</h2>
+    <div class="k-prose">
+      <p>
+        This model is about people whose information passes through a system
+        they did not pick: a client named in a referral, a partner inferred
+        from a reminder, a peer listed in an export. The goal is to reduce
+        involuntary disclosure, coercive use of information, compromise of
+        support networks, and interruption of care, while keeping people in
+        control of their own decisions.
+      </p>
+      <p>
+        <strong>Identity and health status are separate.</strong> Using a
+        service is never proof of either. The scenarios describe possible
+        failures. They are not prevalence estimates, claims about any
+        organization, or inferences about anyone reading this page.
+      </p>
+      <p>
+        First scope: adults, peer outreach, appointments, referrals, staff
+        devices, and contact with HIV and LGBTQ+ services. Minors and
+        guardianship, local law, clinical safety, surveillance powers, travel
+        and emergency response need their own review. Leaving them out is an
+        open boundary, not a sign of low risk.
+      </p>
+      <span class="k-label">What it protects</span>
+      <ul>
+        {PROTECTED.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="unit" data-index={indexOf('unit')} aria-labelledby="unit-title">
+    <h2 class="section-title" id="unit-title">Every scenario follows the harm to the end.</h2>
+    <div class="k-prose">
+      <p>Each threat is written as one chain, so the cost of the fix sits beside the cost of the attack:</p>
+      <ol class="tm-chain" aria-label="The modeling unit, in order">
+        {MODELING_UNIT.map((step) => <li>{step}</li>)}
+      </ol>
+      <span class="k-label">Three distinctions we hold to</span>
+      <dl class="k-terms">
+        {DISTINCTIONS.map((d) => (
+          <div><dt>{d.term}</dt><dd>{d.detail}</dd></div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="register" data-index={indexOf('register')} aria-labelledby="register-title">
+    <div>
+      <h2 class="section-title" id="register-title">The twelve scenarios</h2>
+      <div class="k-prose">
+        <p>
+          All invented, all checkable. Open one for its fixture, probe steps,
+          the control’s own risks, and what stays unsolved.
+        </p>
+      </div>
+      <ul class="tm-register" role="list">
+        {SCENARIOS.map((s) => (
+          <li>
+            <a class="tm-card" href={scenarioHref(s.id)}>
+              <span class="tm-card__id">
+                <span>{s.id}</span>
+                <span class:list={['grade', s.validation_status === 'design-walkthrough' ? 'grade--partial' : 'grade--stated']}>
+                  {VALIDATION_LABEL[s.validation_status]}
+                </span>
+              </span>
+              <h3 class="tm-card__title">{s.title}</h3>
+              <p class="tm-card__line"><strong>Exposed:</strong> {s.exposure}</p>
+              <p class="tm-card__line"><strong>Who bears it:</strong> {s.affected_parties}</p>
+              <span class="tm-card__workflow">{s.workflow}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="actors" data-index={indexOf('actors')} aria-labelledby="actors-title">
+    <div>
+      <h2 class="section-title" id="actors-title">Who could act, and what not to assume</h2>
+      <table class="matrix matrix--compact" role="table">
+        <caption class="matrix__caption">Adversaries are described by capability, never by identity or country.</caption>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" scope="col">Actor</th>
+            <th role="columnheader" scope="col">Capability to test</th>
+            <th role="columnheader" scope="col">Do not assume</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {ADVERSARIES.map((a) => (
+            <tr role="row">
+              <th role="rowheader" scope="row">{a.actor}</th>
+              <td role="cell" data-label="Capability to test">{a.capability}</td>
+              <td role="cell" data-label="Do not assume">{a.dontAssume}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="walkthroughs" data-index={indexOf('walkthroughs')} aria-labelledby="walk-title">
+    <h2 class="section-title" id="walk-title">Where the easy answer fails</h2>
+    <div class="k-prose">
+      <p>
+        Three adversarial walkthroughs test the claims a security tool is most
+        tempted to make. Each is a paper counterexample, walked step by step,
+        repaired, and walked again. None is an executed exploit.
+      </p>
+      <ul>
+        {WALKTHROUGHS.map((w) => (
+          <li><a href={`/threat-model/walkthroughs/#walkthrough-${w.id}`}>{w.title}</a> — {w.result}</li>
+        ))}
+      </ul>
+      <div class="actions">
+        <a class="k-link" href="/threat-model/walkthroughs/">Read the walkthroughs →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="deciding" data-index={indexOf('deciding')} aria-labelledby="deciding-title">
+    <h2 class="section-title" id="deciding-title">No risk score. Four questions that block release.</h2>
+    <div class="k-prose">
+      <p>
+        We do not multiply invented probabilities, and we never assign a risk
+        tier from someone’s identity or HIV status. For each deployment, record
+        how severe the harm could be, how far it reaches, who has access, how
+        uncertain we are, whether it can be undone, what it does to care, and
+        the constraints the person has told us about.
+      </p>
+      <span class="k-label">Resolve before claiming anything is ready</span>
+      <ul>
+        {BLOCKING_QUESTIONS.map((q) => <li>{q}</li>)}
+      </ul>
+      <p>“Unknown” needs investigation or a narrower claim. It is never a pass.</p>
+      <span class="k-label">Every recommended control must name</span>
+      <p>{CONTROL_CONTRACT.join(' · ')}.</p>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="readiness" data-index={indexOf('readiness')} aria-labelledby="ready-title">
+    <div>
+      <h2 class="section-title" id="ready-title">Before any readiness claim</h2>
+      <div class="k-prose">
+        <p>
+          What has to be true before Secure Pride says a workflow is safe to
+          use. Checked {MODEL_FACTS.published}. Nothing here is met yet, and the
+          table says so.
+        </p>
+      </div>
+      <table class="matrix matrix--controls" role="table" aria-labelledby="ready-title">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" scope="col">Requirement</th>
+            <th role="columnheader" scope="col">Evidence needed</th>
+            <th role="columnheader" scope="col">Status</th>
+            <th role="columnheader" scope="col">Where it stands</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {RELEASE_REQUIREMENTS.map((r) => (
+            <tr role="row">
+              <th role="rowheader" scope="row">{r.requirement}</th>
+              <td role="cell" data-label="Evidence needed">{r.evidence}</td>
+              <td role="cell" data-label="Status">
+                <span class:list={['grade', `grade--${REQUIREMENT_GRADE[r.status]}`]}>{REQUIREMENT_LABEL[r.status]}</span>
+              </td>
+              <td role="cell" data-label="Where it stands">{r.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="prior-work" data-index={indexOf('prior-work')} aria-labelledby="prior-title">
+    <div>
+      <h2 class="section-title" id="prior-title">Built on existing work</h2>
+      <div class="k-prose">
+        <p>
+          Community security guidance and HIV confidentiality frameworks
+          already exist, and this model reuses them. What may be new is a
+          maintained, testable link between service workflows, disclosure
+          harm, the harm controls can cause, and release checks. That is a
+          question for review, not a claim. This was a targeted search, not a
+          systematic review; not finding something does not mean it does not
+          exist.
+        </p>
+      </div>
+      <table class="matrix matrix--compact" role="table">
+        <caption class="matrix__caption">Sources are linked, not republished. No endorsement by any cited organization is implied.</caption>
+        <thead role="rowgroup">
+          <tr role="row">
+            <th role="columnheader" scope="col">Source</th>
+            <th role="columnheader" scope="col">What we reuse</th>
+            <th role="columnheader" scope="col">How far we read</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {PRIOR_WORK.map((p) => (
+            <tr role="row">
+              <th role="rowheader" scope="row"><a class="k-link" href={p.href} rel="noopener noreferrer">{p.label}</a></th>
+              <td role="cell" data-label="What we reuse">{p.contribution}</td>
+              <td role="cell" data-label="How far we read">{p.boundary}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div class="k-prose">
+        <span class="k-label">Claims we do not make</span>
+        <p>{NOT_CLAIMED.join(' · ')}.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="use" data-index={indexOf('use')} aria-labelledby="use-title">
+    <h2 class="section-title" id="use-title">Use it, check it, challenge it.</h2>
+    <div class="k-prose">
+      <p>
+        The corpus is versioned JSON, released under the repository’s
+        Apache-2.0 licence, so other tools and trainers can build on it. Every
+        scenario is invented; never add a real case.
+      </p>
+      <p>
+        Inside Secure Pride, a change to a tool’s behaviour must name the
+        scenarios it affects and attach test evidence. The scanner already
+        does: its no-match result links to SP-02 and SP-11, and an SP-02
+        fixture runs against its pattern engine on every build.
+      </p>
+      <p>
+        <strong>Review has not started.</strong> The next milestone is paid,
+        consent-based review with people living with HIV, LGBTQ+ community
+        practitioners, service staff and technical reviewers. Taking part will
+        never require disclosing HIV status, identity, real cases, or proof of
+        community membership. If you want to be told when it opens, or you
+        know work this duplicates, <a href="/contact/">get in touch</a>.
+        Please do not send real incidents: there is no safe intake route for
+        them yet.
+      </p>
+      <div class="actions">
+        <a class="k-button k-button--opal" href="/threat-model/corpus.json" download="securepride-threat-model-corpus.json">Download the corpus</a>
+        <a class="k-link" href={`${REPO}/tree/main/docs/threat-model`}>Full model and review notes →</a>
+      </div>
+    </div>
+  </section>
+</PageShell>

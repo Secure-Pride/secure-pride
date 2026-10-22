@@ -1,9 +1,9 @@
 ---
 /** The stakes — who pays when a control fails. Copy from #67. */
 import PageShell from '../layouts/PageShell.astro';
-import { PRIMARY } from '../lib/site/nav';
+import { routeFor } from '../lib/site/nav';
 
-const route = PRIMARY[1];
+const route = routeFor('/stakes/');
 
 const risks = [
   {
@@ -90,6 +90,9 @@ const risks = [
         chronic underfunding. It can reduce a particular exposure and make the
         next decision clearer.
       </p>
+      <div class="actions">
+        <a class="k-link" href="/threat-model/">Twelve more scenarios, each traced to a test, in the threat model →</a>
+      </div>
     </div>
   </section>
 </PageShell>

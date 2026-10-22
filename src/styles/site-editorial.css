@@ -79,6 +79,7 @@
 .ledger--home .cell--lede { grid-column: span 7; }
 .ledger--home .cell--now { grid-column: span 5; }
 .ledger--home .cell--fact { grid-column: span 4; }
+.ledger--home .cell--feature { grid-column: span 12; }
 
 .cell,
 .tile {
@@ -173,6 +174,10 @@
   border-left: 1px solid var(--rule);
 }
 .doorways > li { display: flex; margin: 0; }
+/* The threat model leads: its doorway takes the whole first row. */
+.doorways > li:first-child { grid-column: 1 / -1; }
+.doorways > li:first-child .doorway { min-height: 0; }
+.doorways > li:first-child .doorway__label { font-size: clamp(1.35rem, 2.4vw, 1.9rem); }
 .doorway {
   position: relative;
   display: flex;

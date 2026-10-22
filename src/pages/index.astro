@@ -1,7 +1,7 @@
 ---
 /**
- * Home: one statement, one interaction, then a ruled sheet of facts and the
- * four doorways. Every fact cell restates something the 2026-10-02 site,
+ * Home: one statement, one interaction, then a ruled sheet of facts (led
+ * by the threat model, DECISION-011) and the doorways. Every fact cell restates something the 2026-10-02 site,
  * the privacy notice, or the tools page already says; nothing is new claim.
  * The statement itself is new and needs the founder's sign-off.
  */
@@ -11,6 +11,8 @@ import Footer from '../components/Footer.astro';
 import KintsugiVessel from '../components/site/KintsugiVessel.astro';
 import RunningHead from '../components/site/RunningHead.astro';
 import { HOME, PRIMARY } from '../lib/site/nav';
+import { SCENARIOS } from '../lib/threat-model/corpus';
+import { MODEL_FACTS } from '../lib/threat-model/model';
 import '../styles/site.css';
 
 const facts = [
@@ -58,6 +60,21 @@ const facts = [
           </KintsugiVessel>
 
           <div class="ledger ledger--home" role="group" aria-label="What is available and where its limits are">
+            <div class="cell cell--feature" data-gem="amber">
+              <h2 class="cell__label">At the centre · Threat model v{MODEL_FACTS.version}</h2>
+              <span class="cell__value">Who gets exposed, and what the fix might break.</span>
+              <p class="cell__note">
+                {SCENARIOS.length} invented scenarios of disclosure, coercion, and lost
+                access to care. Each names who bears the harm, the control we
+                propose, what that control could break, and the test that would
+                show it works. A working draft: not yet reviewed by the people it
+                is for.
+              </p>
+              <div class="actions">
+                <a class="k-button k-button--opal" href="/threat-model/">Read the threat model</a>
+                <a class="k-link" href="/threat-model/scenarios/sp-01/">Start with SP-01: a reminder that discloses care →</a>
+              </div>
+            </div>
             <div class="cell cell--lede">
               <p class="home__lede">
                 Secure Pride builds open-source tools for LGBTQ+ organizations,

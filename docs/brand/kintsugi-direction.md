@@ -40,6 +40,7 @@ The navigation is *yobitsugi*: shards from different vessels joined by one gold 
 | Page | Gem | Why |
 |---|---|---|
 | Home | gold | The seam itself |
+| Threat model | amber | Warning without alarm; previously unassigned (DECISION-011) |
 | Tools | sapphire | Keeps cyan's existing "action/tool" meaning (DECISION-006) |
 | The stakes | garnet | Cost and risk |
 | Founder | tourmaline | Personal accountability; queer pink lineage |

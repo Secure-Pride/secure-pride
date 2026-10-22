@@ -38,31 +38,39 @@ export const HOME: Route = {
 
 export const PRIMARY: readonly Route[] = [
   {
+    href: '/threat-model/',
+    label: 'Threat model',
+    word: 'Threats',
+    gem: 'amber',
+    index: '01',
+    blurb: 'Twelve ways disclosure, coercion and lost care happen, each traced to a test.',
+  },
+  {
     href: '/tools/',
     label: 'Tools',
     gem: 'sapphire',
-    index: '01',
+    index: '02',
     blurb: 'A bounded text check before you share, and what it cannot do.',
   },
   {
     href: '/stakes/',
     label: 'The stakes',
     gem: 'garnet',
-    index: '02',
+    index: '03',
     blurb: 'Who pays when a control fails.',
   },
   {
     href: '/founder/',
     label: 'Founder',
     gem: 'tourmaline',
-    index: '03',
+    index: '04',
     blurb: 'A person you can hold accountable.',
   },
   {
     href: '/contact/',
     label: 'Contact',
     gem: 'emerald',
-    index: '04',
+    index: '05',
     blurb: 'Tell me where the work gets harder.',
   },
 ];
@@ -73,7 +81,7 @@ export const SECONDARY: readonly Route[] = [
     label: 'Privacy and processing',
     word: 'Privacy',
     gem: 'amethyst',
-    index: '05',
+    index: '06',
     blurb: 'Where scanner text goes and what is logged.',
   },
   {
@@ -81,7 +89,7 @@ export const SECONDARY: readonly Route[] = [
     label: 'Report a vulnerability',
     word: 'Security',
     gem: 'lapis',
-    index: '06',
+    index: '07',
     blurb: 'How to disclose a security issue.',
   },
 ];
@@ -105,6 +113,13 @@ export const LEGACY_ANCHORS: Readonly<Record<string, string>> = {
   '#about': '/founder/',
   '#get-involved': '/contact/',
 };
+
+/** The route for an href. Throws at build time if the site map lacks it. */
+export function routeFor(href: string): Route {
+  const route = [HOME, ...PRIMARY, ...SECONDARY].find((r) => r.href === href);
+  if (!route) throw new Error(`No route for ${href} in src/lib/site/nav.ts`);
+  return route;
+}
 
 /** True when `pathname` is this route or nested under it. */
 export function isCurrent(route: Route, pathname: string): boolean {

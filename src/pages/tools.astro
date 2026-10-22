@@ -5,13 +5,13 @@
  * "Before you start" list); tested limits from src/lib/site/scanner-limits.ts.
  */
 import PageShell from '../layouts/PageShell.astro';
-import { PRIMARY } from '../lib/site/nav';
+import { routeFor } from '../lib/site/nav';
 import { LIMIT_LABEL, SCANNER_LIMITS, SCANNER_LIMITS_TESTED } from '../lib/site/scanner-limits';
 import { GUIDE_UPDATED, GUIDE_VERSION } from '../components/tools/wifi-enterprise/content/meta';
 
 const LAB_RECORD = 'https://github.com/Secure-Pride/secure-pride/blob/main/docs/guides/wifi-enterprise-lab-verification.md';
 
-const route = PRIMARY[0];
+const route = routeFor('/tools/');
 ---
 
 <PageShell
@@ -53,6 +53,12 @@ const route = PRIMARY[0];
             <li>
               This checks one submission. It does not monitor your organization
               or connect to your AI provider.
+            </li>
+            <li>
+              A story with no names can still identify someone. Threat
+              scenarios <a href="/threat-model/scenarios/sp-02/">SP-02</a> and
+              <a href="/threat-model/scenarios/sp-11/">SP-11</a> set this
+              boundary, and an SP-02 test runs on every build.
             </li>
           </ul>
         </div>
