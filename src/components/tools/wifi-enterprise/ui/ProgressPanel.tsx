@@ -44,7 +44,7 @@ export default function ProgressPanel({
           checked={persist}
           onChange={(event) => onPersistChange(event.target.checked)}
           aria-describedby="persist-help"
-          className="mt-0.5 h-5 w-5 shrink-0 accent-[color:var(--sp-brass-light)]"
+          className="mt-0.5 h-5 w-5 shrink-0 accent-(--sp-brass-light)"
         />
         <span>
           <span className="block font-semibold">Remember my progress on this device</span>
@@ -53,7 +53,7 @@ export default function ProgressPanel({
           </span>
         </span>
       </label>
-      <p role="status" className="min-h-[1.25rem] text-xs text-text-secondary">
+      <p role="status" className="min-h-5 text-xs text-text-secondary">
         {storeNotice}
       </p>
 

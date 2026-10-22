@@ -11,7 +11,7 @@ RUN npm ci
 # Only the inputs astro build actually reads — keeps the layer cache tight
 # and avoids pulling unrelated top-level files (docs/, functions/, etc.)
 # into the build stage.
-COPY astro.config.mjs tsconfig.json tailwind.config.ts postcss.config.mjs ./
+COPY astro.config.mjs tsconfig.json ./
 COPY src/ ./src/
 COPY public/ ./public/
 RUN npm run build           # astro build → dist/

@@ -61,7 +61,7 @@ export default function IntakeForm({ answers, onChange, onSubmit }: Props) {
                 }`}
               >
                 <legend className="px-1 font-heading text-xl font-semibold normal-case tracking-normal">
-                  <span className="mr-2 font-mono text-sm text-[color:var(--sp-brass-light)]">
+                  <span className="mr-2 font-mono text-sm text-(--sp-brass-light)">
                     {index + 1}/{QUESTIONS.length}
                   </span>
                   {question.prompt}
@@ -79,7 +79,7 @@ export default function IntakeForm({ answers, onChange, onSubmit }: Props) {
                       <label
                         key={option.id}
                         htmlFor={id}
-                        className="flex min-h-[44px] cursor-pointer items-start gap-3 rounded-md border border-dark-border p-3 hover:bg-dark-elevated has-[:checked]:border-[color:var(--sp-brass-light)]"
+                        className="flex min-h-[44px] cursor-pointer items-start gap-3 rounded-md border border-dark-border p-3 hover:bg-dark-elevated has-checked:border-(--sp-brass-light)"
                       >
                         <input
                           id={id}
@@ -88,7 +88,7 @@ export default function IntakeForm({ answers, onChange, onSubmit }: Props) {
                           value={option.id}
                           checked={isChecked(answers, question, option.id)}
                           onChange={() => onChange(nextAnswers(answers, question, option.id))}
-                          className="mt-1 h-5 w-5 shrink-0 accent-[color:var(--sp-brass-light)]"
+                          className="mt-1 h-5 w-5 shrink-0 accent-(--sp-brass-light)"
                         />
                         <span>
                           <span className="block">{option.label}</span>
@@ -112,7 +112,7 @@ export default function IntakeForm({ answers, onChange, onSubmit }: Props) {
       )}
       <button
         type="submit"
-        className="mt-6 min-h-[44px] rounded-md bg-[color:var(--sp-brass-light)] px-6 py-3 font-semibold text-dark-bg"
+        className="mt-6 min-h-[44px] rounded-md bg-(--sp-brass-light) px-6 py-3 font-semibold text-dark-bg"
       >
         Show my path
       </button>

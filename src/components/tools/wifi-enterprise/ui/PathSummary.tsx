@@ -23,7 +23,7 @@ const PathSummary = forwardRef<HTMLHeadingElement, Props>(function PathSummary(
         id="path-title"
         ref={headingRef}
         tabIndex={-1}
-        className="mt-1 font-heading text-3xl normal-case tracking-normal text-[color:var(--sp-brass-highlight)]"
+        className="mt-1 font-heading text-3xl normal-case tracking-normal text-(--sp-brass-highlight)"
       >
         {label.title}
       </h2>
@@ -44,7 +44,7 @@ const PathSummary = forwardRef<HTMLHeadingElement, Props>(function PathSummary(
           <dl className="mt-3 grid gap-x-4 gap-y-2 text-sm sm:grid-cols-[max-content_1fr]">
             {PLACEHOLDERS.map((item) => (
               <div key={item.example} className="contents">
-                <dt className="font-mono text-[color:var(--sp-brass-light)]">{item.example}</dt>
+                <dt className="font-mono text-(--sp-brass-light)">{item.example}</dt>
                 <dd className="text-text-secondary">{item.meaning}</dd>
               </div>
             ))}

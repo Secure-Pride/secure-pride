@@ -150,7 +150,7 @@ export default function WifiEnterpriseGuide() {
 
   return (
     <main className="mx-auto max-w-[1120px] px-4 py-10 text-text-primary sm:px-6 sm:py-12">
-      <p className="mb-3 font-mono text-sm text-[color:var(--sp-brass-light)]">
+      <p className="mb-3 font-mono text-sm text-(--sp-brass-light)">
         Field guide · Draft v{GUIDE_VERSION} · Updated {GUIDE_UPDATED}
       </p>
       <h1 className="font-heading text-4xl normal-case leading-tight tracking-normal">
@@ -165,7 +165,7 @@ export default function WifiEnterpriseGuide() {
         aria-labelledby="boundary-title"
         className="my-8 rounded-lg border border-dark-borderGlow bg-dark-surface p-5"
       >
-        <h2 id="boundary-title" className="font-heading text-xl normal-case tracking-normal text-[color:var(--sp-brass-light)]">
+        <h2 id="boundary-title" className="font-heading text-xl normal-case tracking-normal text-(--sp-brass-light)">
           Before you start
         </h2>
         <ul className="mt-2 list-disc space-y-1 pl-6 text-text-secondary">

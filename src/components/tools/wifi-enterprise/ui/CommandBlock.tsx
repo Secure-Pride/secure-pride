@@ -40,7 +40,7 @@ export default function CommandBlock({ block }: { block: Block }) {
       >
         <code>{block.code}</code>
       </pre>
-      <p role="status" className="mt-1 min-h-[1.25rem] text-xs text-text-secondary">
+      <p role="status" className="mt-1 min-h-5 text-xs text-text-secondary">
         {notice}
       </p>
     </figure>
