@@ -32,6 +32,7 @@ Significant decisions are recorded in [decisions/](decisions/).
 - [DECISION-009](decisions/DECISION-009.md): Adopt the founder's security policy for Secure Pride, with graded controls
 - [DECISION-010](decisions/DECISION-010.md): The heraldic heart-lock shield is the canonical mark
 - [DECISION-011](decisions/DECISION-011.md): Make the threat model the centre of the public site
+- [DECISION-012](decisions/DECISION-012.md): Serve the Content-Security-Policy, with build-time hashes
 
 ## Threat Model
 

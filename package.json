@@ -8,9 +8,9 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/build-headers.mjs",
     "preview": "astro preview",
-    "check": "npm run check:tokens && astro build && tsc --noEmit",
+    "check": "npm run check:tokens && npm run build && tsc --noEmit",
     "check:tokens": "node scripts/check-color-tokens.mjs && node scripts/check-design-tokens.mjs",
     "test": "vitest run",
     "astro": "astro"
@@ -33,6 +33,7 @@
     "@cloudflare/workers-types": "^4.20260702.1",
     "@types/node": "^20.19.43",
     "@types/react": "^18.2.45",
+    "parse5": "^8.0.1",
     "typescript": "^5.4.5",
     "vitest": "^5.0.0",
     "wrangler": "^4.146.0"
