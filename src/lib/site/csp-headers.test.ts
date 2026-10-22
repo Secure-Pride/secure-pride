@@ -40,6 +40,16 @@ describe('CSP hashing', () => {
     // Mentioning style= inside a script body is not an attribute.
     expect(scanHtml('<script>el.setAttribute("style=", 1)</script>').blocked).toEqual([]);
   });
+
+  it('follows the browser parser on edge cases a regex misses', () => {
+    // Browsers end a script at "</script >"; the hash must cover exactly "a()".
+    expect(scanHtml('<script>a()</script ><p>x</p>').scripts).toEqual(['a()']);
+    // A ">" inside an attribute value does not end the tag.
+    expect(scanHtml('<div title="a>b" onclick="x()"></div>').blocked).toContain('inline on*= event handler');
+    // Inline code inside <template> still runs once cloned.
+    expect(scanHtml('<template><b style="x"></b></template>').blocked).toContain('inline style="" attribute');
+    expect(scanHtml('<a href="  JavaScript:go()">x</a>').blocked).toContain('javascript: URL');
+  });
 });
 
 describe('_headers template', () => {
@@ -57,6 +67,10 @@ describe('_headers template', () => {
     for (const directive of ["default-src 'self'", "object-src 'none'", "base-uri 'self'", "form-action 'none'", "frame-ancestors 'none'"]) {
       expect(csp).toContain(directive);
     }
+  });
+
+  it('starts the HSTS ramp at 30 days, apex only, until the decision record moves it', () => {
+    expect(rendered).toMatch(/^  Strict-Transport-Security: max-age=2592000$/m);
   });
 
   it('still renders when the build has no inline elements', () => {

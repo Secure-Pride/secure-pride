@@ -38,7 +38,16 @@ Tested with `wrangler pages dev dist` (which applies `_headers` as production do
 ## Consequences
 
 - A future inline `style=""` or event handler fails the build with the file name, rather than silently breaking in production.
-- HSTS moves from Cloudflare's 30 days to the authored one year with `includeSubDomains; preload`. Every securepride.org subdomain must stay HTTPS-only. `preload` alone does not submit the domain to browser preload lists.
+- **HSTS ramps instead of jumping.** The authored value was one year with `includeSubDomains; preload`, which is hard to walk back: browsers keep it for the full max-age, and preload-list removal takes months. Step 1 ships `max-age=2592000` (30 days, apex only), the same as the zone already sends, so nothing changes for visitors. On 2026-10-22 only `securepride.org`, `www` and `design` resolved, all HTTPS-only.
+
+  | Step | Value | Move on when |
+  |---|---|---|
+  | 1 (now) | `max-age=2592000` | Shipped; no HTTPS errors reported for 2 weeks |
+  | 2 | `max-age=2592000; includeSubDomains` | Every DNS record in the Cloudflare zone is checked to serve valid HTTPS, or is not a web host |
+  | 3 | `max-age=31536000; includeSubDomains` | Step 2 has run a month without breakage |
+  | 4 | `max-age=63072000; includeSubDomains; preload` + submit at hstspreload.org | The founder decides the domain should be HTTPS-only for good (Tier 3: hard to reverse) |
+
+  `csp-headers.test.ts` pins the current step, so moving to the next step is a deliberate edit to both the template and the test.
 - The Docker/nginx image does not read `_headers`; it still serves without these headers.
 
 ## Verification
