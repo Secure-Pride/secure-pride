@@ -25,7 +25,7 @@ export default function StepCard({ step, index, done, onToggle }: Props) {
     >
       <div className="flex flex-wrap items-start justify-between gap-3">
         <h3 id={titleId} className="font-heading text-xl normal-case leading-snug tracking-normal">
-          <span className="mr-2 font-mono text-sm text-[color:var(--sp-brass-light)]">
+          <span className="mr-2 font-mono text-sm text-(--sp-brass-light)">
             {String(index + 1).padStart(2, "0")}
           </span>
           {step.title}
@@ -80,7 +80,7 @@ export default function StepCard({ step, index, done, onToggle }: Props) {
             type="checkbox"
             checked={done}
             onChange={() => onToggle(step.id)}
-            className="h-5 w-5 accent-[color:var(--sp-status-protected)]"
+            className="h-5 w-5 accent-(--sp-status-protected)"
           />
           {done ? "Done" : "Mark this step done"}
           <span className="sr-only">: {step.title}</span>

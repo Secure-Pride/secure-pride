@@ -27,7 +27,7 @@ export function StageNav({ stages, active, done, onSelect }: NavProps) {
                 aria-current={current ? "step" : undefined}
                 className={`flex min-h-[44px] w-full items-center justify-between gap-3 rounded-md border px-3 py-2 text-left text-sm ${
                   current
-                    ? "border-[color:var(--sp-brass-light)] bg-dark-elevated"
+                    ? "border-(--sp-brass-light) bg-dark-elevated"
                     : "border-transparent hover:bg-dark-elevated"
                 }`}
               >
@@ -94,7 +94,7 @@ export const StageView = forwardRef<HTMLHeadingElement, ViewProps>(function Stag
           <button
             type="button"
             onClick={() => onMove(index + 1)}
-            className="min-h-[44px] rounded-md bg-[color:var(--sp-brass-light)] px-5 py-2 font-semibold text-dark-bg"
+            className="min-h-[44px] rounded-md bg-(--sp-brass-light) px-5 py-2 font-semibold text-dark-bg"
           >
             Next stage →
           </button>

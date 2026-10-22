@@ -1,202 +1,320 @@
 /* Self-hosted fonts — no Google tracking */
-@import '@fontsource/orbitron/400.css';
-@import '@fontsource/orbitron/700.css';
-@import '@fontsource/orbitron/900.css';
-@import '@fontsource/rajdhani/400.css';
-@import '@fontsource/rajdhani/500.css';
-@import '@fontsource/rajdhani/600.css';
-@import '@fontsource/rajdhani/700.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
-@import '@fontsource/jetbrains-mono/400.css';
-@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/orbitron/400.css' layer(base);
+@import '@fontsource/orbitron/700.css' layer(base);
+@import '@fontsource/orbitron/900.css' layer(base);
+@import '@fontsource/rajdhani/400.css' layer(base);
+@import '@fontsource/rajdhani/500.css' layer(base);
+@import '@fontsource/rajdhani/600.css' layer(base);
+@import '@fontsource/rajdhani/700.css' layer(base);
+@import '@fontsource/inter/400.css' layer(base);
+@import '@fontsource/inter/500.css' layer(base);
+@import '@fontsource/inter/600.css' layer(base);
+@import '@fontsource/inter/700.css' layer(base);
+@import '@fontsource/jetbrains-mono/400.css' layer(base);
+@import '@fontsource/jetbrains-mono/500.css' layer(base);
 
 /* Kintsugi design-system color tokens — see src/styles/tokens.css */
-@import './tokens.css';
+@import './tokens.css' layer(base);
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-:root {
-  /* Kintsugi reskin: every value below is a var(--sp-*) reference into
-     tokens.css. Same custom-property names as before — only the source
-     moved, so nothing consuming --color-* needs to change. */
+@theme {
   --color-neon-pink: var(--sp-neon-pink);
-  --color-neon-cyan: var(--sp-neon-cyan);
+  --color-neon-magenta: var(--sp-neon-magenta);
+  --color-neon-purple: var(--sp-neon-purple);
   --color-neon-violet: var(--sp-neon-violet);
+  --color-neon-blue: var(--sp-neon-blue);
+  --color-neon-cyan: var(--sp-neon-cyan);
+  --color-neon-teal: var(--sp-neon-teal);
+  --color-neon-green: var(--sp-neon-green);
+  --color-neon-yellow: var(--sp-neon-yellow);
+  --color-neon-orange: var(--sp-neon-orange);
+  --color-neon-red: var(--sp-neon-red);
+
   --color-brand-primary: var(--sp-teal);
+  --color-brand-accent: var(--sp-deep-purple);
   --color-brand-electric: var(--sp-cyan);
+  --color-brand-hotPink: var(--sp-hot-pink);
+  --color-brand-violet: var(--sp-violet);
+
+  --color-dark-void: var(--sp-void);
   --color-dark-bg: var(--sp-bg);
   --color-dark-surface: var(--sp-surface);
+  --color-dark-elevated: var(--sp-elevated);
+  --color-dark-border: var(--sp-border);
+  --color-dark-borderGlow: var(--sp-border-glow);
+
+  --color-light-bg: var(--sp-light-bg);
+  --color-light-surface: var(--sp-light-surface);
+  --color-light-elevated: var(--sp-light-elevated);
+  --color-light-border: var(--sp-light-border);
+
+  --color-status-protected: var(--sp-status-protected);
+  --color-status-warning: var(--sp-status-warning);
+  --color-status-blocked: var(--sp-status-blocked);
+  --color-status-info: var(--sp-status-info);
+
   --color-text-primary: var(--sp-text-primary);
   --color-text-secondary: var(--sp-text-secondary);
-  --font-display: "Orbitron", "Rajdhani", sans-serif;
-  --font-heading: "Rajdhani", "DM Sans", sans-serif;
-  --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono: "JetBrains Mono", "SF Mono", "Monaco", monospace;
+  --color-text-muted: var(--sp-text-muted);
+  --color-text-inverse: var(--sp-text-inverse);
+
+  --font-display: 'Orbitron', 'Rajdhani', sans-serif;
+  --font-heading: 'Rajdhani', 'DM Sans', sans-serif;
+  --font-body:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', 'Monaco', monospace;
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.625rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.875rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 2.5rem;
+  --text-4xl: 2.75rem;
+  --text-4xl--line-height: 3rem;
+  --text-5xl: 3.5rem;
+  --text-5xl--line-height: 3.75rem;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+
+  --shadow-glow: var(--glow-cyan);
+  --shadow-glow-pink: var(--glow-pink);
+  --shadow-glow-violet: var(--glow-violet);
+  --shadow-glow-rainbow: var(--glow-rainbow);
+
+  --background-image-rainbow-gradient: var(--grad-rainbow);
+  --background-image-neon-gradient: var(--grad-neon);
+
+  --animate-glow: glow 1.5s ease-in-out infinite alternate;
+
+  @keyframes glow {
+    from {
+      text-shadow:
+        0 0 10px currentColor,
+        0 0 20px currentColor;
+    }
+    to {
+      text-shadow:
+        0 0 20px currentColor,
+        0 0 40px currentColor;
+    }
+  }
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
-body {
-  background-color: var(--color-dark-bg);
-  color: var(--color-text-primary);
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.625;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
-:focus-visible {
-  outline: 3px solid var(--color-neon-cyan);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
+/* Tailwind 4 puts utilities in a cascade layer; unlayered rules beat every
+   layer. These base rules sat below utilities in v3 (by specificity), so
+   they live in `base` here to keep that order. Site pages (site.css) stay
+   unlayered and still win over them, as before. */
+@layer base {
+  :root {
+    /* Kintsugi reskin: every value below is a var(--sp-*) reference into
+       tokens.css. Same custom-property names as before — only the source
+       moved, so nothing consuming --color-* needs to change. */
+    --color-neon-pink: var(--sp-neon-pink);
+    --color-neon-cyan: var(--sp-neon-cyan);
+    --color-neon-violet: var(--sp-neon-violet);
+    --color-brand-primary: var(--sp-teal);
+    --color-brand-electric: var(--sp-cyan);
+    --color-dark-bg: var(--sp-bg);
+    --color-dark-surface: var(--sp-surface);
+    --color-text-primary: var(--sp-text-primary);
+    --color-text-secondary: var(--sp-text-secondary);
+    --font-display: "Orbitron", "Rajdhani", sans-serif;
+    --font-heading: "Rajdhani", "DM Sans", sans-serif;
+    --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: "JetBrains Mono", "SF Mono", "Monaco", monospace;
+  }
 
-button:focus-visible, a:focus-visible {
-  outline: 3px solid var(--color-neon-cyan);
-  outline-offset: 2px;
-}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+  body {
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.625;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-  color: var(--color-text-primary);
-}
+  :focus-visible {
+    outline: 3px solid var(--color-neon-cyan);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
 
-/* h1 gets the loud display face; h2-h6 stay on the calmer heading face —
-   only the biggest hero-level heading is meant to shout. */
-h1 {
-  font-family: var(--font-display);
-  font-size: 3.5rem;
-  line-height: 3.75rem;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-h2 { font-size: 2rem; line-height: 2.5rem; }
-h3 { font-size: 1.5rem; line-height: 2rem; }
+  button:focus-visible, a:focus-visible {
+    outline: 3px solid var(--color-neon-cyan);
+    outline-offset: 2px;
+  }
 
-.lead {
-  font-family: var(--font-body);
-  font-size: 1.125rem;
-  line-height: 1.625;
-  color: var(--color-text-secondary);
-}
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
+  }
 
-.caption, .label {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-}
+  /* h1 gets the loud display face; h2-h6 stay on the calmer heading face —
+     only the biggest hero-level heading is meant to shout. */
+  h1 {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    line-height: 3.75rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  h2 { font-size: 2rem; line-height: 2.5rem; }
+  h3 { font-size: 1.5rem; line-height: 2rem; }
 
-a {
-  color: var(--color-neon-cyan);
-  text-decoration: none;
-  transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
-}
+  .lead {
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    line-height: 1.625;
+    color: var(--color-text-secondary);
+  }
 
-a:hover { text-shadow: 0 0 10px rgba(15, 181, 201, 0.5); }
+  .caption, .label {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
 
-code {
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-  background-color: rgba(17, 17, 40, 0.8);
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  color: var(--color-neon-cyan);
-}
+  a {
+    color: var(--color-neon-cyan);
+    text-decoration: none;
+    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-pre {
-  background-color: var(--color-dark-surface);
-  border: 1px solid rgba(42, 42, 80, 0.5);
-  border-radius: 8px;
-  padding: 1.5rem;
-  overflow-x: auto;
-  margin: 1.5rem 0;
-}
+  a:hover { text-shadow: 0 0 10px rgba(15, 181, 201, 0.5); }
 
-pre code { background: none; padding: 0; border-radius: 0; color: inherit; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    background-color: rgba(17, 17, 40, 0.8);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    color: var(--color-neon-cyan);
+  }
 
-ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
-li { margin: 0.5rem 0; }
+  pre {
+    background-color: var(--color-dark-surface);
+    border: 1px solid rgba(42, 42, 80, 0.5);
+    border-radius: 8px;
+    padding: 1.5rem;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
 
-.skip-to-content {
-  position: absolute;
-  top: -9999px;
-  left: 0;
-  z-index: 9999;
-  padding: 0.5rem 1rem;
-  background-color: var(--color-neon-cyan);
-  color: var(--color-dark-bg);
-  text-decoration: none;
-  font-weight: 700;
-  border-radius: 0 0 4px 0;
-}
+  pre code { background: none; padding: 0; border-radius: 0; color: inherit; }
 
-.skip-to-content:focus { top: 0; outline: none; border-radius: 0; }
+  ul, ol { margin: 1rem 0; padding-left: 1.5rem; }
+  li { margin: 0.5rem 0; }
 
-/* ─── NOISE TEXTURE ────────────────────────────────── */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.4;
-}
+  .skip-to-content {
+    position: absolute;
+    top: -9999px;
+    left: 0;
+    z-index: 9999;
+    padding: 0.5rem 1rem;
+    background-color: var(--color-neon-cyan);
+    color: var(--color-dark-bg);
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 0 0 4px 0;
+  }
 
-/* ─── ANIMATIONS ───────────────────────────────────── */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+  .skip-to-content:focus { top: 0; outline: none; border-radius: 0; }
 
-@keyframes slideInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+  /* ─── NOISE TEXTURE ────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
 
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+  /* ─── ANIMATIONS ───────────────────────────────────── */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-@keyframes statusPulse {
-  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--sp-status-protected); }
-  50%       { opacity: 0.6; box-shadow: 0 0 16px var(--sp-status-protected); }
-}
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-/* ─── SCROLL REVEAL ────────────────────────────────── */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.55s ease, transform 0.55s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-@media print {
-  html { background: #fff; }
-  body { background: #fff; color: #000; }
-  a { color: #000; text-decoration: underline; }
-}
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--sp-status-protected); }
+    50%       { opacity: 0.6; box-shadow: 0 0 16px var(--sp-status-protected); }
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  /* ─── SCROLL REVEAL ────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  @media print {
+    html { background: #fff; }
+    body { background: #fff; color: #000; }
+    a { color: #000; text-decoration: underline; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
 }
