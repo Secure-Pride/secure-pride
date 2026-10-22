@@ -7,14 +7,18 @@ interface Props {
   canonicalUrl?: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Extra class for <body>; site pages pass 'site-body' (charcoal overscroll). */
+  bodyClass?: string;
 }
 
 const {
   title,
   description = 'Open-source security tools for LGBTQ+ organizations. Understand what is available, where information goes, and what each tool can miss.',
   canonicalUrl,
-  ogImage = 'https://securepride.org/sp-og-preview.png',
+  // Rendered by docs/brand/art/build-og.mjs from the statement and the obsidian shield artwork.
+  ogImage = 'https://securepride.org/og/securepride-og.png',
   noindex = false,
+  bodyClass,
 } = Astro.props;
 
 const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepride.org').href;
@@ -26,16 +30,19 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#0a0a1a" />
+    <meta name="theme-color" content="#1a191d" />
     {noindex && <meta name="robots" content="noindex" />}
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Most security is built for people who can afford to fail. A black stone shield with a heart, mended in gold." />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="SecurePride" />
+    <meta property="og:site_name" content="Secure Pride" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -48,7 +55,7 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
     <link rel="icon" href="/favicons/favicon-16.png" sizes="16x16" type="image/png" />
     <link rel="apple-touch-icon" href="/favicons/apple-touch-icon.png" sizes="180x180" />
     <link rel="manifest" href="/favicons/site.webmanifest" />
-    <meta name="msapplication-TileColor" content="#0a0a1a" />
+    <meta name="msapplication-TileColor" content="#1a191d" />
 
     <title>{title}</title>
 
@@ -56,23 +63,8 @@ const canonical = canonicalUrl ?? new URL(Astro.url.pathname, 'https://securepri
       html { color-scheme: dark; }
     </style>
   </head>
-  <body>
+  <body class={bodyClass}>
     <a href="#main-content" class="skip-to-content">Skip to main content</a>
     <slot />
-    <script>
-      const reveals = document.querySelectorAll('.reveal');
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('visible');
-              observer.unobserve(entry.target);
-            }
-          });
-        },
-        { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-      );
-      reveals.forEach((el) => observer.observe(el));
-    </script>
   </body>
 </html>

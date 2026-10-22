@@ -1,0 +1,69 @@
+---
+/**
+ * The security plate: a full-bleed charcoal band that holds the obsidian
+ * shield artwork beside the two numbers a reporter needs (acknowledgment
+ * window, default disclosure deadline) and the two ways to report.
+ *
+ * Artwork: src/assets/art/obsidian-shield.png — provenance in
+ * docs/brand/art/README.md. It is artwork, not the logo: the identity-kit
+ * mark rules (no glow, rotation, or overlaid text) are kept by not placing
+ * text on it at all. Astro re-encodes it to AVIF/WebP at build time, which
+ * drops the C2PA manifest from the served copies; the caption carries the
+ * provenance instead.
+ */
+import { Picture } from 'astro:assets';
+import shield from '../../assets/art/obsidian-shield.png';
+import { POLICY_FACTS } from '../../lib/site/security-policy';
+
+export interface Props {
+  /** id of the element that labels the plate (an h2 inside it). */
+  labelId: string;
+}
+
+const { labelId } = Astro.props;
+---
+
+<section class="plate surface-charcoal" aria-labelledby={labelId}>
+  <div class="plate__inner">
+    <div class="plate__record">
+      <p class="plate__kicker">
+        <span class="plate__rule" aria-hidden="true"></span>Coordinated disclosure
+      </p>
+      <h2 class="plate__title" id={labelId}>Two numbers to hold me to.</h2>
+      <dl class="plate__figures">
+        <div class="plate__figure">
+          <dt>to acknowledge your report</dt>
+          <dd><span class="plate__num">{POLICY_FACTS.ackHours}</span><span class="plate__unit">hours</span></dd>
+        </div>
+        <div class="plate__figure">
+          <dt>default public disclosure deadline</dt>
+          <dd><span class="plate__num">{POLICY_FACTS.disclosureDays}</span><span class="plate__unit">days</span></dd>
+        </div>
+      </dl>
+      <div class="actions plate__actions">
+        <a class="k-button k-button--opal" href={POLICY_FACTS.advisoryUrl} rel="noopener noreferrer">
+          Report privately on GitHub
+        </a>
+        <a class="k-button k-button--ghost-dark" href={`mailto:${POLICY_FACTS.email}`}>
+          Email {POLICY_FACTS.email}
+        </a>
+      </div>
+    </div>
+    <figure class="plate__art">
+      <Picture
+        src={shield}
+        formats={['avif', 'webp']}
+        fallbackFormat="jpg"
+        widths={[640, 960, 1280, 1942]}
+        sizes="(min-width: 960px) 52vw, 100vw"
+        alt="A black stone shield with a heart carved into its face, cracked through and mended with a seam of gold."
+        loading="eager"
+        decoding="async"
+      />
+      <figcaption>
+        AI-generated artwork. The source file carries its C2PA provenance
+        record (OpenAI gpt-image, August 2026).
+      </figcaption>
+    </figure>
+  </div>
+</section>

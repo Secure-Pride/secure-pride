@@ -1,0 +1,64 @@
+---
+/**
+ * The Secure Pride mark: the heraldic shield with the heart-lock
+ * (canonical per the founder, 2026-10-21 — DECISION-010; it replaces the
+ * rounded identity-kit shield this component used before).
+ *
+ * Geometry and colours are copied verbatim from the design system's heraldic
+ * vector, secure-pride-design `project/favicons/favicon-simplified.svg`
+ * (Claude Design handoff 31decd2) — the same mark as the raster favicon set in
+ * `public/favicons/`. The only change: its square #0a0a1a base field is
+ * omitted so the mark sits directly on charcoal.
+ *
+ * One vector serves both sizes; `variant` is kept so callers and aria labels
+ * stay stable. Never animate, glow, rotate, or overlay text on the mark.
+ */
+interface Props {
+  variant: 'small' | 'medium';
+  size: number;
+  /** Prefix for gradient ids so two marks on one page never collide. */
+  idPrefix: string;
+  class?: string;
+}
+
+const { variant, size, idPrefix, class: className } = Astro.props;
+const id = (name: string) => `${idPrefix}-${name}`;
+const url = (name: string) => `url(#${id(name)})`;
+---
+
+<svg
+  class={className}
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="4 3 24 28"
+  width={size}
+  height={size}
+  role="img"
+  aria-label={`Secure Pride — Heart-Lock Shield (${variant})`}
+>
+  <defs>
+    <linearGradient id={id('brass')} x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#e2b25b" />
+      <stop offset="100%" stop-color="#6a4a1c" />
+    </linearGradient>
+    <linearGradient id={id('prism')} x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c81e6c" />
+      <stop offset="50%" stop-color="#8b2ecc" />
+      <stop offset="100%" stop-color="#0fb5c9" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M16 4 L5 8 V16 c0 7 5 13 11 14 c6-1 11-7 11-14 V8 Z"
+    fill="#2a1c08"
+    stroke={url('brass')}
+    stroke-width="1.2"
+    stroke-linejoin="round"
+  />
+  <path d="M13 14 V12.5 a3 3 0 0 1 6 0 V14" fill="none" stroke={url('brass')} stroke-width="1.6" stroke-linecap="round" />
+  <path
+    d="M16 24 C 16 24, 10 20, 10 15.5 C 10 13.2, 11.8 12, 13.3 12 C 14.4 12, 15.3 12.6, 16 13.6 C 16.7 12.6, 17.6 12, 18.7 12 C 20.2 12, 22 13.2, 22 15.5 C 22 20, 16 24, 16 24 Z"
+    fill={url('brass')}
+  />
+  <circle cx="16" cy="17" r="1.1" fill="#0a0604" />
+  <rect x="15.5" y="17.3" width="1" height="2.6" fill="#0a0604" />
+  <path d="M7 21 Q 16 27 25 21" fill="none" stroke={url('prism')} stroke-width="0.9" stroke-linecap="round" opacity="0.95" />
+</svg>

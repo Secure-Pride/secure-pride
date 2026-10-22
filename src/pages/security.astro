@@ -1,93 +1,357 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
+/**
+ * Security policy — the founder's Security Policy 2.0.0, adapted for
+ * Secure Pride (DECISION-009). Content lives in src/lib/site/security-policy.ts
+ * and security-controls.ts; SECURITY.md states the same policy and
+ * security-policy.test.ts keeps the two in step.
+ *
+ * Order follows what a reporter needs first: how to report, what to send,
+ * what happens next. Reference material (scope, controls, contributor
+ * practice, document record) follows.
+ */
+import PageShell from '../layouts/PageShell.astro';
+import SecurityPlate from '../components/site/SecurityPlate.astro';
+import DisclosureTimeline from '../components/site/DisclosureTimeline.astro';
+import ControlsLedger from '../components/site/ControlsLedger.astro';
+import { SECONDARY } from '../lib/site/nav';
+import {
+  COMMITMENTS,
+  CONTRIBUTOR_PRACTICES,
+  DISCLOSURE_VARIANTS,
+  MAINTAINER_PRACTICES,
+  PROJECT_STANDARDS,
+  NOT_TO_REPORT,
+  NOTIFICATION_STEPS,
+  POLICY_FACTS,
+  REPORT_CONTENTS,
+  RESOURCE_LINKS,
+  RESOURCE_TOOLS,
+  SAFE_HARBOR_CONDITIONS,
+  SCOPE,
+  SEVERITY_MATRIX,
+  STANDARDS,
+  SUPPORTED_VERSIONS,
+} from '../lib/site/security-policy';
+import { CONTROLS_CHECKED } from '../lib/site/security-controls';
+
+const route = SECONDARY[1];
+
+/** Contents, in page order. Index numbers are generated from position. */
+const SECTIONS = [
+  ['report', 'Report a vulnerability'],
+  ['include', 'What to include'],
+  ['not-to-report', 'What not to report'],
+  ['timeline', 'Disclosure timeline'],
+  ['commitments', 'What I commit to'],
+  ['severity', 'Severity and response'],
+  ['safe-harbor', 'Safe harbor'],
+  ['scope', 'Scope and versions'],
+  ['controls', 'Standards and controls'],
+  ['contributors', 'For contributors'],
+  ['document', 'This document'],
+] as const;
+const toc = SECTIONS.map(([id, title], i) => ({ id, title, index: String(i + 1).padStart(2, '0') }));
+const indexOf = (id: string): string => toc.find((s) => s.id === id)?.index ?? '';
 ---
 
-<Layout
-  title="Security Policy - SecurePride"
-  description="SecurePride security and vulnerability disclosure policy."
-  canonicalUrl="https://securepride.org/security/"
+<PageShell
+  route={route}
+  documentTitle="Security Policy — Secure Pride"
+  description="How to report a vulnerability in Secure Pride privately, what happens next, and which security controls are in place."
+  eyebrow={`Policy · Updated ${POLICY_FACTS.adapted}`}
+  heading="Report it privately. The repair goes on the record."
+  lede="Secure Pride follows a Coordinated Vulnerability Disclosure (CVD) approach that balances transparency with responsible handling of security issues."
 >
-  <Header />
+  <Fragment slot="title">Report it privately.<br />The repair goes on the record.</Fragment>
 
-  <main id="main-content" class="min-h-screen">
-    <div class="mx-auto max-w-3xl px-4 py-20 sm:px-6 lg:px-8">
-      <h1 class="mb-4 font-display text-4xl sm:text-5xl font-bold text-text-primary">
-        Security Policy
-      </h1>
-      <p class="mb-8 text-text-secondary">Last updated: March 31, 2026</p>
+  <nav class="toc" aria-labelledby="toc-title">
+    <h2 class="toc__title" id="toc-title">On this page</h2>
+    <ol class="toc__list">
+      {toc.map((s) => (
+        <li><a class="toc__link" href={`#${s.id}`}><span class="toc__index">{s.index}</span>{s.title}</a></li>
+      ))}
+    </ol>
+  </nav>
 
-      <div class="prose prose-invert max-w-none space-y-8 text-text-secondary">
-        <section>
-          <h2 class="mb-4 font-heading text-2xl font-bold text-text-primary">Vulnerability Reporting</h2>
-          <p>
-            SecurePride takes security vulnerabilities seriously. If you discover a security vulnerability, please report it responsibly to{' '}
-            <a href="mailto:security@securepride.org" class="text-neon-cyan hover:underline">
-              security@securepride.org
-            </a>{' '}
-            rather than disclosing it publicly.
-          </p>
-          <p class="mt-4 rounded-lg bg-dark-surface p-4 text-sm">
-            <strong>Note:</strong> This is a template security policy. You must customize this document to reflect SecurePride's actual security practices, including specific vulnerability disclosure procedures, response timelines, and any bug bounty program details. Consult with your security team to ensure this policy aligns with your organization's practices.
-          </p>
-        </section>
+  <SecurityPlate labelId="plate-title" />
 
-        <section>
-          <h2 class="mb-4 font-heading text-2xl font-bold text-text-primary">Responsible Disclosure</h2>
-          <p>When reporting a vulnerability, please include:</p>
-          <ul class="list-disc list-inside space-y-2 mt-4">
-            <li>A clear description of the vulnerability</li>
-            <li>Steps to reproduce the issue</li>
-            <li>Potential impact assessment</li>
-            <li>Your contact information for follow-up</li>
-          </ul>
-          <p class="mt-4">
-            We commit to acknowledging your report within 48 hours and providing a timeline for resolution.
-          </p>
-        </section>
+  <section class="section" id="report" data-index={indexOf('report')} aria-labelledby="report-title">
+    <h2 class="section-title" id="report-title">Report a vulnerability</h2>
+    <div class="k-prose">
+      <p>
+        I encourage responsible disclosure of security vulnerabilities. If you
+        discover a security issue in Secure Pride, please report it through one
+        of the following channels:
+      </p>
+      <ul>
+        <li>
+          <strong>Primary contact:</strong>{' '}
+          <a href={POLICY_FACTS.advisoryUrl} rel="noopener noreferrer">GitHub Security Advisory</a>{' '}
+          (private vulnerability reporting — preferred). In the repository:
+          Security tab → Advisories → Report a vulnerability.
+        </li>
+        <li>
+          <strong>Alternative contact:</strong> email{' '}
+          <a href={`mailto:${POLICY_FACTS.email}`}>{POLICY_FACTS.email}</a>.
+        </li>
+        <li>
+          <strong>Sensitive details:</strong> use the private advisory
+          above — only maintainers can read it. No PGP key is published yet,
+          so encrypted email is not offered.
+        </li>
+      </ul>
+      <p>
+        Please avoid disclosing sensitive vulnerability details in public
+        issues, pull requests, or community forums until we have coordinated
+        disclosure.
+      </p>
+    </div>
+  </section>
 
-        <section>
-          <h2 class="mb-4 font-heading text-2xl font-bold text-text-primary">Scope</h2>
-          <p>This security policy covers all SecurePride systems, including but not limited to:</p>
-          <ul class="list-disc list-inside space-y-2 mt-4">
-            <li>securepride.org website and subdomains</li>
-            <li>SecurePride platform infrastructure</li>
-            <li>Official SecurePride applications</li>
-          </ul>
-        </section>
+  <section class="section" id="include" data-index={indexOf('include')} aria-labelledby="include-title">
+    <h2 class="section-title" id="include-title">What to include in your report</h2>
+    <div class="k-prose">
+      <p>
+        An effective vulnerability report helps us quickly understand,
+        validate, and remediate the issue. Please include the following
+        information:
+      </p>
+      <ol>
+        {REPORT_CONTENTS.map((item) => <li><strong>{item.term}</strong> — {item.detail}</li>)}
+      </ol>
+    </div>
+  </section>
 
-        <section>
-          <h2 class="mb-4 font-heading text-2xl font-bold text-text-primary">Out of Scope</h2>
-          <p>The following are explicitly out of scope for vulnerability reports:</p>
-          <ul class="list-disc list-inside space-y-2 mt-4">
-            <li>Third-party services and platforms</li>
-            <li>Social engineering attacks</li>
-            <li>Attacks requiring physical access</li>
-            <li>Vulnerabilities in dependencies without a clear SecurePride impact</li>
-          </ul>
-        </section>
+  <section class="section" id="not-to-report" data-index={indexOf('not-to-report')} aria-labelledby="not-title">
+    <h2 class="section-title" id="not-title">What not to report</h2>
+    <div class="k-prose">
+      <p>The following items are generally outside the scope of our security program:</p>
+      <ul>
+        {NOT_TO_REPORT.map((line) => <li>{line}</li>)}
+      </ul>
+      <p>If you are unsure whether an issue qualifies, please report it and we will make the determination.</p>
+    </div>
+  </section>
 
-        <section>
-          <h2 class="mb-4 font-heading text-2xl font-bold text-text-primary">Bug Bounty Program</h2>
-          <p>
-            SecurePride values the contributions of security researchers. While we do not currently offer a formal bug bounty program, we recognize and credit all responsible vulnerability disclosures. Researchers who discover and responsibly report vulnerabilities may be acknowledged in our Hall of Honor.
-          </p>
-        </section>
-
-        <section>
-          <h2 class="mb-4 font-heading text-2xl font-bold text-text-primary">Security Contact</h2>
-          <p>For all security matters, contact:</p>
-          <p class="mt-4">
-            <strong>Email:</strong>{' '}
-            <a href="mailto:security@securepride.org" class="text-neon-cyan hover:underline">
-              security@securepride.org
-            </a>
-          </p>
-        </section>
+  <section class="section section--wide section--timeline" id="timeline" data-index={indexOf('timeline')} aria-labelledby="timeline-title">
+    <h2 class="section-title" id="timeline-title">Disclosure timeline</h2>
+    <DisclosureTimeline labelledBy="timeline-title" />
+    <div class="timeline-notes">
+      <dl class="k-terms">
+        {DISCLOSURE_VARIANTS.map((v) => (
+          <div><dt>{v.term}</dt><dd>{v.detail}</dd></div>
+        ))}
+      </dl>
+      <div class="k-prose">
+        <h3>CVE assignment</h3>
+        <p>
+          For eligible vulnerabilities, I will request CVE assignment through
+          the GitHub Security Advisory system or MITRE directly. CVE
+          publication timing will be coordinated with the public disclosure
+          schedule.
+        </p>
       </div>
     </div>
-  </main>
+  </section>
 
-  <Footer />
-</Layout>
+  <section class="section" id="commitments" data-index={indexOf('commitments')} aria-labelledby="commit-title">
+    <h2 class="section-title" id="commit-title">My commitment to reporters</h2>
+    <div class="k-prose">
+      <p>When you report a vulnerability to me, you can expect:</p>
+      <ul>
+        {COMMITMENTS.map((item) => <li><strong>{item.term}</strong> — {item.detail}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="severity" data-index={indexOf('severity')} aria-labelledby="severity-title">
+    <h2 class="section-title" id="severity-title">Severity and response</h2>
+    <table class="matrix matrix--compact" role="table">
+      <caption class="matrix__caption">We classify security incidents using the following severity matrix:</caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col">Severity</th>
+          <th role="columnheader" scope="col">Impact</th>
+          <th role="columnheader" scope="col">Response time</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {SEVERITY_MATRIX.map((row) => (
+          <tr role="row">
+            <th role="rowheader" scope="row">{row.severity}</th>
+            <td role="cell" data-label="Impact">{row.impact}</td>
+            <td role="cell" data-label="Response time">{row.response}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <div class="k-prose section__after">
+      <h3>Notification procedures</h3>
+      <p>In the event of a confirmed security incident affecting users:</p>
+      <ol>
+        {NOTIFICATION_STEPS.map((item) => <li><strong>{item.term}</strong> — {item.detail}</li>)}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="safe-harbor" data-index={indexOf('safe-harbor')} aria-labelledby="harbor-title">
+    <h2 class="section-title" id="harbor-title">Safe harbor</h2>
+    <div class="k-prose">
+      <p>
+        I am committed to protecting security researchers who report
+        vulnerabilities in good faith. I will not pursue legal action against
+        researchers who:
+      </p>
+      <ul>
+        {SAFE_HARBOR_CONDITIONS.map((line) => <li>{line}</li>)}
+      </ul>
+      <p>I encourage security research that helps improve the security and reliability of open-source software.</p>
+      <h3>Legal considerations</h3>
+      <p>
+        This security policy reflects my commitment to responsible
+        vulnerability disclosure and open-source security best practices.
+      </p>
+      <p>
+        All security research and vulnerability reporting must comply with
+        applicable laws, including the Computer Fraud and Abuse Act (CFAA),
+        Digital Millennium Copyright Act (DMCA), and international
+        equivalents. This safe harbor policy is contingent on good-faith
+        security research conducted within legal boundaries.
+      </p>
+      <p>
+        For projects involving user data, please refer to individual
+        repository documentation regarding data handling and privacy
+        practices. For securepride.org, that is{' '}
+        <a href="/privacy/">the privacy and processing page</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="scope" data-index={indexOf('scope')} aria-labelledby="scope-title">
+    <h2 class="section-title" id="scope-title">Scope and supported versions</h2>
+    <div class="split">
+      <div class="k-prose">
+        <p>
+          This policy covers vulnerability disclosure, incident response, and
+          security practices for Secure Pride: the securepride.org site and the
+          code at{' '}
+          <a href={POLICY_FACTS.repoUrl} rel="noopener noreferrer">github.com/Secure-Pride/secure-pride</a>.
+          As an individual open-source developer and security engineer, I
+          welcome collaboration from the security research community to
+          identify and address vulnerabilities.
+        </p>
+        <p>It applies to Secure Pride’s public code and services, including:</p>
+        <ul>
+          {SCOPE.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+      <div>
+        <table class="matrix matrix--compact" role="table">
+          <caption class="matrix__caption">We provide security updates for the following versions of our projects:</caption>
+          <thead role="rowgroup">
+            <tr role="row">
+              <th role="columnheader" scope="col">Version</th>
+              <th role="columnheader" scope="col">Supported</th>
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            {SUPPORTED_VERSIONS.map((row) => (
+              <tr role="row">
+                <th role="rowheader" scope="row">{row.version}</th>
+                <td role="cell" data-label="Supported">{row.supported}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <p class="fine">
+          For projects with specific version support policies, please refer to
+          the individual repository documentation.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--wide" id="controls" data-index={indexOf('controls')} aria-labelledby="controls-title">
+    <h2 class="section-title" id="controls-title">Standards and controls</h2>
+    <div class="k-prose">
+      <p>My security practices align with recognized industry frameworks and standards:</p>
+      <ul>
+        {STANDARDS.map((line) => <li>{line}</li>)}
+      </ul>
+      <p>
+        The policy lists the controls below “where applicable.” Each one is
+        marked with how you can check it, as of {CONTROLS_CHECKED}. A control
+        that is not yet in place is listed as such.
+      </p>
+    </div>
+    <ControlsLedger />
+  </section>
+
+  <section class="section section--wide" id="contributors" data-index={indexOf('contributors')} aria-labelledby="contrib-title">
+    <h2 class="section-title" id="contrib-title">Security practices for contributors</h2>
+    <div class="split">
+      <div class="k-prose">
+        <h3>For code contributors</h3>
+        <p>When contributing code to Secure Pride projects:</p>
+        <ul>
+          {CONTRIBUTOR_PRACTICES.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+      <div class="k-prose">
+        <h3>For maintainers and collaborators</h3>
+        <p>Project collaborators should follow these security practices:</p>
+        <ul>
+          {MAINTAINER_PRACTICES.map((line) => <li>{line}</li>)}
+        </ul>
+        <h3>Project standards</h3>
+        <p>All contributions must also:</p>
+        <ul>
+          {PROJECT_STANDARDS.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+      <div class="k-prose">
+        <h3>Documentation</h3>
+        <ul class="link-list">
+          {RESOURCE_LINKS.map((link) => (
+            <li><a href={link.href} rel="noopener noreferrer">{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="k-prose">
+        <h3>Security tools</h3>
+        <ul>
+          {RESOURCE_TOOLS.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="document" data-index={indexOf('document')} aria-labelledby="doc-title">
+    <h2 class="section-title" id="doc-title">This document</h2>
+    <div class="k-prose">
+      <dl class="doc-record">
+        <div><dt>Edition</dt><dd>Secure Pride, adapted from Security Policy {POLICY_FACTS.sourceVersion}</dd></div>
+        <div><dt>Source effective</dt><dd>{POLICY_FACTS.sourceEffective}</dd></div>
+        <div><dt>Last updated</dt><dd>{POLICY_FACTS.adapted}</dd></div>
+        <div><dt>Policy owner</dt><dd><a href="https://github.com/mazze93" rel="noopener noreferrer">{POLICY_FACTS.owner}</a></dd></div>
+      </dl>
+      <p>
+        This security policy is reviewed and updated periodically in response
+        to emerging threats, best practice evolution, or community feedback.
+        Material changes will be announced through GitHub repository commits
+        and releases, and security advisories for significant policy updates.
+        Version history and change logs are maintained in the repository
+        commit history. The same policy is in the repository as{' '}
+        <a href={`${POLICY_FACTS.repoUrl}/blob/main/SECURITY.md`} rel="noopener noreferrer">SECURITY.md</a>.
+      </p>
+      <h3>Acknowledgments</h3>
+      <p>
+        I am grateful to security researchers and community members who help
+        improve the security of my projects. Vulnerability reports that lead to
+        security improvements will be acknowledged in security advisories and
+        release notes (unless anonymity is preferred).
+      </p>
+      <p class="fine">Based on security best practices from OWASP, OpenSSF, GitHub, and NIST.</p>
+    </div>
+  </section>
+</PageShell>

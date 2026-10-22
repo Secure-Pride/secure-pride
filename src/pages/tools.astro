@@ -1,0 +1,156 @@
+---
+/**
+ * Tools — what is available today and where each boundary is.
+ * Scanner copy from #67; Wi-Fi guide copy from #69 (its page description and
+ * "Before you start" list); tested limits from src/lib/site/scanner-limits.ts.
+ */
+import PageShell from '../layouts/PageShell.astro';
+import { PRIMARY } from '../lib/site/nav';
+import { LIMIT_LABEL, SCANNER_LIMITS, SCANNER_LIMITS_TESTED } from '../lib/site/scanner-limits';
+import { GUIDE_UPDATED, GUIDE_VERSION } from '../components/tools/wifi-enterprise/content/meta';
+
+const LAB_RECORD = 'https://github.com/Secure-Pride/secure-pride/blob/main/docs/guides/wifi-enterprise-lab-verification.md';
+
+const route = PRIMARY[0];
+---
+
+<PageShell
+  route={route}
+  documentTitle="Tools — Secure Pride"
+  description="Two tools with their limits stated: a manual text check for known prompt-injection, credential, and personal-data patterns, and a guided path to per-device Wi-Fi certificates."
+  eyebrow="Available today"
+  heading="Bounded tools. Limits on the record."
+>
+  <section class="section section--wide" aria-labelledby="scanner-title">
+    <div class="ledger ledger--two">
+      <div class="cell">
+        <span class="cell__label">Available · Manual text check</span>
+        <h2 class="section-title" id="scanner-title">AI Safety Scanner</h2>
+        <div class="k-prose">
+          <p>
+            Checks text for known prompt-injection, credential, and
+            personal-data patterns. It returns findings and, when masking
+            applies, a redacted draft for you to review.
+          </p>
+        </div>
+        <div class="actions">
+          <a class="k-button k-button--opal" href="/tools/scanner/">Try with example text</a>
+        </div>
+      </div>
+      <div class="cell">
+        <h3 class="cell__label">Before you use it</h3>
+        <div class="k-prose">
+          <ul>
+            <li>Text is sent to our Cloudflare-hosted scanner.</li>
+            <li>
+              Do not submit real client records, passwords, health information,
+              or identity details.
+            </li>
+            <li>
+              No match means no matching pattern was found. It does not mean the
+              text is safe.
+            </li>
+            <li>
+              This checks one submission. It does not monitor your organization
+              or connect to your AI provider.
+            </li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a class="k-link" href="/privacy/">Read how processing and logs work →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--wide" aria-labelledby="limits-title">
+    <h2 class="section-title" id="limits-title">What the scanner misses</h2>
+    <table class="matrix matrix--compact matrix--limits" role="table">
+      <caption class="matrix__caption">
+        Tested {SCANNER_LIMITS_TESTED} against the scanner’s pattern engine.
+        A miss returns no match, which is not the same as safe.
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col">Input</th>
+          <th role="columnheader" scope="col">Result</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {SCANNER_LIMITS.map((limit) => (
+          <tr role="row">
+            <th role="rowheader" scope="row">{limit.input}</th>
+            <td role="cell" data-label="Result">
+              <span class:list={['grade', limit.result === 'caught' ? 'grade--verified' : 'grade--gap']}>{LIMIT_LABEL[limit.result]}</span>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section section--wide" aria-labelledby="wifi-title">
+    <div class="ledger ledger--two">
+      <div class="cell">
+        <span class="cell__label">Draft v{GUIDE_VERSION} · Field guide · Updated {GUIDE_UPDATED}</span>
+        <h2 class="section-title" id="wifi-title">Wi-Fi Enterprise guide</h2>
+        <div class="k-prose">
+          <p>
+            A guided, step-by-step path to per-device Wi-Fi certificates
+            (802.1X) for small organizations. Runs entirely in your browser;
+            nothing is sent anywhere.
+          </p>
+        </div>
+        <div class="actions">
+          <a class="k-button k-button--opal" href="/tools/wifi-enterprise/">Start the guide</a>
+        </div>
+      </div>
+      <div class="cell">
+        <h3 class="cell__label">Before you start</h3>
+        <div class="k-prose">
+          <ul>
+            <li>Six questions choose your path. Your answers stay in this browser. Nothing is sent anywhere.</li>
+            <li>This page never asks for passwords, secrets, or names. Keep those in your password manager.</li>
+            <li>
+              This is a draft. The server commands were tested in a lab with
+              step-ca and FreeRADIUS 3.2.5. Access-point and device steps
+              follow vendor documentation and are not yet tested on real
+              hardware.
+            </li>
+          </ul>
+        </div>
+        <div class="actions">
+          <a class="k-link" href={LAB_RECORD}>Read the lab record →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="inspect-title">
+    <h2 class="section-title" id="inspect-title">Inspect it. Run it. Know the boundary.</h2>
+    <div class="k-prose">
+      <p>
+        The code is Apache 2.0 licensed. The Docker image serves the static
+        interface; it does not include the scanner API. Full-stack local
+        development uses Wrangler.
+      </p>
+      <div class="actions">
+        <a class="k-link" href="https://github.com/Secure-Pride/secure-pride#run-locally">Source and local setup →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="dev-title">
+    <h2 class="section-title" id="dev-title">In development</h2>
+    <div class="k-prose">
+      <p>
+        The Rust/WASM scanner is built but not deployed to the public scanner
+        route. Community playbooks and deployment templates remain roadmap
+        work.
+      </p>
+      <div class="actions">
+        <a class="k-link" href="https://github.com/Secure-Pride/secure-pride/tree/main/scanner-rs">Inspect the next scanner →</a>
+      </div>
+    </div>
+  </section>
+</PageShell>

@@ -1,0 +1,47 @@
+---
+/** Contact — a direct conversation. Copy from #67 (Contact.astro). */
+import PageShell from '../layouts/PageShell.astro';
+import { PRIMARY } from '../lib/site/nav';
+
+const route = PRIMARY[3];
+---
+
+<PageShell
+  route={route}
+  documentTitle="Contact — Secure Pride"
+  description="Email Secure Pride directly. No study, plan, or form required."
+  eyebrow="A direct conversation"
+  heading="Tell me where the work gets harder."
+  lede="You do not need to join a study or buy a plan to get in touch. A question, an accessibility problem, or a description of a workflow is enough."
+>
+  <section class="section" aria-labelledby="email-title">
+    <h2 class="section-title" id="email-title">Write to a person.</h2>
+    <div class="k-prose">
+      <div class="actions">
+        <a class="k-button k-button--opal" href="mailto:hello@securepride.org">Email hello@securepride.org</a>
+      </div>
+      <p>
+        This opens your email app. Your email provider processes the message
+        when you send it.
+      </p>
+      <p>
+        Please leave out client names, case details, credentials, and other
+        sensitive information. Email is not an emergency-response channel.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="other-title">
+    <h2 class="section-title" id="other-title">Other ways in.</h2>
+    <div class="k-prose">
+      <div class="actions">
+        <a class="k-link" href="https://github.com/Secure-Pride/secure-pride/blob/main/CONTRIBUTING.md">Contribute to the project →</a>
+      </div>
+      <p>
+        For a suspected vulnerability, use{' '}
+        <a href="/security/">the security reporting process</a>{' '}
+        instead of a public issue.
+      </p>
+    </div>
+  </section>
+</PageShell>

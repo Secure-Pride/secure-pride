@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Secure Pride — Protecting identity. Empowering pride.</title>
+  <meta name="description" content="Open-source, AI-native cybersecurity infrastructure for LGBTQ+ organizations and other at-risk civil society groups." />
+  <meta name="theme-color" content="#0b1020" />
+  <style>
+    :root {
+      --bg: #070b16;
+      --bg-soft: #0f1529;
+      --panel: rgba(16, 24, 48, 0.78);
+      --panel-strong: rgba(20, 29, 58, 0.92);
+      --text: #edf2ff;
+      --muted: #b8c3e0;
+      --line: rgba(255,255,255,0.1);
+      --gold: #f0b84b;
+      --violet: #8d63ff;
+      --pink: #ff5ea8;
+      --cyan: #5edfff;
+      --green: #67e8a5;
+      --shadow: 0 24px 80px rgba(0,0,0,0.35);
+      --radius: 22px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 15% 15%, rgba(141,99,255,0.16), transparent 28%),
+        radial-gradient(circle at 88% 18%, rgba(255,94,168,0.14), transparent 24%),
+        radial-gradient(circle at 50% 120%, rgba(94,223,255,0.12), transparent 30%),
+        linear-gradient(180deg, #060914 0%, #0a1020 55%, #0b1223 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .wrap { width: min(calc(100% - 2rem), var(--max)); margin: 0 auto; }
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(12px);
+      background: rgba(7, 11, 22, 0.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.95rem 0;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+    }
+    .brand-badge {
+      width: 2.3rem;
+      height: 2.3rem;
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(240,184,75,0.18), rgba(141,99,255,0.28));
+      border: 1px solid rgba(255,255,255,0.09);
+      display: grid;
+      place-items: center;
+      box-shadow: inset 0 0 40px rgba(255,255,255,0.03);
+    }
+    .brand-badge span { font-size: 1.1rem; }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: flex-end;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .hero {
+      padding: 4.5rem 0 2.4rem;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size: 0.88rem;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: clamp(2.6rem, 7vw, 5.4rem);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      margin: 0 0 1rem;
+      max-width: 11ch;
+    }
+    .accent {
+      background: linear-gradient(90deg, var(--gold), #ffd978 22%, #fff 50%, #f1b5ff 74%, #87ecff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: 1.06rem;
+      max-width: 62ch;
+      margin: 0 0 1.4rem;
+    }
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin: 1.5rem 0 1.8rem;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.9rem 1.2rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      font-weight: 600;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(240,184,75,0.18), rgba(255,94,168,0.16));
+      border-color: rgba(255,255,255,0.14);
+    }
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-top: 0.8rem;
+    }
+    .pill {
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    .hero-card {
+      position: relative;
+      border-radius: 28px;
+      padding: 1.15rem;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -30% auto auto -20%;
+      width: 70%;
+      height: 60%;
+      background: radial-gradient(circle, rgba(240,184,75,0.18), transparent 65%);
+      pointer-events: none;
+    }
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: auto -18% -18% auto;
+      width: 60%;
+      height: 55%;
+      background: radial-gradient(circle, rgba(141,99,255,0.22), transparent 65%);
+      pointer-events: none;
+    }
+    .hero-card img {
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      position: relative;
+      z-index: 1;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      margin: 1.8rem 0 0;
+    }
+    .stat {
+      padding: 1rem;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .stat strong {
+      display: block;
+      font-size: 1.35rem;
+      line-height: 1.1;
+      margin-bottom: 0.2rem;
+    }
+    .stat span {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+    section {
+      padding: 1.7rem 0;
+    }
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    h2 {
+      font-size: clamp(1.6rem, 4vw, 2.35rem);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 42rem;
+    }
+    .grid-3, .grid-2 {
+      display: grid;
+      gap: 1rem;
+    }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      padding: 1.15rem;
+      box-shadow: var(--shadow);
+    }
+    .card h3 {
+      margin: 0 0 0.6rem;
+      font-size: 1.16rem;
+      letter-spacing: -0.02em;
+    }
+    .card p {
+      margin: 0 0 0.9rem;
+      color: var(--muted);
+    }
+    .list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.55rem;
+    }
+    .list li {
+      color: var(--muted);
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
+    }
+    .list li::before {
+      content: "•";
+      color: var(--gold);
+      line-height: 1.2;
+      font-weight: 700;
+    }
+    .project-tag-row, .badge-row {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.85rem;
+    }
+    .tag, .badge {
+      border-radius: 999px;
+      padding: 0.36rem 0.7rem;
+      font-size: 0.8rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+    }
+    .band {
+      margin: 1.25rem 0 0.6rem;
+      padding: 1rem 1.1rem;
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgba(240,184,75,0.12), rgba(141,99,255,0.12), rgba(94,223,255,0.08));
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+    .band p {
+      margin: 0;
+      color: var(--text);
+    }
+    .trust-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 1rem;
+    }
+    .quote {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    }
+    .quote p {
+      margin: 0;
+      font-size: 1.12rem;
+      color: var(--text);
+    }
+    .quote small {
+      display: block;
+      margin-top: 0.9rem;
+      color: var(--muted);
+    }
+    .team-card strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+    }
+    .team-card span {
+      display: block;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+    footer {
+      padding: 2rem 0 3.2rem;
+    }
+    .footer-box {
+      padding: 1.2rem;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .footer-box p {
+      margin: 0;
+      color: var(--muted);
+    }
+    @media (max-width: 980px) {
+      .hero-grid, .trust-grid, .grid-3, .grid-2, .stats {
+        grid-template-columns: 1fr;
+      }
+      .nav-inner {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      h1 { max-width: 14ch; }
+    }
+    @media (max-width: 640px) {
+      .hero { padding-top: 3.2rem; }
+      .wrap { width: min(calc(100% - 1.2rem), var(--max)); }
+      .card, .hero-card, .footer-box { border-radius: 18px; }
+      .btn { width: 100%; }
+      .cta-row { display: grid; grid-template-columns: 1fr; }
+      .nav-links { gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#top" aria-label="Secure Pride home">
+        <span class="brand-badge"><span>🛡️</span></span>
+        <span>Secure Pride</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#mission">Mission</a>
+        <a href="#projects">Projects</a>
+        <a href="#trust">Trust</a>
+        <a href="#design">Design</a>
+        <a href="#team">Team</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">Open-source • AI-native • accessibility-first cybersecurity</div>
+          <h1>Protecting identity. <span class="accent">Empowering pride.</span></h1>
+          <p>
+            Secure Pride builds cybersecurity infrastructure, tooling, and training for LGBTQ+ organizations and other at-risk civil society groups that need security to be low-friction, trustworthy, and usable by under-resourced teams.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://securepride.org">Visit securepride.org</a>
+            <a class="btn btn-secondary" href="https://github.com/Secure-Pride">View open-source work</a>
+            <a class="btn btn-secondary" href="mailto:hello@securepride.org">Contact</a>
+          </div>
+          <div class="meta" aria-label="Organization highlights">
+            <span class="pill">LGBTQ+-led</span>
+            <span class="pill">Privacy-by-default</span>
+            <span class="pill">Zero-trust architecture</span>
+            <span class="pill">Community-accountable</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <img src="./assets/secure-pride-logo.jpeg" alt="Secure Pride logo with shield and lock mark" style="width: 100%; height: auto; display: block; border-radius: 18px;" />
+        </div>
+      </div>
+      <div class="wrap">
+        <div class="stats" aria-label="Key facts">
+          <div class="stat"><strong>3</strong><span>Flagship initiatives across tooling, governance, and AI safety</span></div>
+          <div class="stat"><strong>0</strong><span>Surveillance-style analytics, telemetry brokerage, or paywalled safety model</span></div>
+          <div class="stat"><strong>16</strong><span>Sections in the Stonewall Standard DPA framework</span></div>
+          <div class="stat"><strong>&lt;15 min</strong><span>Target time to first value for under-resourced teams</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="mission">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Mission and context</h2>
+          </div>
+          <p>Security is often built for well-resourced teams. Secure Pride is built for volunteer-heavy organizations facing harassment, doxxing, phishing, data exposure, and limited operational capacity.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Accessibility first</h3>
+            <p>Every tool, interface, and documentation artifact is designed for reduced cognitive load, plain-language comprehension, and screen-reader compatibility.</p>
+            <ul class="list">
+              <li>ADHD-friendly output formatting</li>
+              <li>Plain-language guidance and error states</li>
+              <li>Semantic structure and accessible interaction patterns</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Community-centered</h3>
+            <p>Leadership, design, and threat modeling are informed by lived experience from the communities the organization serves.</p>
+            <ul class="list">
+              <li>LGBTQ+-led organizational direction</li>
+              <li>Threat modeling grounded in real-world harm</li>
+              <li>Tools shaped by community trust needs</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Open and privacy-hardened</h3>
+            <p>Secure Pride treats safety infrastructure as a public good, with open licensing and a privacy-by-default technical posture.</p>
+            <ul class="list">
+              <li>Permissive open-source and open-access publishing</li>
+              <li>No analytics tracking or data brokerage</li>
+              <li>Minimal collection and stronger default protections</li>
+            </ul>
+          </article>
+        </div>
+        <div class="band">
+          <p><strong>Core mission:</strong> make cybersecurity accessible, affordable, and manageable for communities that need it most.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Flagship work</h2>
+          </div>
+          <p>Secure Pride’s portfolio spans security tooling, governance frameworks, and AI-native threat defense designed for small civil society organizations.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Cyber-Defense Audit Suite</h3>
+            <p>A modular, CLI-first security audit framework tailored to under-resourced nonprofit operations.</p>
+            <ul class="list">
+              <li>Network exposure scanning and open port enumeration</li>
+              <li>DNS hardening verification for DNSSEC, SPF, DKIM, and DMARC</li>
+              <li>TLS/SSL validation, secrets scanning, and privacy checklist generation</li>
+              <li>Passive by default, with accessible output and screen-reader mode</li>
+            </ul>
+            <div class="project-tag-row">
+              <span class="tag">Python 3.11+</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">MIT</span>
+            </div>
+          </article>
+          <article class="card">
+            <h3>Stonewall Standard DPA</h3>
+            <p>A reusable data processing agreement framework for LGBTQ+ nonprofits handling sensitive community data.</p>
+            <ul class="list">
+              <li>Dual-format legal text and plain-English summaries</li>
+              <li>Guidance for AI/LLM vendor onboarding and data handling</li>
+              <li>Community-safe data classification tiers</li>
+              <li>Incident response and breach escalation templates</li>
+            </ul>
+            <div class="project-tag-row">
+              <span class="tag">Markdown</span>
+              <span class="tag">PDF</span>
+              <span class="tag">CC BY 4.0</span>
+            </div>
+          </article>
+          <article class="card">
+            <h3>AI-Native Threat Toolkit</h3>
+            <p>An in-development toolkit addressing prompt injection, output integrity, and AI-assisted phishing threats targeting civil society.</p>
+            <ul class="list">
+              <li>LLM output integrity checking</li>
+              <li>Prompt injection detection patterns</li>
+              <li>AI-assisted phishing classification</li>
+              <li>Threat brief generation from open-source feeds</li>
+            </ul>
+            <div class="project-tag-row">
+              <span class="tag">Python</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">Pre-release</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="trust">
+      <div class="wrap trust-grid">
+        <div>
+          <div class="section-head">
+            <div>
+              <h2>Trust architecture</h2>
+            </div>
+          </div>
+          <div class="grid-2">
+            <article class="card">
+              <h3>Infrastructure</h3>
+              <ul class="list">
+                <li>Astro static site architecture with minimal client-side complexity</li>
+                <li>Cloudflare Pages, WAF, DNSSEC, TLS 1.3, HSTS, and Zero Trust controls</li>
+                <li>GitHub source control with CI/CD and automated checks</li>
+                <li>Docker for isolated and reproducible execution</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Privacy defaults</h3>
+              <ul class="list">
+                <li>No Google Analytics, fingerprinting, or session replay on the public site</li>
+                <li>Community-submitted data processed locally or encrypted end-to-end in transit</li>
+                <li>Proton services for organizational communications</li>
+                <li>Minimal collection posture for sensitive data</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>AI safeguards</h3>
+              <ul class="list">
+                <li>No community-sensitive data passed to external AI endpoints</li>
+                <li>Input sanitization before model calls</li>
+                <li>Structured output validation and human review flags</li>
+                <li>Zero-retention expectations in vendor agreements</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Data tiers</h3>
+              <ul class="list">
+                <li>Tier 1: general public content</li>
+                <li>Tier 2: organizational operational data with stronger access controls</li>
+                <li>Tier 3: community-sensitive data with maximum protection and minimal collection</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+        <aside class="card quote">
+          <p>Community safety infrastructure should be a public good, not a profit center.</p>
+          <small>Secure Pride design and governance posture</small>
+          <div class="badge-row">
+            <span class="badge">Zero trust</span>
+            <span class="badge">Open-source transparency</span>
+            <span class="badge">Privacy by default</span>
+            <span class="badge">Low-friction resilience</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="design">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Mindful Development</h2>
+          </div>
+          <p>Secure Pride’s product philosophy emphasizes execution excellence without sacrificing clarity, accessibility, or community trust.</p>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Clarity over cleverness</h3>
+            <p>Readable systems, readable docs, and plain language instead of jargon theater.</p>
+            <ul class="list">
+              <li>Explicit patterns over clever shortcuts</li>
+              <li>Low-friction contributor understanding</li>
+              <li>Future-maintainer friendly design</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Modularity as compassion</h3>
+            <p>Complex systems are easier to contribute to when they are broken into understandable, testable units.</p>
+            <ul class="list">
+              <li>Smaller components reduce cognitive load</li>
+              <li>Easier debugging and extension</li>
+              <li>Faster documentation and onboarding</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>ADHD-friendly patterns</h3>
+            <p>Design decisions actively reduce overwhelm during real-world use and incident response.</p>
+            <ul class="list">
+              <li>Progressive disclosure</li>
+              <li>Batch notifications over alert fatigue</li>
+              <li>Undo and confirmation patterns for safety</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="team">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Team</h2>
+          </div>
+          <p>A small founding team combining cybersecurity engineering, research training, information governance, and community-centered design.</p>
+        </div>
+        <div class="grid-2">
+          <article class="card team-card">
+            <strong>Mazze LeCzzare Frazer</strong>
+            <span>Founder &amp; Executive Director · Security Engineer · Durham, North Carolina</span>
+            <p>Leads technical development, strategic planning, grant research, and program delivery, with experience in zero-trust architecture, open-source development, AI safety integration, and accessibility-first product design.</p>
+          </article>
+          <article class="card team-card">
+            <strong>Alec Phillips</strong>
+            <span>Co-Investigator · Records and governance specialist</span>
+            <p>Supports administrative infrastructure, records management, and documentation governance, bringing institutional-grade archival and information governance experience.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-box">
+      <div>
+        <strong>Built with purpose. Measured with care.</strong>
+        <p>Open-source cybersecurity infrastructure for communities that need trustworthy protection without unnecessary complexity.</p>
+      </div>
+      <div class="cta-row" style="margin:0;">
+        <a class="btn btn-secondary" href="https://securepride.org">Website</a>
+        <a class="btn btn-secondary" href="https://github.com/Secure-Pride">GitHub</a>
+        <a class="btn btn-secondary" href="mailto:hello@securepride.org">hello@securepride.org</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

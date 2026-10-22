@@ -1,121 +1,81 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+/** Privacy and processing. Content unchanged from 2026-10-02; new shell only. */
+import PageShell from '../layouts/PageShell.astro';
+import { SECONDARY } from '../lib/site/nav';
+
+const route = SECONDARY[0];
+
+const sections = [
+  {
+    id: 'before',
+    title: 'Before submitting text',
+    paragraphs: [
+      'The public scanner sends your submission to Secure Pride’s Cloudflare-hosted API. It does not run entirely on your device or within your organization.',
+      'Use invented examples or text you are authorized to share. Do not submit client records, health information, passwords, or details about someone’s identity. Masking happens after the server receives the original text.',
+    ],
+  },
+  {
+    id: 'processing',
+    title: 'Scanner processing',
+    paragraphs: [
+      'The current TypeScript scanner checks text against known patterns. Its request handler does not send the text to an external AI model. The application does not intentionally save the submitted text to a database or include it in its audit log.',
+      'Text and results are held in the page’s memory while you use it. Clear removes the displayed input and results; it does not delete hosting logs or undo a request already received. Copying a redacted draft places it on your device’s clipboard, which may sync across devices.',
+    ],
+  },
+  {
+    id: 'audit',
+    title: 'Application audit metadata',
+    paragraphs: [
+      'Each scan reaching the engine emits a structured log event. It includes a trace identifier, timestamp, hashed actor identifier, input length, detected data categories, injection severity, and policy action. The public interface uses an anonymous actor identifier.',
+      'These events exclude the submitted text, but their categories can still reveal sensitive context. A hashed identifier is not a guarantee of anonymity.',
+    ],
+  },
+  {
+    id: 'hosting',
+    title: 'Hosting details still to verify',
+    paragraphs: [
+      'Cloudflare processes network requests and may handle connection and security metadata, such as IP addresses. We have not verified the deployment’s log retention, log access, or processing locations for this notice. We cannot promise zero hosting logs, a specific residency, or a deletion deadline.',
+      'If those details are essential to your work, do not submit sensitive information to the hosted scanner. Contact us to discuss the boundary first.',
+    ],
+  },
+  {
+    id: 'contact',
+    title: 'Contact and tracking',
+    paragraphs: [
+      'The public contact links open your email app. Sending a message discloses its contents and sender details to the email providers and recipient. Include only what is necessary for your question.',
+      'The site application does not include an analytics SDK or persist scanner text in browser storage. This statement does not cover hosting security logs or external sites you choose to visit.',
+    ],
+  },
+];
 ---
 
-<Layout
-  title="Privacy and processing — Secure Pride"
+<PageShell
+  route={route}
+  documentTitle="Privacy and processing — Secure Pride"
   description="Where scanner text goes, what the application logs, and which hosting details remain unverified."
-  canonicalUrl="https://securepride.org/privacy/"
+  eyebrow="Notice · Updated October 2, 2026"
+  heading="Privacy and processing"
+  lede="This notice describes the current public scanner and contact surface."
 >
-  <Header />
-  <main id="main-content" class="page-wrap section-space">
-    <div class="max-w-3xl space-y-8 text-text-secondary">
-      <h1 class="font-heading text-4xl normal-case text-text-primary">
-        Privacy and processing
-      </h1>
+  {sections.map((section) => (
+    <section class="section" aria-labelledby={`privacy-${section.id}`}>
+      <h2 class="section-title" id={`privacy-${section.id}`}>{section.title}</h2>
+      <div class="k-prose">
+        {section.paragraphs.map((text) => <p>{text}</p>)}
+      </div>
+    </section>
+  ))}
+
+  <section class="section" aria-labelledby="privacy-requests">
+    <h2 class="section-title" id="privacy-requests">Questions or deletion requests</h2>
+    <div class="k-prose">
       <p>
-        Updated October 2, 2026. This notice describes the current public
-        scanner and contact surface.
+        Email <a href="mailto:hello@securepride.org">hello@securepride.org</a>{' '}
+        to ask about processing or request deletion of information you
+        provided. Do not resend sensitive records as proof of your request.
+        What can be located or deleted depends on the information held and the
+        hosting configuration.
       </p>
-      <section>
-        <h2 class="font-heading text-2xl normal-case text-text-primary mb-4">
-          Before submitting text
-        </h2>
-        <p>
-          The public scanner sends your submission to Secure Pride’s
-          Cloudflare-hosted API. It does not run entirely on your device or
-          within your organization.
-        </p>
-        <p class="mt-4">
-          Use invented examples or text you are authorized to share. Do not
-          submit client records, health information, passwords, or details about
-          someone’s identity. Masking happens after the server receives the
-          original text.
-        </p>
-      </section>
-      <section>
-        <h2 class="font-heading text-2xl normal-case text-text-primary mb-4">
-          Scanner processing
-        </h2>
-        <p>
-          The current TypeScript scanner checks text against known patterns. Its
-          request handler does not send the text to an external AI model. The
-          application does not intentionally save the submitted text to a
-          database or include it in its audit log.
-        </p>
-        <p class="mt-4">
-          Text and results are held in the page’s memory while you use it. Clear
-          removes the displayed input and results; it does not delete hosting
-          logs or undo a request already received. Copying a redacted draft
-          places it on your device’s clipboard, which may sync across devices.
-        </p>
-      </section>
-      <section>
-        <h2 class="font-heading text-2xl normal-case text-text-primary mb-4">
-          Application audit metadata
-        </h2>
-        <p>
-          Each scan reaching the engine emits a structured log event. It
-          includes a trace identifier, timestamp, hashed actor identifier, input
-          length, detected data categories, injection severity, and policy
-          action. The public interface uses an anonymous actor identifier.
-        </p>
-        <p class="mt-4">
-          These events exclude the submitted text, but their categories can
-          still reveal sensitive context. A hashed identifier is not a guarantee
-          of anonymity.
-        </p>
-      </section>
-      <section>
-        <h2 class="font-heading text-2xl normal-case text-text-primary mb-4">
-          Hosting details still to verify
-        </h2>
-        <p>
-          Cloudflare processes network requests and may handle connection and
-          security metadata, such as IP addresses. We have not verified the
-          deployment’s log retention, log access, or processing locations for
-          this notice. We cannot promise zero hosting logs, a specific
-          residency, or a deletion deadline.
-        </p>
-        <p class="mt-4">
-          If those details are essential to your work, do not submit sensitive
-          information to the hosted scanner. Contact us to discuss the boundary
-          first.
-        </p>
-      </section>
-      <section>
-        <h2 class="font-heading text-2xl normal-case text-text-primary mb-4">
-          Contact and tracking
-        </h2>
-        <p>
-          The public contact links open your email app. Sending a message
-          discloses its contents and sender details to the email providers and
-          recipient. Include only what is necessary for your question.
-        </p>
-        <p class="mt-4">
-          The site application does not include an analytics SDK or persist
-          scanner text in browser storage. This statement does not cover hosting
-          security logs or external sites you choose to visit.
-        </p>
-      </section>
-      <section>
-        <h2 class="font-heading text-2xl normal-case text-text-primary mb-4">
-          Questions or deletion requests
-        </h2>
-        <p>
-          Email{" "}
-          <a class="sp-link" href="mailto:hello@securepride.org">
-            hello@securepride.org
-          </a>{" "}
-          to ask about processing or request deletion of information you
-          provided. Do not resend sensitive records as proof of your request.
-          What can be located or deleted depends on the information held and the
-          hosting configuration.
-        </p>
-      </section>
     </div>
-  </main>
-  <Footer />
-</Layout>
+  </section>
+</PageShell>

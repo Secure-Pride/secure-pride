@@ -1,0 +1,61 @@
+---
+/**
+ * The controls ledger: every control the source policy lists, with a grade
+ * that says how a reader can check it and the evidence behind the grade.
+ * Data and grading rules: src/lib/site/security-controls.ts.
+ *
+ * Grades are written out as words in every row; colour only repeats them.
+ */
+import {
+  CONTROL_GROUPS,
+  CONTROLS_CHECKED,
+  GRADE_LABEL,
+  GRADE_MEANING,
+  gradeCounts,
+  type ControlGrade,
+} from '../../lib/site/security-controls';
+
+const GRADE_ORDER: ControlGrade[] = ['verified', 'partial', 'stated', 'gap'];
+const counts = gradeCounts();
+const slug = (title: string): string => title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+---
+
+<div class="ledger-controls">
+  <dl class="grade-key" aria-label={`Grades, checked ${CONTROLS_CHECKED}`}>
+    {GRADE_ORDER.map((grade) => (
+      <div class="grade-key__item">
+        <dt>
+          <span class:list={['grade', `grade--${grade}`]}>{GRADE_LABEL[grade]}</span>
+          <span class="grade-key__count">{counts[grade]}</span>
+        </dt>
+        <dd>{GRADE_MEANING[grade]}</dd>
+      </div>
+    ))}
+  </dl>
+
+  {CONTROL_GROUPS.map((group) => (
+    <table class="matrix matrix--controls" role="table" aria-labelledby={`controls-${slug(group.title)}`}>
+      <caption id={`controls-${slug(group.title)}`} class="matrix__caption">{group.title}</caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col">Control</th>
+          <th role="columnheader" scope="col">What the policy says</th>
+          <th role="columnheader" scope="col">Status</th>
+          <th role="columnheader" scope="col">How you can check</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {group.controls.map((control) => (
+          <tr role="row">
+            <th role="rowheader" scope="row">{control.name}</th>
+            <td role="cell" data-label="What the policy says">{control.claim}</td>
+            <td role="cell" data-label="Status">
+              <span class:list={['grade', `grade--${control.grade}`]}>{GRADE_LABEL[control.grade]}</span>
+            </td>
+            <td role="cell" data-label="How you can check">{control.evidence}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  ))}
+</div>

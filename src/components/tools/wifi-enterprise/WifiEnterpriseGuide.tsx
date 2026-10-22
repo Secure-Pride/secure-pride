@@ -28,7 +28,7 @@ import ProgressPanel from "./ui/ProgressPanel";
 import { StageNav, StageView } from "./ui/StageView";
 
 const LAB_RECORD =
-  "https://github.com/mazze93/secure-pride/blob/main/docs/guides/wifi-enterprise-lab-verification.md";
+  "https://github.com/Secure-Pride/secure-pride/blob/main/docs/guides/wifi-enterprise-lab-verification.md";
 
 type View = "intake" | "guide";
 
