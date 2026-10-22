@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
+  NO_MATCH_GUIDANCE,
+  NO_MATCH_SCENARIOS,
   parseScanResponse,
   redactedDraft,
   scanFindings,
@@ -241,8 +243,24 @@ export default function AISafetyScanner() {
               ? "The scanner recommends withholding this submission. It has not blocked another app or AI provider; you control what happens next."
               : needsReview
                 ? "Review each finding. A redacted draft can still contain sensitive context or missed patterns."
-                : "This check found none of its known patterns. It may miss sensitive context, identities, or unfamiliar attacks. Review the text and your provider's data handling before sharing."}
+                : NO_MATCH_GUIDANCE}
           </p>
+          {!result.blocked && !needsReview && (
+            <p className="mt-2 text-sm text-text-secondary">
+              Why no match is not clearance:{" "}
+              {NO_MATCH_SCENARIOS.map((id, index) => (
+                <span key={id}>
+                  {index > 0 && " · "}
+                  <a
+                    href={`/threat-model/scenarios/${id.toLowerCase()}/`}
+                    className="underline underline-offset-4"
+                  >
+                    threat scenario {id}
+                  </a>
+                </span>
+              ))}
+            </p>
+          )}
           <ul className="mt-4 space-y-3 list-none p-0">
             {findings.map((finding, index) => (
               <li
