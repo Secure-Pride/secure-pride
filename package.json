@@ -30,7 +30,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241230.0",
+    "@cloudflare/workers-types": "^4.20260702.1",
     "@types/node": "^20.12.12",
     "@types/react": "^18.2.45",
     "typescript": "^5.4.5",
