@@ -13,7 +13,7 @@ import PageShell from '../layouts/PageShell.astro';
 import SecurityPlate from '../components/site/SecurityPlate.astro';
 import DisclosureTimeline from '../components/site/DisclosureTimeline.astro';
 import ControlsLedger from '../components/site/ControlsLedger.astro';
-import { SECONDARY } from '../lib/site/nav';
+import { routeFor } from '../lib/site/nav';
 import {
   COMMITMENTS,
   CONTRIBUTOR_PRACTICES,
@@ -34,7 +34,7 @@ import {
 } from '../lib/site/security-policy';
 import { CONTROLS_CHECKED } from '../lib/site/security-controls';
 
-const route = SECONDARY[1];
+const route = routeFor('/security/');
 
 /** Contents, in page order. Index numbers are generated from position. */
 const SECTIONS = [

@@ -1,0 +1,138 @@
+---
+/**
+ * One page per corpus scenario: /threat-model/scenarios/sp-01/ … sp-12/.
+ * Describes a generic, invented situation; it never encodes a visitor's
+ * own assessment, and asks nothing.
+ */
+import PageShell from '../../../layouts/PageShell.astro';
+import { routeFor } from '../../../lib/site/nav';
+import {
+  SCENARIOS,
+  VALIDATION_LABEL,
+  neighbours,
+  scenarioHref,
+  scenarioSlug,
+  sourcesFor,
+  type Scenario,
+} from '../../../lib/threat-model/corpus';
+import { SCENARIO_LINKS, WALKTHROUGHS } from '../../../lib/threat-model/model';
+
+export function getStaticPaths() {
+  return SCENARIOS.map((scenario) => ({ params: { id: scenarioSlug(scenario.id) }, props: { scenario } }));
+}
+
+interface Props {
+  scenario: Scenario;
+}
+
+const { scenario: s } = Astro.props;
+const route = routeFor('/threat-model/');
+const { prev, next } = neighbours(s.id);
+const walkthroughs = WALKTHROUGHS.filter((w) => w.scenarios.includes(s.id));
+const links = SCENARIO_LINKS[s.id] ?? [];
+const sources = sourcesFor(s);
+
+const situation = [
+  ['Workflow', s.workflow],
+  ['Who could act', s.adversary_capability],
+  ['What is exposed', s.exposure],
+  ['Who bears it', s.affected_parties],
+  ['The harm', s.harm],
+] as const;
+
+const response = [
+  ['Proposed control', s.proposed_control],
+  ['Needs first', s.prerequisites],
+  ['What the control could break', s.control_induced_harm],
+  ['Care fallback and recovery', s.care_fallback_and_recovery],
+] as const;
+---
+
+<PageShell
+  route={route}
+  path={scenarioHref(s.id)}
+  documentTitle={`${s.id}: ${s.title} — Threat model — Secure Pride`}
+  description={`Synthetic threat scenario ${s.id}. ${s.harm}. Proposed control, the harm the control could cause, a test, and what remains unsolved.`}
+  eyebrow={`${s.id} · Synthetic scenario · ${VALIDATION_LABEL[s.validation_status]}`}
+  heading={s.title}
+  lede={`${s.workflow}. The harm: ${s.harm.charAt(0).toLowerCase()}${s.harm.slice(1)}.`}
+>
+  <section class="section section--wide" aria-label="Status of this scenario">
+    <dl class="tm-status">
+      <div><dt>Evidence</dt><dd>Invented scenario</dd></div>
+      <div><dt>Control</dt><dd>Proposed, not deployed</dd></div>
+      <div><dt>Tested</dt><dd>{s.validation_status === 'design-walkthrough' ? 'On paper only' : 'No'}</dd></div>
+      <div><dt>Jurisdiction</dt><dd>Not localized</dd></div>
+      <div><dt>Reviewed</dt><dd>{s.review_date}</dd></div>
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="situation-title">
+    <h2 class="section-title" id="situation-title">The situation</h2>
+    <dl class="tm-fields tm-fields--harm">
+      {situation.map(([term, detail]) => (
+        <div><dt>{term}</dt><dd>{detail}</dd></div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="response-title">
+    <h2 class="section-title" id="response-title">A response, and its cost</h2>
+    <dl class="tm-fields">
+      {response.map(([term, detail]) => (
+        <div><dt>{term}</dt><dd>{detail}</dd></div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="section" aria-labelledby="test-title">
+    <h2 class="section-title" id="test-title">How to test it</h2>
+    <div class="k-prose">
+      <span class="k-label">Synthetic fixture</span>
+      <p>{s.synthetic_fixture}</p>
+      <span class="k-label">Probe steps</span>
+      <ol class="tm-steps">
+        {s.probe_steps.map((step) => <li>{step}</li>)}
+      </ol>
+      <span class="k-label">Passes when</span>
+      <p>{s.expected_result}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="residual-title">
+    <h2 class="section-title" id="residual-title">What stays unsolved</h2>
+    <div class="k-prose">
+      <p>{s.residual_risk}.</p>
+      {walkthroughs.length > 0 && (
+        <>
+          <span class="k-label">Walked through on paper</span>
+          <ul>
+            {walkthroughs.map((w) => (
+              <li><a href={`/threat-model/walkthroughs/#walkthrough-${w.id}`}>{w.title}</a></li>
+            ))}
+          </ul>
+        </>
+      )}
+      {links.length > 0 && (
+        <>
+          <span class="k-label">Where this shows up on Secure Pride</span>
+          <ul>
+            {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+          </ul>
+        </>
+      )}
+      <span class="k-label">Sources for the mechanism</span>
+      <ul>
+        {sources.map((src) => <li><a href={src.href} rel="noopener noreferrer">{src.label}</a></li>)}
+      </ul>
+      <p class="fine">Sources support the mechanism, not this invented event.</p>
+    </div>
+  </section>
+
+  <nav class="section section--wide" aria-label="Other scenarios">
+    <div class="tm-pager">
+      {prev ? <a class="k-link" href={scenarioHref(prev.id)}>← {prev.id}: {prev.title}</a> : <a class="k-link" href="/threat-model/#register">← All scenarios</a>}
+      {next ? <a class="k-link" href={scenarioHref(next.id)}>{next.id}: {next.title} →</a> : <a class="k-link" href="/threat-model/#register">All scenarios →</a>}
+    </div>
+  </nav>
+</PageShell>

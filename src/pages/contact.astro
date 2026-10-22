@@ -1,9 +1,9 @@
 ---
 /** Contact — a direct conversation. Copy from #67 (Contact.astro). */
 import PageShell from '../layouts/PageShell.astro';
-import { PRIMARY } from '../lib/site/nav';
+import { routeFor } from '../lib/site/nav';
 
-const route = PRIMARY[3];
+const route = routeFor('/contact/');
 ---
 
 <PageShell

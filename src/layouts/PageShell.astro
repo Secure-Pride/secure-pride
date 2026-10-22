@@ -26,10 +26,12 @@ interface Props {
   heading: string;
   lede?: string;
   noindex?: boolean;
+  /** Canonical path when the page is nested under its route (e.g. a scenario page). */
+  path?: string;
 }
 
-const { route, documentTitle, description, eyebrow, heading, lede, noindex } = Astro.props;
-const canonicalUrl = new URL(route.href, 'https://securepride.org').href;
+const { route, documentTitle, description, eyebrow, heading, lede, noindex, path } = Astro.props;
+const canonicalUrl = new URL(path ?? route.href, 'https://securepride.org').href;
 ---
 
 <Layout

@@ -1,9 +1,9 @@
 ---
 /** Privacy and processing. Content unchanged from 2026-10-02; new shell only. */
 import PageShell from '../layouts/PageShell.astro';
-import { SECONDARY } from '../lib/site/nav';
+import { routeFor } from '../lib/site/nav';
 
-const route = SECONDARY[0];
+const route = routeFor('/privacy/');
 
 const sections = [
   {
