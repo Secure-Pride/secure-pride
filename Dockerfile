@@ -20,7 +20,7 @@ RUN npm run build           # astro build → dist/
 # Unprivileged variant: runs as the `nginx` user (not root) out of the box,
 # listens on 8080 instead of 80. Removes the most common container-escape
 # escalation path for a static file server.
-FROM nginxinc/nginx-unprivileged:1.30.4-alpine
+FROM nginxinc/nginx-unprivileged:1.31.7-alpine
 
 LABEL org.opencontainers.image.title="Secure Pride" \
       org.opencontainers.image.description="Privacy-first security tools and standards for LGBTQ+ and other high-risk groups — the securepride.org site, served static." \
