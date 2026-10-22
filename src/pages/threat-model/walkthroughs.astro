@@ -1,0 +1,68 @@
+---
+/**
+ * The three adversarial walkthroughs from the touchstone review
+ * (docs/threat-model/TOUCHSTONE.md): paper counterexamples, each repaired
+ * and walked once more. Data: src/lib/threat-model/model.ts.
+ */
+import PageShell from '../../layouts/PageShell.astro';
+import { routeFor } from '../../lib/site/nav';
+import { scenarioById, scenarioHref } from '../../lib/threat-model/corpus';
+import { WALKTHROUGHS } from '../../lib/threat-model/model';
+
+const route = routeFor('/threat-model/');
+const label = (id: string): string => `${id}: ${scenarioById(id)?.title ?? ''}`;
+---
+
+<PageShell
+  route={route}
+  path="/threat-model/walkthroughs/"
+  documentTitle="Walkthroughs — Threat model — Secure Pride"
+  description="Three adversarial walkthroughs of tempting security claims: redaction means anonymity, local means private, and a stricter device policy means more protection."
+  eyebrow="Threat model · Adversarial review · Paper only"
+  heading="Three claims a security tool is tempted to make."
+  lede="Each walkthrough starts from an invented situation, follows the claim step by step until it breaks, repairs it, and walks it again. These are design counterexamples, not executed exploits or device tests."
+>
+  {WALKTHROUGHS.map((w, i) => (
+    <section class="section" id={`walkthrough-${w.id}`} aria-labelledby={`w-${w.id}-title`}>
+      <div>
+        <span class="record">Walkthrough {String.fromCharCode(65 + i)}</span>
+        <h2 class="section-title" id={`w-${w.id}-title`}>{w.title}</h2>
+        <div class="k-prose">
+          <span class="k-label">Maps to</span>
+          <ul class="link-list">
+            {w.scenarios.map((id) => <li><a href={scenarioHref(id)}>{label(id)}</a></li>)}
+          </ul>
+        </div>
+      </div>
+      <div class="k-prose">
+        <span class="k-label">Starting point (invented)</span>
+        <p>{w.start}</p>
+        <span class="k-label">How it breaks</span>
+        <ol class="tm-steps">
+          {w.steps.map((step) => <li>{step}</li>)}
+        </ol>
+        <span class="k-label">Result</span>
+        <p><strong>{w.result}</strong></p>
+        <span class="k-label">Repair</span>
+        <p>{w.repair}</p>
+        <span class="k-label">Walked again</span>
+        <p>{w.repass}</p>
+      </div>
+    </section>
+  ))}
+
+  <section class="section" aria-labelledby="perimeter-title">
+    <h2 class="section-title" id="perimeter-title">What these walkthroughs did not do</h2>
+    <div class="k-prose">
+      <p>
+        No attack traffic, scanner requests with real records, browser runs,
+        device changes, profile installs, source-code audit, forensic work,
+        interviews, or clinical or legal assessment. A repaired claim here is
+        a narrower promise on paper, not a verified implementation.
+      </p>
+      <div class="actions">
+        <a class="k-link" href="/threat-model/">← Back to the threat model</a>
+      </div>
+    </div>
+  </section>
+</PageShell>

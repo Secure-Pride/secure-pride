@@ -1,0 +1,40 @@
+---
+/** Founder — a person you can hold accountable. Copy from #67. */
+import PageShell from '../layouts/PageShell.astro';
+import { routeFor } from '../lib/site/nav';
+
+const route = routeFor('/founder/');
+---
+
+<PageShell
+  route={route}
+  documentTitle="Founder — Secure Pride"
+  description="Who builds Secure Pride and how to hold the work accountable."
+  eyebrow="A person you can hold accountable"
+  heading="I’m Mazze. I founded Secure Pride."
+>
+  <Fragment slot="title">I’m Mazze.<br />I founded Secure Pride.</Fragment>
+
+  <section class="section" aria-labelledby="work-title">
+    <h2 class="section-title" id="work-title">Inspectable work.</h2>
+    <div class="k-prose">
+      <p>
+        I work across security research, engineering, and design. I’m
+        building Secure Pride for the people keeping LGBTQ+ organizations
+        running, and the people who rely on them.
+      </p>
+      <p>
+        I want the work to be inspectable: what a tool does, where it sends
+        information, what it misses, and who is responsible for it. You
+        should not have to trust a protection badge to understand those
+        things.
+      </p>
+      <div class="actions">
+        <a class="k-link" href="https://mazzeleczzare.com/about">Meet the founder →</a>
+        <a class="k-link" href="https://mazzeleczzare.com/work">My work →</a>
+        <a class="k-link" href="https://mazzeleczzare.com/blog/the-lock-icon-is-not-security/">The lock icon is not security →</a>
+        <a class="k-link" href="https://github.com/Secure-Pride/secure-pride">Secure Pride source →</a>
+      </div>
+    </div>
+  </section>
+</PageShell>

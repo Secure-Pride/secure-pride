@@ -1,0 +1,98 @@
+---
+/** The stakes — who pays when a control fails. Copy from #67. */
+import PageShell from '../layouts/PageShell.astro';
+import { routeFor } from '../lib/site/nav';
+
+const route = routeFor('/stakes/');
+
+const risks = [
+  {
+    exposure: 'A client note pasted into an AI tool',
+    mechanism:
+      'Names, contact details, or contextual clues can identify someone outside your organization.',
+    cost: 'The person described may face unwanted disclosure, harassment, or loss of trust in a service they need.',
+    boundary:
+      'A text scan can flag some patterns. It cannot find every identifying detail or approve sharing.',
+  },
+  {
+    exposure: 'A shared account after a volunteer leaves',
+    mechanism: 'A working login can expose messages, records, and internal plans.',
+    cost: 'Clients and staff bear the exposure; the program leader inherits recovery work and interrupted services.',
+    boundary:
+      'Our scanner does not secure accounts. Access review, multi-factor authentication, and recovery planning remain separate work.',
+  },
+  {
+    exposure: 'An instruction hidden in a document',
+    mechanism:
+      'An AI tool may follow text from an untrusted source instead of the task you gave it.',
+    cost: 'A misleading draft or disclosed information can harm the person relying on your program.',
+    boundary:
+      'Pattern checks catch some known forms. Review the source and output; a clean scan is not proof of safety.',
+  },
+];
+---
+
+<PageShell
+  route={route}
+  documentTitle="The stakes — Secure Pride"
+  description="Scenarios to plan around: what is exposed, who bears the cost, and what a text scan can and cannot change."
+  eyebrow="Threats, consequences, responsibility"
+  heading="Who pays when a control fails?"
+  lede="These are scenarios to plan around, not claims about incidents at your organization. The person bearing the cost may never have chosen the tool."
+>
+  <section class="section section--wide" aria-labelledby="matrix-caption">
+    <!-- A comparison matrix is tabular data: a real table, with roles kept
+         explicit so phones can restack rows without losing semantics. -->
+    <table class="matrix" role="table">
+      <caption id="matrix-caption" class="visually-hidden">
+        Three scenarios: what happens, who bears the cost, and what a text scan can change
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row">
+          <th role="columnheader" scope="col">Scenario</th>
+          <th role="columnheader" scope="col">What happens</th>
+          <th role="columnheader" scope="col">Who bears the cost</th>
+          <th role="columnheader" scope="col">What this tool can change</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup">
+        {risks.map((risk) => (
+          <tr role="row">
+            <th role="rowheader" scope="row">{risk.exposure}</th>
+            <td role="cell" data-label="What happens">{risk.mechanism}</td>
+            <td role="cell" data-label="Who bears the cost">{risk.cost}</td>
+            <td role="cell" data-label="What this tool can change">{risk.boundary}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section" aria-labelledby="conditions-title">
+    <h2 class="section-title" id="conditions-title">One more task is not a security strategy.</h2>
+    <div class="k-prose">
+      <p>
+        A program leader may also be the fundraiser, scheduler, case
+        coordinator, and person fixing the printer. That work may be
+        underpaid, unpaid, or interrupted by something more urgent.
+      </p>
+      <p>
+        A control that only works with a dedicated security team is a poor
+        fit. Our tools should make a specific decision easier, show their
+        limits, and leave you with something usable.
+      </p>
+      <p>
+        The goal is to reduce avoidable exposure without making you
+        responsible for solving the hostility your community lives with.
+      </p>
+      <p>
+        A technical control cannot resolve political hostility, coercion, or
+        chronic underfunding. It can reduce a particular exposure and make the
+        next decision clearer.
+      </p>
+      <div class="actions">
+        <a class="k-link" href="/threat-model/">Twelve more scenarios, each traced to a test, in the threat model →</a>
+      </div>
+    </div>
+  </section>
+</PageShell>

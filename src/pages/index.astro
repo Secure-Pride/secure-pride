@@ -1,33 +1,38 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Header from "../components/Header.astro";
-import Contact from "../components/Contact.astro";
-import Footer from "../components/Footer.astro";
-import "../styles/community.css";
-const risks = [
+/**
+ * Home: one statement, one interaction, then a ruled sheet of facts (led
+ * by the threat model, DECISION-011) and the doorways. Every fact cell restates something the 2026-10-02 site,
+ * the privacy notice, or the tools page already says; nothing is new claim.
+ * The statement itself is new and needs the founder's sign-off.
+ */
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import KintsugiVessel from '../components/site/KintsugiVessel.astro';
+import RunningHead from '../components/site/RunningHead.astro';
+import { HOME, PRIMARY } from '../lib/site/nav';
+import { SCENARIOS } from '../lib/threat-model/corpus';
+import { MODEL_FACTS } from '../lib/threat-model/model';
+import '../styles/site.css';
+
+const facts = [
   {
-    exposure: "A client note pasted into an AI tool",
-    mechanism:
-      "Names, contact details, or contextual clues can identify someone outside your organization.",
-    cost: "The person described may face unwanted disclosure, harassment, or loss of trust in a service they need.",
-    boundary:
-      "A text scan can flag some patterns. It cannot find every identifying detail or approve sharing.",
+    label: 'Where text goes',
+    value: 'Cloudflare-hosted API',
+    note: 'The app does not intentionally store submitted text. Hosting log retention is not yet verified.',
+    link: { href: '/privacy/', text: 'Privacy and processing' },
   },
   {
-    exposure: "A shared account after a volunteer leaves",
-    mechanism:
-      "A working login can expose messages, records, and internal plans.",
-    cost: "Clients and staff bear the exposure; the program leader inherits recovery work and interrupted services.",
-    boundary:
-      "Our scanner does not secure accounts. Access review, multi-factor authentication, and recovery planning remain separate work.",
+    label: 'Inspect it',
+    value: 'Apache 2.0',
+    note: 'The code is open. The Docker image serves the interface, not the scanner API.',
+    link: { href: 'https://github.com/Secure-Pride/secure-pride', text: 'Source on GitHub' },
   },
   {
-    exposure: "An instruction hidden in a document",
-    mechanism:
-      "An AI tool may follow text from an untrusted source instead of the task you gave it.",
-    cost: "A misleading draft or disclosed information can harm the person relying on your program.",
-    boundary:
-      "Pattern checks catch some known forms. Review the source and output; a clean scan is not proof of safety.",
+    label: 'In development',
+    value: 'Rust/WASM scanner',
+    note: 'Built, not deployed to the public scanner route.',
+    link: { href: 'https://github.com/Secure-Pride/secure-pride/tree/main/scanner-rs', text: 'Inspect the next scanner' },
   },
 ];
 ---
@@ -36,207 +41,101 @@ const risks = [
   title="Secure Pride — Security infrastructure for people who cannot fail safely"
   description="Open-source security tools for LGBTQ+ organizations. Start with a bounded text scanner, understand its limits, and see who is building it."
   canonicalUrl="https://securepride.org/"
+  bodyClass="site-body"
 >
-  <Header />
-  <main id="main-content" class="community-home">
-    <section class="community-hero page-wrap" aria-labelledby="mission-title">
-      <p class="eyebrow">Secure Pride · Built around real working conditions</p>
-      <h1 id="mission-title">
-        Security infrastructure for people who cannot <span>fail safely.</span>
-      </h1>
-      <p class="hero-lede">
-        You’re keeping a program running, answering messages, and making limited
-        resources stretch. Security has to work inside those conditions.
-      </p>
-      <div class="action-row">
-        <a class="sp-button" href="#tools">
-          See the available tool
-        </a>
-        <a class="sp-link" href="#stakes">
-          Understand the stakes →
-        </a>
+  <div class="site" data-gem={HOME.gem}>
+    <Header />
+    <main id="main-content" class="surface-charcoal home">
+      <div class="wrap">
+        <RunningHead route={HOME} />
       </div>
-      <p class="small-note">
-        No account or payment needed for the text scanner. Hosted processing on
-        Cloudflare.
-      </p>
-      <p class="hero-context">
-        We build open-source tools for LGBTQ+ organizations where a privacy
-        failure can become someone else’s personal risk. Start with what is
-        available today, understand its limits, and decide whether it fits your
-        work.
-      </p>
-      <div class="seam" aria-hidden="true"></div>
-    </section>
+      <div class="wrap home__grid">
+        <p class="page-index" aria-hidden="true">
+          <span>{HOME.index}</span><span>The statement</span>
+        </p>
 
-    <section class="page-wrap section-space" aria-labelledby="conditions-title">
-      <p class="eyebrow">The person doing the work</p>
-      <div class="two-column">
-        <h2 id="conditions-title">One more task is not a security strategy.</h2>
-        <div class="prose-stack">
-          <p>
-            A program leader may also be the fundraiser, scheduler, case
-            coordinator, and person fixing the printer. That work may be
-            underpaid, unpaid, or interrupted by something more urgent.
-          </p>
-          <p>
-            A control that only works with a dedicated security team is a poor
-            fit. Our tools should make a specific decision easier, show their
-            limits, and leave you with something usable.
-          </p>
-          <p>
-            The goal is to reduce avoidable exposure without making you
-            responsible for solving the hostility your community lives with.
-          </p>
-        </div>
-      </div>
-    </section>
+        <div>
+          <KintsugiVessel headingId="statement">
+            Most security is built for people who can afford to fail.
+          </KintsugiVessel>
 
-    <section
-      id="tools"
-      class="page-wrap section-space"
-      aria-labelledby="tools-title"
-    >
-      <p class="eyebrow">Available today</p>
-      <h2 id="tools-title">A bounded check before you share.</h2>
-      <article class="tool-card">
-        <div>
-          <span class="availability">Available · Manual text check</span>
-          <h3>AI Safety Scanner</h3>
-          <p>
-            Checks text for known prompt-injection, credential, and
-            personal-data patterns. It returns findings and, when masking
-            applies, a redacted draft for you to review.
-          </p>
-          <a class="sp-button" href="/tools/scanner">
-            Try with example text
-          </a>
-        </div>
-        <div class="tool-boundary">
-          <h4>Before you use it</h4>
-          <ul>
-            <li>Text is sent to our Cloudflare-hosted scanner.</li>
-            <li>
-              Do not submit real client records, passwords, health information,
-              or identity details.
-            </li>
-            <li>
-              No match means no matching pattern was found. It does not mean the
-              text is safe.
-            </li>
-            <li>
-              This checks one submission. It does not monitor your organization
-              or connect to your AI provider.
-            </li>
-          </ul>
-          <a class="sp-link" href="/privacy">
-            Read how processing and logs work →
-          </a>
-        </div>
-      </article>
-      <div class="two-column development-note">
-        <div>
-          <h3>Inspect it. Run it. Know the boundary.</h3>
-          <p>
-            The code is Apache 2.0 licensed. The Docker image serves the static
-            interface; it does not include the scanner API. Full-stack local
-            development uses Wrangler.
-          </p>
-          <a
-            class="sp-link"
-            href="https://github.com/mazze93/secure-pride#run-locally"
-          >
-            Source and local setup →
-          </a>
-        </div>
-        <div>
-          <h3>In development</h3>
-          <p>
-            The Rust/WASM scanner is built but not deployed to the public
-            scanner route. Community playbooks and deployment templates remain
-            roadmap work.
-          </p>
-          <a
-            class="sp-link"
-            href="https://github.com/mazze93/secure-pride/tree/main/scanner-rs"
-          >
-            Inspect the next scanner →
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section
-      id="stakes"
-      class="page-wrap section-space"
-      aria-labelledby="stakes-title"
-    >
-      <p class="eyebrow">Threats, consequences, responsibility</p>
-      <h2 id="stakes-title">Who pays when a control fails?</h2>
-      <p class="section-intro">
-        These are scenarios to plan around, not claims about incidents at your
-        organization. The person bearing the cost may never have chosen the
-        tool.
-      </p>
-      <div class="risk-grid">
-        {risks.map((risk) => (
-          <article class="risk-card">
-            <h3>{risk.exposure}</h3>
-            <p>{risk.mechanism}</p>
-            <h4>Who bears the cost</h4>
-            <p>{risk.cost}</p>
-            <h4>What this tool can change</h4>
-            <p>{risk.boundary}</p>
-          </article>
-        ))}
-      </div>
-      <p class="section-intro">
-        A technical control cannot resolve political hostility, coercion, or
-        chronic underfunding. It can reduce a particular exposure and make the
-        next decision clearer.
-      </p>
-    </section>
-
-    <section
-      id="about"
-      class="page-wrap section-space founder-section"
-      aria-labelledby="founder-title"
-    >
-      <p class="eyebrow">A person you can hold accountable</p>
-      <div class="two-column">
-        <div>
-          <h2 id="founder-title">
-            I’m Mazze.
-            <br />I founded Secure Pride.
-          </h2>
-          <a class="sp-link" href="https://mazzeleczzare.com/about">
-            Meet the founder →
-          </a>
-        </div>
-        <div class="prose-stack">
-          <p>
-            I work across security research, engineering, and design. I’m
-            building Secure Pride for the people keeping LGBTQ+ organizations
-            running, and the people who rely on them.
-          </p>
-          <p>
-            I want the work to be inspectable: what a tool does, where it sends
-            information, what it misses, and who is responsible for it. You
-            should not have to trust a protection badge to understand those
-            things.
-          </p>
-          <div class="action-row">
-            <a class="sp-link" href="https://mazzeleczzare.com/work">
-              My work →
-            </a>
-            <a class="sp-link" href="https://github.com/mazze93/secure-pride">
-              Secure Pride source →
-            </a>
+          <div class="ledger ledger--home" role="group" aria-label="What is available and where its limits are">
+            <div class="cell cell--feature" data-gem="amber">
+              <h2 class="cell__label">At the centre · Threat model v{MODEL_FACTS.version}</h2>
+              <span class="cell__value">Who gets exposed, and what the fix might break.</span>
+              <p class="cell__note">
+                {SCENARIOS.length} invented scenarios of disclosure, coercion, and lost
+                access to care. Each names who bears the harm, the control we
+                propose, what that control could break, and the test that would
+                show it works. A working draft: not yet reviewed by the people it
+                is for.
+              </p>
+              <div class="actions">
+                <a class="k-button k-button--opal" href="/threat-model/">Read the threat model</a>
+                <a class="k-link" href="/threat-model/scenarios/sp-01/">Start with SP-01: a reminder that discloses care →</a>
+              </div>
+            </div>
+            <div class="cell cell--lede">
+              <p class="home__lede">
+                Secure Pride builds open-source tools for LGBTQ+ organizations,
+                where a privacy failure can become someone else’s personal
+                risk. Start with what is available today, understand its
+                limits, and decide whether it fits your work.
+              </p>
+              <div class="actions">
+                <a class="k-link" href="/stakes/">Who pays when a control fails →</a>
+              </div>
+            </div>
+            <div class="cell cell--now" data-gem="sapphire">
+              <h2 class="cell__label">Available now</h2>
+              <span class="cell__value">AI Safety Scanner</span>
+              <p class="cell__note">Manual text check. No account or payment needed.</p>
+              <div class="actions">
+                <a class="k-button k-button--opal" href="/tools/">See the available tool</a>
+              </div>
+            </div>
+            {facts.map((fact) => (
+              <div class="cell cell--fact">
+                <h2 class="cell__label">{fact.label}</h2>
+                <span class="cell__value">{fact.value}</span>
+                <p class="cell__note">{fact.note}</p>
+                <a class="k-link cell__link" href={fact.link.href}>{fact.link.text} →</a>
+              </div>
+            ))}
           </div>
+
+          <nav aria-label="Sections">
+            <ul class="doorways" role="list">
+              {PRIMARY.map((route) => (
+                <li data-gem={route.gem}>
+                  <a class="doorway" href={route.href}>
+                    <span class="doorway__index" aria-hidden="true">
+                      <span class="shard"></span>{route.index}
+                    </span>
+                    <span class="doorway__title">
+                      <span class="doorway__label">{route.label}</span>
+                      <span class="doorway__slash" aria-hidden="true"> / </span>
+                      <span class="doorway__blurb">{route.blurb}</span>
+                    </span>
+                    <svg class="doorway__arrow" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+                      <path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+                    </svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
-    </section>
-    <Contact />
-  </main>
-  <Footer />
+    </main>
+    <Footer />
+  </div>
 </Layout>
+
+<script>
+  // The old single-page site linked to in-page anchors. Fragments never
+  // reach the server, so _redirects cannot forward them; do it here.
+  import { LEGACY_ANCHORS } from '../lib/site/nav';
+  const target = LEGACY_ANCHORS[window.location.hash];
+  if (target) window.location.replace(target);
+</script>

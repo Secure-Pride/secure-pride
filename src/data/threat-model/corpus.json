@@ -1,0 +1,380 @@
+{
+  "schema_version": "0.2",
+  "corpus_version": "0.2",
+  "title": "SecurePride disclosure, coercion and continuity of care",
+  "status": "draft-not-community-validated",
+  "updated": "2026-10-22",
+  "canonical_url": "https://securepride.org/threat-model/corpus.json",
+  "source_repository": "https://github.com/Secure-Pride/secure-pride/blob/main/src/data/threat-model/corpus.json",
+  "license": "Apache-2.0, as the rest of the repository. Cited sources are linked, not republished, and keep their own licences.",
+  "evidence_note": "Sources support context or mechanisms, not these invented events. No deployed controls or behavioral test results are asserted.",
+  "sources": {
+    "LINDDUN": "https://linddun.org/threat-types/",
+    "WHO": "https://www.who.int/publications/i/item/9789240064355",
+    "UNAIDS": "https://jointsiwg.unaids.org/wp-content/uploads/2025/03/Monitoring-HIV-Programs_English.pdf",
+    "SIAB": "https://securityinabox.org/media/en/blog/cf-lgbti-africa.pdf",
+    "APPLE-L": "https://support.apple.com/en-ie/105120",
+    "APPLE-S": "https://support.apple.com/guide/deployment/restrictions-for-supervised-devices-dep6b5ae23e9/web",
+    "SP-HOME": "https://securepride.org/",
+    "SP-PRIVACY": "https://securepride.org/privacy/"
+  },
+  "scenarios": [
+    {
+      "id": "SP-01",
+      "title": "Reminder discloses a care association",
+      "workflow": "Client reminder",
+      "adversary_capability": "Household observer who can see a notification",
+      "exposure": "Sender identity and appointment association",
+      "affected_parties": "Client and anyone inferred to be their partner",
+      "harm": "Outing, coercion or withdrawal from care",
+      "proposed_control": "Client-approved channel, timing and wording, including sender display",
+      "prerequisites": "A safely agreed contact preference and a fallback reachable by the client",
+      "control_induced_harm": "Neutral wording may be confusing; disabling all reminders may cause missed contact",
+      "care_fallback_and_recovery": "Use the agreed alternative contact route; revert wording only with recipient approval",
+      "synthetic_fixture": "Synthetic reminder with neutral body but a revealing clinic sender label",
+      "probe_steps": [
+        "Display on a locked shared test device",
+        "Inspect sender, preview and linked device display",
+        "Repeat using the intended fallback"
+      ],
+      "expected_result": "Review catches sender disclosure and fallback works without requiring the unsafe channel",
+      "residual_risk": "Message-provider records and physical observation remain",
+      "source_ids": [
+        "WHO",
+        "UNAIDS"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-02",
+      "title": "Context survives pattern redaction",
+      "workflow": "Sharing a case narrative",
+      "adversary_capability": "Reader who can correlate a public event listing",
+      "exposure": "Unique combination of event, role and place",
+      "affected_parties": "Person described, even if identification is mistaken",
+      "harm": "Involuntary attribution of sensitive care information",
+      "proposed_control": "No safety authorization from scanner output; minimize context and use synthetic examples",
+      "prerequisites": "Known sharing purpose and a reviewer able to assess contextual linkage",
+      "control_induced_harm": "Over-redaction can remove information needed for legitimate care",
+      "care_fallback_and_recovery": "Withhold public narrative and use a separately reviewed minimum clinical communication",
+      "synthetic_fixture": "Invented person is the only speaker in an invented event roster; narrative omits their name",
+      "probe_steps": [
+        "Compare narrative with synthetic roster",
+        "Remove a direct identifier and repeat",
+        "Inspect the proposed no-match result wording"
+      ],
+      "expected_result": "No-match never authorizes sharing; remaining linkage is explicitly identified",
+      "residual_risk": "Reviewer knowledge is incomplete; no general anonymity guarantee",
+      "source_ids": [
+        "LINDDUN",
+        "SP-HOME"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "design-walkthrough",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-03",
+      "title": "Assessment leaves a shared-device trace",
+      "workflow": "Private planning interface",
+      "adversary_capability": "Later user of the same browser profile",
+      "exposure": "Assessment answers and topic association",
+      "affected_parties": "Visitor and people described in answers",
+      "harm": "Disclosure through local state",
+      "proposed_control": "Static guidance first; no automatic answer persistence, transmission or export",
+      "prerequisites": "Explicit inventory of browser state and hosting data flows",
+      "control_induced_harm": "No autosave can lose work; downloads can expose it through sync",
+      "care_fallback_and_recovery": "Use non-personal static guidance; user controls whether to create an export",
+      "synthetic_fixture": "Synthetic answers entered into a shared test-browser session",
+      "probe_steps": [
+        "Inspect network and storage during success and error paths",
+        "Reload, reopen and test back/forward and session restore",
+        "Inspect URL and exported-file behavior"
+      ],
+      "expected_result": "Documented no-answer-transmission/persistence contract holds for tested paths; no no-traces claim",
+      "residual_risk": "OS screenshots, monitoring, browser history and compromised endpoints",
+      "source_ids": [
+        "LINDDUN",
+        "SP-PRIVACY"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "design-walkthrough",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-04",
+      "title": "Device restriction interrupts care",
+      "workflow": "Applying a device baseline",
+      "adversary_capability": "Policy operator making an unsafe recommendation; coercive household context",
+      "exposure": "Care account and recovery access",
+      "affected_parties": "Person relying on the device for services",
+      "harm": "Loss of service access or increased dependency",
+      "proposed_control": "Ownership-specific advice; prerequisites, recovery and essential-task testing",
+      "prerequisites": "Verified backup/recovery and independently usable care fallback before disruptive changes",
+      "control_induced_harm": "Supervision can erase a configured phone; restrictions may block essential functions",
+      "care_fallback_and_recovery": "Defer the change if fallback is unsafe; use the reviewed device recovery procedure",
+      "synthetic_fixture": "Test phone with synthetic portal and a second channel controlled by the same fictional household member",
+      "probe_steps": [
+        "Trace setup and recovery prerequisites",
+        "Test portal and authentication under the proposed policy",
+        "Check who controls every fallback factor"
+      ],
+      "expected_result": "Unsafe dependency blocks the recommendation; essential care remains reachable",
+      "residual_risk": "Later platform or service changes need retesting",
+      "source_ids": [
+        "APPLE-S",
+        "WHO"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "design-walkthrough",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-05",
+      "title": "Offboarding misses an active session",
+      "workflow": "Volunteer departure",
+      "adversary_capability": "Former worker with a valid session or export",
+      "exposure": "Client records and correspondence",
+      "affected_parties": "Clients, staff and contacts",
+      "harm": "Unauthorized disclosure and targeting",
+      "proposed_control": "Individual accounts, session revocation, access and export review",
+      "prerequisites": "Inventory of applications, shared credentials and recovery privileges",
+      "control_induced_harm": "Revocation without handover can strand active client work",
+      "care_fallback_and_recovery": "Transfer necessary work to an authorized person without restoring departed access",
+      "synthetic_fixture": "Synthetic volunteer account with two sessions and an exported dummy file",
+      "probe_steps": [
+        "Disable account",
+        "Attempt access using both sessions",
+        "Check ownership handover and document retained export limits"
+      ],
+      "expected_result": "Live access is denied and work continues; no claim that prior copies are erased",
+      "residual_risk": "Previously copied data may remain outside service control",
+      "source_ids": [
+        "SIAB",
+        "SP-HOME"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-06",
+      "title": "Endpoint compromise defeats message confidentiality",
+      "workflow": "Sensitive messaging",
+      "adversary_capability": "Targeted actor with endpoint execution capability",
+      "exposure": "Plaintext at an authorized endpoint",
+      "affected_parties": "Device user and their support network",
+      "harm": "Surveillance and network exposure",
+      "proposed_control": "Updates, appropriate Lockdown Mode, data minimization and qualified incident escalation",
+      "prerequisites": "Supported device and reviewed essential workflows; evidence-preservation plan if an incident is suspected",
+      "control_induced_harm": "Feature limits may disrupt contact; a reset can destroy useful evidence",
+      "care_fallback_and_recovery": "Use a separately assessed communication route and specialist recovery guidance",
+      "synthetic_fixture": "Paper scenario in which an attacker can read content after decryption on one endpoint",
+      "probe_steps": [
+        "Trace where content exists as plaintext",
+        "Compare this with encryption and Lockdown claims",
+        "Walk through escalation without submitting real records"
+      ],
+      "expected_result": "Guidance does not claim encryption or a negative scan proves endpoint safety",
+      "residual_risk": "Unknown exploits and incomplete forensic visibility",
+      "source_ids": [
+        "APPLE-L"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-07",
+      "title": "Recovery returns control to an abuser",
+      "workflow": "Account recovery",
+      "adversary_capability": "Household member controlling a recovery number or email",
+      "exposure": "Recovery factors and account access",
+      "affected_parties": "Account holder and their contacts",
+      "harm": "Coercion and loss of independent care contact",
+      "proposed_control": "Recipient-selected recovery and dependency review",
+      "prerequisites": "Safe ability to change factors; independently controlled recovery path",
+      "control_induced_harm": "Changes may notify the other party or lock the person out",
+      "care_fallback_and_recovery": "Defer visible changes where unsafe; agree on a safely reachable support route",
+      "synthetic_fixture": "Synthetic account whose primary and backup recovery routes share one controller",
+      "probe_steps": [
+        "Map controllers of all factors",
+        "Trace notifications caused by changes",
+        "Attempt a loss-of-device walkthrough"
+      ],
+      "expected_result": "Shared control is identified; a nominal second factor is not counted as independent",
+      "residual_risk": "Physical coercion and total factor loss",
+      "source_ids": [
+        "SIAB"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-08",
+      "title": "Aggregate reporting identifies a small group",
+      "workflow": "Program reporting",
+      "adversary_capability": "Reader with auxiliary local knowledge",
+      "exposure": "Rare combinations and group membership",
+      "affected_parties": "People counted, including falsely attributed individuals",
+      "harm": "Disclosure or hostile inference",
+      "proposed_control": "Necessity and linkage review; carefully governed aggregation and release",
+      "prerequisites": "Understanding of recipient and available auxiliary data",
+      "control_induced_harm": "Suppressing data can obscure service inequities",
+      "care_fallback_and_recovery": "Use a broader reviewed report or controlled access preserving necessary service insight",
+      "synthetic_fixture": "Synthetic two-row cohort table joined with a public fictional event list",
+      "probe_steps": [
+        "Attempt linkage using the synthetic external list",
+        "Review repeated releases for differencing",
+        "Check whether the revised report still serves its purpose"
+      ],
+      "expected_result": "Reviewer identifies re-identification and repeat-release risk before publication",
+      "residual_risk": "Unknown auxiliary data; no universal small-cell threshold guarantees anonymity",
+      "source_ids": [
+        "LINDDUN",
+        "WHO"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-09",
+      "title": "Impersonated service extracts information",
+      "workflow": "Support or referral request",
+      "adversary_capability": "Attacker impersonating a familiar care worker",
+      "exposure": "Credentials, codes or private case information",
+      "affected_parties": "Client and service contacts",
+      "harm": "Account compromise or disclosure",
+      "proposed_control": "Verify through an independently established channel before sensitive action",
+      "prerequisites": "Accessible verification route agreed before the suspicious request",
+      "control_induced_harm": "Overly difficult verification may delay legitimate support",
+      "care_fallback_and_recovery": "Offer a known service contact and safe non-sensitive interim assistance",
+      "synthetic_fixture": "Invented urgent message from a lookalike service contact requesting a verification code",
+      "probe_steps": [
+        "Trace the requested action",
+        "Verify using a previously established contact",
+        "Check accessibility when the usual channel is unavailable"
+      ],
+      "expected_result": "No code or private record is disclosed; legitimate assistance remains reachable",
+      "residual_risk": "The established channel can itself be compromised",
+      "source_ids": [
+        "SIAB"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-10",
+      "title": "Administration becomes a surveillance dependency",
+      "workflow": "Managed-device program",
+      "adversary_capability": "Compromised or abusive management administrator",
+      "exposure": "Management authority and device associations",
+      "affected_parties": "Device users and service network",
+      "harm": "Expanded access, disruption or coerced control",
+      "proposed_control": "Minimal authority, separated administration and reviewed management visibility",
+      "prerequisites": "Actual platform/enrollment capability inventory and accountable operators",
+      "control_induced_harm": "Management can increase institutional power over a personal device",
+      "care_fallback_and_recovery": "Provide an agreed exit/recovery route; do not require enrollment for care",
+      "synthetic_fixture": "Proposed management roles and enrollment design for fictional staff and client devices",
+      "probe_steps": [
+        "List actual commands and data visible to each role",
+        "Trace administrator compromise",
+        "Walk through user exit and service continuity"
+      ],
+      "expected_result": "Claims match real privileges; client device ownership is preserved",
+      "residual_risk": "Privileged compromise and external institutional pressure",
+      "source_ids": [
+        "APPLE-S",
+        "APPLE-L"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-11",
+      "title": "Public contribution leaks an incident",
+      "workflow": "Bug report or AI-assisted troubleshooting",
+      "adversary_capability": "Public reader or external processing recipient",
+      "exposure": "Incident logs, screenshots or linked identities",
+      "affected_parties": "Client or worker whose data was copied",
+      "harm": "Permanent disclosure and targeting",
+      "proposed_control": "Synthetic public reproductions and separately governed private intake",
+      "prerequisites": "Clear reporting routes, access and retention rules before solicitation",
+      "control_induced_harm": "Poor reproduction can impede fixing a real defect",
+      "care_fallback_and_recovery": "Request minimal non-sensitive technical facts through the appropriate process",
+      "synthetic_fixture": "Synthetic bug-report attachment with contextual identifiers but no name",
+      "probe_steps": [
+        "Review attachment and metadata",
+        "Attempt contextual linkage",
+        "Trace where public and private submissions would be retained"
+      ],
+      "expected_result": "Sensitive context stays out of public issue and hosted scanner; useful synthetic repro retained",
+      "residual_risk": "Human oversharing and copies outside project control",
+      "source_ids": [
+        "SP-HOME",
+        "LINDDUN"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    },
+    {
+      "id": "SP-12",
+      "title": "One export exposes a network",
+      "workflow": "Referral and record export",
+      "adversary_capability": "Insider or attacker controlling an authorized export-capable account",
+      "exposure": "Contact graph and linked services",
+      "affected_parties": "Clients, partners, peer workers and recipients",
+      "harm": "Collective exposure and disruption",
+      "proposed_control": "Minimum necessary exports, scoped roles and recipient review",
+      "prerequisites": "Known purpose, destination and dependency map",
+      "control_induced_harm": "Restrictions can delay essential coordination",
+      "care_fallback_and_recovery": "Use a tested minimal referral route with accountable emergency exception handling",
+      "synthetic_fixture": "Fictional referral graph across two services and a broad export role",
+      "probe_steps": [
+        "Trace compromise of the export role",
+        "Measure which synthetic relationships become visible",
+        "Test minimal legitimate referral and revocation"
+      ],
+      "expected_result": "Unnecessary graph disclosure is prevented while required referral works",
+      "residual_risk": "Recipient compromise and misuse of legitimately shared information",
+      "source_ids": [
+        "UNAIDS",
+        "WHO"
+      ],
+      "evidence_class": "synthetic-design-scenario",
+      "control_status": "proposed",
+      "validation_status": "not-tested",
+      "jurisdiction": "not-localized",
+      "review_date": "2026-10-21"
+    }
+  ]
+}

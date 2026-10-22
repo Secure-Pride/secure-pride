@@ -63,6 +63,15 @@ export function parseScanResponse(value: unknown): ScanResponse {
   return value as unknown as ScanResponse;
 }
 
+/**
+ * What a no-match result means. Threat-model scenarios SP-02 (context
+ * survives pattern redaction) and SP-11 (a public report leaks an incident)
+ * require that it never reads as clearance to share.
+ */
+export const NO_MATCH_GUIDANCE =
+  "This check found none of its known patterns. It may miss sensitive context, identities, or unfamiliar attacks. A story with no names can still identify someone through an event, a role, or a place. Review the text and your provider's data handling before sharing.";
+export const NO_MATCH_SCENARIOS = ["SP-02", "SP-11"] as const;
+
 export function scanSummary(result: ScanResponse): string {
   if (result.blocked) return "Do not share this submission";
   if (

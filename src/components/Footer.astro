@@ -1,25 +1,43 @@
 ---
-import "../styles/community.css";
+/**
+ * Site footer: the medium-tier mark as a sign-off, the founding line kept
+ * from the 2026-10-02 site, and the secondary routes.
+ */
+import BrandMark from './site/BrandMark.astro';
+import { PRIMARY, SECONDARY, EXTERNAL, TOOL_LINKS } from '../lib/site/nav';
+import '../styles/site.css';
 ---
 
-<footer class="community-footer" aria-label="Site footer">
-  <div class="page-wrap">
-    <p>
-      Secure Pride · Security infrastructure for people who cannot fail safely.
-    </p>
-    <nav class="footer-links" aria-label="Footer navigation">
-      <a href="/tools/scanner">Text scanner</a>
-      <a href="/tools/wifi-enterprise">Wi-Fi Enterprise guide</a>
-      <a href="/privacy">Privacy and processing</a>
-      <a href="/security">Report a vulnerability</a>
-      <a href="https://github.com/mazze93/secure-pride/blob/main/CONTRIBUTING.md">
-        Contribute
-      </a>
-      <a href="https://github.com/mazze93/secure-pride">
-        Source and documentation
-      </a>
-      <a href="https://design.securepride.org">Design system</a>
+<footer class="site-footer" aria-label="Site footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__sign">
+      <BrandMark variant="medium" size={128} idPrefix="ftr" class="site-footer__mark" />
+      <p class="site-footer__line">
+        Security infrastructure for people who cannot fail safely.
+      </p>
+    </div>
+    <nav class="site-footer__nav" aria-label="Footer navigation">
+      <ul role="list">
+        {PRIMARY.map((route) => (
+          <li data-gem={route.gem}><a href={route.href}>{route.label}</a></li>
+        ))}
+      </ul>
+      <ul role="list">
+        {SECONDARY.map((route) => (
+          <li data-gem={route.gem}><a href={route.href}>{route.label}</a></li>
+        ))}
+        {TOOL_LINKS.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+      <ul role="list">
+        {EXTERNAL.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
     </nav>
-    <p>© 2026 Secure Pride. Code licensed under Apache 2.0.</p>
+    <p class="site-footer__legal">
+      © 2026 Secure Pride. Code licensed under Apache 2.0.
+    </p>
   </div>
 </footer>

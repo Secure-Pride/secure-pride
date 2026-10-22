@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react";
    "Where we draw the line online."
 
    Token values here MIRROR colors_and_type.css in secure-pride-design
-   (mazze93/secure-pride-design), which is the source of truth for the
+   (Secure-Pride/secure-pride-design), which is the source of truth for the
    design language. If the two disagree, that repo is correct and this
    file is a bug — see its docs/journal/ for migration history.
    ═══════════════════════════════════════════════════════════════ */
