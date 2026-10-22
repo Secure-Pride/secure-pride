@@ -19,7 +19,7 @@ The heraldic shield with the heart-lock is the Secure Pride mark. The rounded id
 ## Implementation
 
 - `src/components/site/BrandMark.astro` now draws the heraldic vector, copied verbatim from `favicon-simplified.svg` with only its square base field removed so it sits on charcoal (same treatment the rounded mark had). Props are unchanged, so the header, footer, tool bar and security plate callers did not move.
-- One vector serves both `small` (32 px header) and `medium` (96 px footer); checked by rendering both on the built site at 1x and 3x.
+- One vector serves both `small` (36 px header) and `medium` (128 px footer, clamped to 88–128 px by CSS); checked by rendering both on the built site at 1x and 3x.
 - The obsidian shield artwork on `/security/` stays **artwork**, not the mark.
 
 ## Follow-ups

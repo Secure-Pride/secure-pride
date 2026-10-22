@@ -30,3 +30,4 @@ Significant decisions are recorded in [decisions/](decisions/).
 - [DECISION-007](decisions/DECISION-007.md): Publish a guided, path-routed 802.1X (WPA2/3-Enterprise) field guide
 - [DECISION-008](decisions/DECISION-008.md): Kintsugi porcelain — reconcile the honest site with a real kintsugi design
 - [DECISION-009](decisions/DECISION-009.md): Adopt the founder's security policy for Secure Pride, with graded controls
+- [DECISION-010](decisions/DECISION-010.md): The heraldic heart-lock shield is the canonical mark

@@ -11,6 +11,7 @@ import {
   DISCLOSURE_TIMELINE,
   NOT_TO_REPORT,
   POLICY_FACTS,
+  PROJECT_STANDARDS,
   REPORT_CONTENTS,
   SAFE_HARBOR_CONDITIONS,
   SEVERITY_MATRIX,
@@ -31,6 +32,7 @@ describe('SECURITY.md matches the published policy', () => {
 
   it('carries no superseded commitment', () => {
     expect(markdown).not.toMatch(/48 hours|5 business days/);
+    expect(markdown).not.toMatch(/key available on request/);
   });
 
   it('carries every table row and list item', () => {
@@ -38,6 +40,6 @@ describe('SECURITY.md matches the published policy', () => {
     for (const row of SEVERITY_MATRIX) expect(markdown).toContain(`| ${row.severity} | ${row.impact} | ${row.response} |`);
     for (const row of SUPPORTED_VERSIONS) expect(markdown).toContain(`| ${row.version} | ${row.supported} |`);
     for (const item of [...REPORT_CONTENTS, ...COMMITMENTS]) expect(markdown).toContain(`**${item.term}** — ${item.detail}`);
-    for (const line of [...NOT_TO_REPORT, ...SAFE_HARBOR_CONDITIONS]) expect(markdown).toContain(`- ${line}`);
+    for (const line of [...NOT_TO_REPORT, ...SAFE_HARBOR_CONDITIONS, ...PROJECT_STANDARDS]) expect(markdown).toContain(`- ${line}`);
   });
 });

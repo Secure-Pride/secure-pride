@@ -120,8 +120,8 @@ The obsidian shield is heraldic with a carved heart. It is artwork, not the mark
 
 Per `identity-kit/06_guidelines`:
 
-- Header (32 px, charcoal): `small_64` brass, base field removed so it sits on charcoal.
-- Footer (96 px, charcoal): `medium_256` brass, base field removed.
+- Header (36 px, charcoal): the heraldic mark (DECISION-010), base field removed so it sits on charcoal.
+- Footer (128 px, clamped to 88–128 px, charcoal): the same vector, base field removed.
 - On porcelain: `mono_light` only.
 - Favicons: the existing user-supplied set in `public/favicons/`, unchanged.
 - Never animate, glow, rotate, or overlay text on the mark. The kintsugi interaction never touches it.

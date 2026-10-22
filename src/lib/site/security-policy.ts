@@ -164,6 +164,13 @@ export const MAINTAINER_PRACTICES: readonly string[] = [
   'Use hardware security keys for 2FA when possible',
 ];
 
+export const PROJECT_STANDARDS: readonly string[] = [
+  'Have zero telemetry or hidden data collection',
+  'Protect sensitive identity data',
+  'Pass security validation checks',
+  'Be reviewed before merge',
+];
+
 export const RESOURCE_LINKS: ReadonlyArray<{ label: string; href: string }> = [
   { label: 'OWASP Secure Coding Practices', href: 'https://owasp.org/projects/secure-coding-practices-quick-reference-guide' },
   { label: 'GitHub Security Best Practices', href: 'https://docs.github.com/en/code-security' },

@@ -39,7 +39,7 @@ const TOKENS = {
 const font = (pkg, file) => pathToFileURL(join(ROOT, 'node_modules', '@fontsource', pkg, 'files', file)).href;
 const artUrl = pathToFileURL(join(ROOT, 'src', 'assets', 'art', 'obsidian-shield.png')).href;
 
-/** The footer mark from the built home page — the identity-kit SVG as shipped. */
+/** The footer mark from the built home page — the heraldic mark (DECISION-010) as shipped. */
 function readMark() {
   const html = readFileSync(join(ROOT, 'dist', 'index.html'), 'utf8');
   const match = html.match(/<svg class="site-footer__mark"[\s\S]*?<\/svg>/);

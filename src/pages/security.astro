@@ -19,6 +19,7 @@ import {
   CONTRIBUTOR_PRACTICES,
   DISCLOSURE_VARIANTS,
   MAINTAINER_PRACTICES,
+  PROJECT_STANDARDS,
   NOT_TO_REPORT,
   NOTIFICATION_STEPS,
   POLICY_FACTS,
@@ -94,8 +95,9 @@ const indexOf = (id: string): string => toc.find((s) => s.id === id)?.index ?? '
           <a href={`mailto:${POLICY_FACTS.email}`}>{POLICY_FACTS.email}</a>.
         </li>
         <li>
-          <strong>PGP encryption:</strong> for sensitive disclosures,
-          PGP-encrypted email is welcome (key available on request).
+          <strong>Sensitive details:</strong> use the private advisory
+          above — only maintainers can read it. No PGP key is published yet,
+          so encrypted email is not offered.
         </li>
       </ul>
       <p>
@@ -300,6 +302,11 @@ const indexOf = (id: string): string => toc.find((s) => s.id === id)?.index ?? '
         <p>Project collaborators should follow these security practices:</p>
         <ul>
           {MAINTAINER_PRACTICES.map((line) => <li>{line}</li>)}
+        </ul>
+        <h3>Project standards</h3>
+        <p>All contributions must also:</p>
+        <ul>
+          {PROJECT_STANDARDS.map((line) => <li>{line}</li>)}
         </ul>
       </div>
       <div class="k-prose">
