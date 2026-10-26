@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ── Stage 1: Build the Astro site ──────────────────────────────────────────
-FROM node:26.12.0-alpine AS builder
+FROM node:26.12.1-alpine AS builder
 WORKDIR /app
 
 # Install deps before copying source so layer is cached on dep changes only
