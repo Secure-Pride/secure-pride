@@ -26,6 +26,10 @@ The public scanner is the Pages route people already call. Shipping means that r
 
 The JSON returned to the browser stays the contract `parseScanResponse` already checks (`blocked`, `action`, findings, optional `masked_text`), plus `engine: "scanner-rs"` and `versions`. A response that fails that check is HTTP 500. The UI already treats a non-OK response as "no result", which is not a clean pass.
 
+The 50,000-character cap is JavaScript string length (UTF-16 code units) in the Pages route and in the engine. A draft under that cap is scanned even when its UTF-8 encoding is longer.
+
+Scanner CI rebuilds `functions/_lib/scanner/pkg` with `scripts/build-wasm.sh` and fails if that package differs from the commit.
+
 Audit logging stays in the Pages Function: hashed actor id, classifications, severity, length. Submitted text is not logged.
 
 `require_review` (incomplete coverage) is not mapped to an empty pass. It stays unblocked only when findings are present for review, and coverage failure adds an explicit policy line.

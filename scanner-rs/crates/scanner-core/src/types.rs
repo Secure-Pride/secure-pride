@@ -94,5 +94,27 @@ pub const RULES_VERSION: &str = "rules-v1";
 /// tell the two apart once a real model replaces this.
 pub const SEMANTIC_MODEL_VERSION: &str = "heuristic-v1";
 
+/// Cap shared with the Pages route and the scanner page.
+/// Both of those use JavaScript `string.length` (UTF-16 code units), not
+/// UTF-8 bytes and not Unicode scalar values.
 pub const MAX_INPUT_LENGTH: usize = 50_000;
+
+/// JavaScript `string.length` for a Rust string.
+pub fn js_string_length(text: &str) -> usize {
+    text.encode_utf16().count()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn javascript_length_is_utf16_code_units() {
+        assert_eq!(js_string_length("a"), 1);
+        assert_eq!(js_string_length("字"), 1);
+        assert_eq!("字".len(), 3);
+        assert_eq!(js_string_length("😀"), 2);
+        assert_eq!("😀".len(), 4);
+    }
+}
 pub const DEFAULT_MAX_DECODE_DEPTH: u8 = 3;
