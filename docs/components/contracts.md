@@ -13,7 +13,7 @@
 ## `PageShell` (active)
 
 **Source:** `src/layouts/PageShell.astro`
-**Usage context:** Shell for every public porcelain page except the scanner tool: header, running head, page head with the route's gem and vertical index, gold seam, content slot, footer.
+**Usage context:** Shell for every public porcelain page, including the scanner: header, running head, page head with the route's gem and vertical index, gold seam, content slot, footer.
 
 ### Props
 
