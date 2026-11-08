@@ -35,8 +35,13 @@ dedicated Workers entrypoint and is not deployed to its own hostname.
 ```bash
 cd scanner-rs
 cargo test --workspace                                          # unit + fixture tests
+bash scripts/build-wasm.sh                                      # refresh functions/_lib/scanner/pkg
 cargo build --target wasm32-unknown-unknown --release -p scanner-worker
 ```
+
+`scripts/build-wasm.sh` writes the module the Pages Function imports. Commit
+`functions/_lib/scanner/pkg` with the source change. The site README holds
+the current page snapshots.
 
 Deploying requires `worker-build` and an authenticated `wrangler` — neither
 was available in the environment this was built in, so staging deploy and
