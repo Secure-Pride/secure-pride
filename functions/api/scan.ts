@@ -63,6 +63,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       { status: 400 }
     );
   }
+  // JavaScript string length (UTF-16 code units). The Rust engine uses the same count.
   if (body.text.length > 50_000) {
     return Response.json(
       { detail: "Input exceeds maximum length of 50,000 characters" },

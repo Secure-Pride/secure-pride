@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Rebuild the WASM module the Pages Function imports.
 # Commit functions/_lib/scanner/pkg after running this.
+# Scanner CI runs this script and fails if the package differs.
+# rust-toolchain.toml pins the compiler that produced the committed wasm.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 BINDGEN_VERSION="0.2.129"

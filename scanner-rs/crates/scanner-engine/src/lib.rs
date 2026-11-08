@@ -6,7 +6,8 @@ use std::collections::HashMap;
 
 use scanner_core::{
     normalize, Coverage, Decision, Finding, ScanResponse, Severity, Versions,
-    DEFAULT_MAX_DECODE_DEPTH, MAX_INPUT_LENGTH, RULES_VERSION, SEMANTIC_MODEL_VERSION,
+    js_string_length, DEFAULT_MAX_DECODE_DEPTH, MAX_INPUT_LENGTH, RULES_VERSION,
+    SEMANTIC_MODEL_VERSION,
 };
 use serde::Serialize;
 use serde_json::json;
@@ -43,7 +44,7 @@ pub struct PublicScan {
 }
 
 pub fn scan_text(text: &str, max_decode_depth: u8) -> ScanResponse {
-    if text.len() > MAX_INPUT_LENGTH {
+    if js_string_length(text) > MAX_INPUT_LENGTH {
         return ScanResponse {
             decision: Decision::Block,
             confidence: 1.0,
@@ -271,6 +272,49 @@ mod tests {
         assert_eq!(scan.pii_matches[0].masked, "u***@example.com");
         assert_eq!(scan.masked_text.as_deref(), Some("u***@example.com"));
         assert!(!json.contains(input));
+    }
+
+    #[test]
+    fn cjk_under_the_character_cap_is_scanned() {
+        // 20_000 CJK characters are inside the advertised cap and past the
+        // old UTF-8 byte guard (3 bytes each).
+        let text = "字".repeat(20_000);
+        assert!(text.len() > MAX_INPUT_LENGTH);
+        assert!(js_string_length(&text) < MAX_INPUT_LENGTH);
+        let scan = scan_public(&text, DEFAULT_MAX_DECODE_DEPTH);
+        assert_eq!(scan.action, "log_only");
+        assert!(
+            !scan
+                .policy_violations
+                .iter()
+                .any(|line| line.contains("coverage incomplete"))
+        );
+    }
+
+    #[test]
+    fn over_the_javascript_cap_still_blocks() {
+        // 25_001 emoji are under 50_000 scalars and over 50_000 UTF-16 units.
+        let text = "😀".repeat(25_001);
+        assert!(text.chars().count() < MAX_INPUT_LENGTH);
+        assert!(js_string_length(&text) > MAX_INPUT_LENGTH);
+        let scan = scan_public(&text, DEFAULT_MAX_DECODE_DEPTH);
+        assert_eq!(scan.action, "block");
+        assert!(
+            scan
+                .policy_violations
+                .iter()
+                .any(|line| line.contains("coverage incomplete"))
+        );
+    }
+
+    #[test]
+    fn emoji_under_the_javascript_cap_is_scanned() {
+        // Each emoji is one scalar, two UTF-16 units, and four UTF-8 bytes.
+        let text = "😀".repeat(20_000);
+        assert!(text.len() > MAX_INPUT_LENGTH);
+        assert_eq!(js_string_length(&text), 40_000);
+        let scan = scan_public(&text, DEFAULT_MAX_DECODE_DEPTH);
+        assert_eq!(scan.action, "log_only");
     }
 
     #[test]
