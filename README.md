@@ -27,11 +27,31 @@ For someone operating under elevated exposure:
 | Surface | What it provides | Runtime / boundary |
 | --- | --- | --- |
 | [Secure Pride web platform](https://securepride.org) | Public project entry point, documentation, and security resources | Astro on Cloudflare Pages |
-| [AI Safety Scanner](https://securepride.org/tools/scanner) | Bounded AI-assisted analysis with validation-oriented workflows | Cloudflare runtime; treat outputs as untrusted until reviewed |
+| [AI Safety Scanner](https://securepride.org/tools/scanner) | A manual check for known personal-data, credential, and prompt-injection patterns. A no-match is not clearance. | Rust engine as WASM on the Cloudflare Pages `/api/scan` route |
 | Static distribution | Self-contained build for containerized local use | Docker serves the static build only |
 | Security development controls | Contribution rules, AI-development guidance, architecture decisions, and release procedures | Version-controlled documentation |
 
 > **Scope boundary:** Cloudflare Pages Functions, including `/api/scan` and `/api/health`, are not bundled into the Docker image. Use `npx wrangler pages dev` for full-stack local development.
+
+## Scanner
+
+The [AI Safety Scanner](https://securepride.org/tools/scanner) checks a draft you are authorized to share. Porcelain is the working surface. Charcoal marks the processing boundary and a result the scanner says to withhold. Fire opal fills the check. `/api/scan` calls the Rust engine compiled to WASM. The check cannot establish that text is safe.
+
+These snapshots use the invented example only.
+
+![Scanner page. Porcelain title, charcoal processing plate, fire-opal check.](docs/images/scanner-page.png)
+
+A review stays on porcelain and includes a redacted draft.
+
+![Review required, with the invented address masked.](docs/images/scanner-review.png)
+
+A withhold result is a charcoal plate. The findings name the pattern. They do not repeat the submitted text.
+
+![Do not share this submission.](docs/images/scanner-withhold.png)
+
+The same page at a narrow width.
+
+![Scanner page at a narrow width.](docs/images/scanner-mobile.png)
 
 ## Security posture
 
