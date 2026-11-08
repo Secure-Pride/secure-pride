@@ -1,12 +1,23 @@
 ---
-import ToolLayout from '../../layouts/ToolLayout.astro';
-import ToolTopBar from '../../components/ToolTopBar.astro';
+/**
+ * The text scanner, on the same porcelain page as the rest of the site.
+ * Charcoal plates inside the tool mark the processing boundary and a
+ * withhold result. See docs/decisions/DECISION-014.md.
+ */
+import PageShell from '../../layouts/PageShell.astro';
 import AISafetyScanner from '../../components/tools/AISafetyScanner';
+import { routeFor } from '../../lib/site/nav';
+
+const route = routeFor('/tools/');
 ---
-<ToolLayout
-  title="AI Safety Scanner — Secure Pride"
+<PageShell
+  route={route}
+  path="/tools/scanner/"
+  documentTitle="AI Safety Scanner — Secure Pride"
   description="Check example text for known personal-data, credential, and prompt-injection patterns. Hosted processing, explicit limits, and redacted drafts for review."
+  eyebrow="Manual text check"
+  heading="Check a draft before you share."
+  lede="Looks for known personal-data, credential, and prompt-injection patterns. It cannot establish that text is safe or protect your organization as a whole."
 >
-  <ToolTopBar label="AI Safety Scanner" />
   <AISafetyScanner client:only="react" />
-</ToolLayout>
+</PageShell>
