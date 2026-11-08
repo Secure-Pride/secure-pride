@@ -77,10 +77,12 @@ pub struct Finding {
     pub span: Option<(usize, usize)>,
     pub evidence: Option<String>,
     pub normalized_evidence: Option<String>,
+    /// Static explanation safe to show a person. Never the raw match.
+    pub description: String,
     pub action: Decision,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, PartialEq)]
 pub struct Versions {
     pub rules: String,
     pub semantic_model: Option<String>,

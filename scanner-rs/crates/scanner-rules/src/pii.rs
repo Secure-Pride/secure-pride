@@ -194,6 +194,32 @@ pub fn scan_pii(text: &str) -> Vec<RawPiiMatch> {
     matches
 }
 
+/// Replace PII on the caller's original text with the masked forms.
+/// Returns `None` when nothing on this exact string matched, so a homoglyph
+/// that was only caught after folding does not produce a draft that still
+/// contains the original characters.
+pub fn redact_pii(text: &str) -> Option<String> {
+    let matches = scan_pii(text);
+    if matches.is_empty() {
+        return None;
+    }
+    let mut spans: Vec<(usize, usize, String)> = matches
+        .into_iter()
+        .map(|m| (m.start, m.end, m.masked))
+        .collect();
+    spans.sort_by(|a, b| b.0.cmp(&a.0));
+    let mut out = text.to_string();
+    let mut cursor = text.len();
+    for (start, end, masked) in spans {
+        if end > cursor || start > end || end > out.len() {
+            continue;
+        }
+        out.replace_range(start..end, &masked);
+        cursor = start;
+    }
+    if out == text { None } else { Some(out) }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -202,6 +228,13 @@ mod tests {
     fn detects_email() {
         let hits = scan_pii("contact me at jane.doe@example.com please");
         assert!(hits.iter().any(|m| m.pii_type == "email"));
+    }
+
+    #[test]
+    fn redact_replaces_email_and_drops_the_raw_address() {
+        let redacted = redact_pii("user@example.com").unwrap();
+        assert_eq!(redacted, "u***@example.com");
+        assert!(!redacted.contains("user@example.com"));
     }
 
     #[test]

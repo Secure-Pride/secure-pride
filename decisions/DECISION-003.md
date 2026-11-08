@@ -138,8 +138,7 @@ there, per the respec's own §8 ordering.
 
 ### Outcome (updated later)
 
-Implemented per plan above in this same change. Staging deploy, live
-Promptfoo run against a deployed preview Worker, and cutover of
-`functions/api/scan.ts` to the new engine are **not done** — they need
-Cloudflare deploy credentials and are called out as the explicit next step
-in the PR description.
+Implemented per plan above in this same change. A later pass,
+`docs/decisions/DECISION-013.md`, puts this engine on the public
+`/api/scan` route as WASM inside the existing Pages Function. A separate
+Worker hostname is still not deployed.
