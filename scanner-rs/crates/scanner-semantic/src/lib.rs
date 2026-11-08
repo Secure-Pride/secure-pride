@@ -159,6 +159,7 @@ fn keyword_group_findings(text_lower: &str, groups: &[KeywordGroup], id_prefix: 
                 span: None,
                 evidence: Some(group.description.to_string()),
                 normalized_evidence: None,
+                description: group.description.to_string(),
                 action: Decision::Warn,
             });
         }
@@ -175,12 +176,14 @@ fn multilingual_fuzzy_findings(tokens: &[String]) -> Vec<Finding> {
             .filter(|target| contains_fuzzy_token(tokens, target, MAX_FUZZY_DISTANCE))
             .count();
         if hits >= seed.min_hits {
+            let description = format!("Typo-tolerant multilingual ({}) override intent", seed.lang);
             findings.push(Finding {
                 id: format!("semantic:multilingual_override_fuzzy_{}", seed.lang),
                 severity: Severity::High,
                 span: None,
-                evidence: Some(format!("Typo-tolerant multilingual ({}) override intent", seed.lang)),
+                evidence: Some(description.clone()),
                 normalized_evidence: None,
+                description,
                 action: Decision::Warn,
             });
         }
@@ -195,12 +198,14 @@ fn fuzzy_credential_findings(tokens: &[String]) -> Vec<Finding> {
         let near_miss = tokens.iter().any(|t| t != stem && contains_fuzzy_token(&[t.clone()], stem, MAX_FUZZY_DISTANCE));
         let has_long_token = tokens.iter().any(|t| t.len() >= 12 && t.chars().all(|c| c.is_alphanumeric()));
         if near_miss && has_long_token {
+            let description = format!("Misspelled credential keyword near a long token (stem: {stem})");
             findings.push(Finding {
                 id: format!("semantic:fuzzy_credential_{stem}"),
                 severity: Severity::Medium,
                 span: None,
-                evidence: Some(format!("Misspelled credential keyword near a long token (stem: {stem})")),
+                evidence: Some(description.clone()),
                 normalized_evidence: None,
+                description,
                 action: Decision::Warn,
             });
         }

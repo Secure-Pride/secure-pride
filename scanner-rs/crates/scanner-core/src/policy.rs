@@ -43,6 +43,7 @@ mod tests {
             span: None,
             evidence: None,
             normalized_evidence: None,
+            description: "test".into(),
             action,
         }
     }

@@ -1,6 +1,8 @@
 pub mod injection;
 pub mod pii;
 
+pub use pii::redact_pii;
+
 use std::collections::HashSet;
 
 use scanner_core::{Decision, Finding, NormalizedText, Severity};
@@ -20,6 +22,21 @@ fn truncate_evidence(s: &str) -> String {
         let truncated: String = s.chars().take(MAX_EVIDENCE_LEN).collect();
         format!("{truncated}…")
     }
+}
+
+fn pii_description(pii_type: &str) -> String {
+    match pii_type {
+        "email" => "Email address",
+        "us_phone" => "Phone number",
+        "ssn" => "Social Security number",
+        "credit_card" => "Payment card number",
+        "api_key_generic" => "API key",
+        "bearer_token" => "Bearer token",
+        "aws_key" => "Cloud access key",
+        "private_key_header" => "Private key",
+        other => other,
+    }
+    .to_string()
 }
 
 fn injection_action(severity: Severity) -> Decision {
@@ -61,6 +78,7 @@ pub fn scan(normalized: &NormalizedText) -> Vec<Finding> {
                 span: Some((m.start, m.end)),
                 evidence: Some(truncate_evidence(&m.matched_text)),
                 normalized_evidence: Some(truncate_evidence(&m.matched_text)),
+                description: m.description.to_string(),
                 action: injection_action(m.severity),
             });
         }
@@ -81,7 +99,8 @@ pub fn scan(normalized: &NormalizedText) -> Vec<Finding> {
                 // `evidence` holds the masked form only — raw PII/credential
                 // values never leave the detection layer.
                 evidence: Some(m.masked.clone()),
-                normalized_evidence: Some(m.masked),
+                normalized_evidence: Some(m.masked.clone()),
+                description: pii_description(m.pii_type),
                 action: pii_action(m.category),
             });
         }

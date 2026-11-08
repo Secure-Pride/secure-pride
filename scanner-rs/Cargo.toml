@@ -4,6 +4,8 @@ members = [
     "crates/scanner-core",
     "crates/scanner-rules",
     "crates/scanner-semantic",
+    "crates/scanner-engine",
+    "crates/scanner-wasm",
     "crates/scanner-worker",
 ]
 

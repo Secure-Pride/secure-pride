@@ -1,62 +1,12 @@
-//! `workers-rs` HTTP entrypoint. Wires normalization -> rules -> semantic ->
-//! fail-closed policy into the JSON contract from the respec (section 4).
+//! `workers-rs` HTTP entrypoint for a dedicated scanner route.
 //!
-//! Not wired into the live `/api/scan` Pages Function route yet — see
-//! DECISION-003. This Worker has to be deployed to staging and pass the
-//! fixture suite there before any cutover.
+//! The public site calls the same pipeline through `scanner-wasm`, loaded by
+//! `functions/api/scan.ts`. See docs/decisions/DECISION-013.md.
 
-use std::collections::HashMap;
-
-use scanner_core::{
-    normalize, Coverage, Decision, ScanRequest, ScanResponse, Versions,
-    DEFAULT_MAX_DECODE_DEPTH, MAX_INPUT_LENGTH, RULES_VERSION, SEMANTIC_MODEL_VERSION,
-};
+use scanner_core::{ScanRequest, DEFAULT_MAX_DECODE_DEPTH};
 use worker::*;
 
-pub fn scan_text(text: &str, max_decode_depth: u8) -> ScanResponse {
-    if text.len() > MAX_INPUT_LENGTH {
-        return ScanResponse {
-            decision: Decision::Block,
-            confidence: 1.0,
-            coverage: Coverage { normalization: false, rules: false, semantic: false },
-            scores: HashMap::new(),
-            findings: vec![],
-            redacted_text: None,
-            versions: Versions {
-                rules: RULES_VERSION.to_string(),
-                semantic_model: Some(SEMANTIC_MODEL_VERSION.to_string()),
-            },
-        };
-    }
-
-    let normalized = normalize(text, max_decode_depth);
-    let coverage = Coverage { normalization: true, rules: true, semantic: true };
-
-    let rules_findings = scanner_rules::scan(&normalized);
-    let semantic_findings = scanner_semantic::classify(&normalized);
-
-    let (decision, confidence) = scanner_core::decide(&rules_findings, &semantic_findings, &coverage);
-
-    let mut scores: HashMap<String, i32> = HashMap::new();
-    scores.insert("rules_findings".to_string(), rules_findings.len() as i32);
-    scores.insert("semantic_findings".to_string(), semantic_findings.len() as i32);
-
-    let mut findings = rules_findings;
-    findings.extend(semantic_findings);
-
-    ScanResponse {
-        decision,
-        confidence,
-        coverage,
-        scores,
-        findings,
-        redacted_text: None,
-        versions: Versions {
-            rules: RULES_VERSION.to_string(),
-            semantic_model: Some(SEMANTIC_MODEL_VERSION.to_string()),
-        },
-    }
-}
+pub use scanner_engine::scan_text;
 
 #[event(fetch)]
 async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
@@ -93,6 +43,8 @@ async fn fetch(mut req: Request, _env: Env, _ctx: Context) -> Result<Response> {
 
 #[cfg(test)]
 mod tests {
+    use scanner_core::{Decision, DEFAULT_MAX_DECODE_DEPTH, MAX_INPUT_LENGTH};
+
     use super::*;
 
     #[test]
