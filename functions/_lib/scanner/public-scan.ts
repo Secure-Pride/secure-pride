@@ -42,6 +42,9 @@ export function parsePublicScan(value: unknown): PublicScan | null {
     value.engine !== "scanner-rs" ||
     !record(value.versions) ||
     typeof value.versions.rules !== "string" ||
+    (value.versions.semantic_model !== undefined &&
+      value.versions.semantic_model !== null &&
+      typeof value.versions.semantic_model !== "string") ||
     !value.injections.every(
       (item) =>
         record(item) &&

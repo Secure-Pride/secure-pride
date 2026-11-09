@@ -161,6 +161,14 @@ fn split_findings(findings: &[Finding]) -> (Vec<PublicInjection>, Vec<PublicPii>
                 classification: pii_classification(name).to_string(),
                 masked: finding.evidence.clone().unwrap_or_else(|| "[REDACTED]".to_string()),
             });
+        } else if let Some(stem) = finding.id.strip_prefix("semantic:fuzzy_credential_") {
+            // A misspelled credential keyword is a credential warning. It is
+            // not a prompt-injection pattern.
+            pii.push(PublicPii {
+                pii_type: format!("fuzzy_credential_{stem}"),
+                classification: "credential".to_string(),
+                masked: "[REDACTED]".to_string(),
+            });
         } else if let Some(name) = finding.id.strip_prefix("rule:").or_else(|| finding.id.strip_prefix("semantic:")) {
             injections.push(PublicInjection {
                 pattern_name: name.to_string(),
@@ -258,6 +266,25 @@ mod tests {
         assert!(scan.injections.iter().any(|item| item.pattern_name == "role_override"));
         assert!(!json.contains(input));
         assert!(scan.masked_text.is_none());
+    }
+
+    #[test]
+    fn fuzzy_credential_stays_a_credential_warning() {
+        let scan = scan_public("here is my pasword: aB3xQ9zK7mN2pL8w", DEFAULT_MAX_DECODE_DEPTH);
+        assert!(scan.injections.is_empty());
+        assert!(scan.pii_matches.iter().any(|item| item.classification == "credential"));
+        assert!(!scan.policy_violations.iter().any(|line| line.starts_with("Prompt injection")));
+    }
+
+    #[test]
+    fn fullwidth_email_does_not_return_an_unmasked_draft() {
+        let input = "user\u{FF20}example.com";
+        let scan = scan_public(input, DEFAULT_MAX_DECODE_DEPTH);
+        let json = serde_json::to_string(&scan).unwrap();
+        assert_ne!(scan.action, "mask_and_allow");
+        assert!(scan.masked_text.is_none());
+        assert!(!json.contains(input));
+        assert!(!json.contains("user@example.com"));
     }
 
     #[test]
