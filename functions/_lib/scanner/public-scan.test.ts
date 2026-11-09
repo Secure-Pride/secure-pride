@@ -29,4 +29,13 @@ describe("parsePublicScan", () => {
   it("rejects mask_and_allow without a draft", () => {
     expect(parsePublicScan({ ...pass, action: "mask_and_allow" })).toBeNull();
   });
+
+  it("accepts a missing or null semantic model and rejects a non-string", () => {
+    const { semantic_model: _dropped, ...versions } = pass.versions;
+    expect(parsePublicScan({ ...pass, versions })?.action).toBe("log_only");
+    expect(parsePublicScan({ ...pass, versions: { ...pass.versions, semantic_model: null } })?.action).toBe(
+      "log_only",
+    );
+    expect(parsePublicScan({ ...pass, versions: { ...pass.versions, semantic_model: 1 } })).toBeNull();
+  });
 });
