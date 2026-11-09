@@ -28,7 +28,7 @@ The JSON returned to the browser stays the contract `parseScanResponse` already 
 
 The 50,000-character cap is JavaScript string length (UTF-16 code units) in the Pages route and in the engine. A draft under that cap is scanned even when its UTF-8 encoding is longer.
 
-Scanner CI rebuilds `functions/_lib/scanner/pkg` with `scripts/build-wasm.sh` and fails if that package differs from the commit.
+Scanner CI rebuilds `functions/_lib/scanner/pkg` with `scripts/build-wasm.sh` and fails if that package differs from the commit. The build remaps the cargo registry path, because panic locations otherwise embed `CARGO_HOME` and the bytes differ between a dev machine and the GitHub runner.
 
 Audit logging stays in the Pages Function: hashed actor id, classifications, severity, length. Submitted text is not logged.
 
