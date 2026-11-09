@@ -203,9 +203,23 @@ pub fn redact_pii(text: &str) -> Option<String> {
     if matches.is_empty() {
         return None;
     }
-    let mut spans: Vec<(usize, usize, String)> = matches
+    let raw: Vec<(usize, usize, String)> = matches
         .into_iter()
         .map(|m| (m.start, m.end, m.masked))
+        .collect();
+    // A phone-shaped run inside an email is a second match. Applying the
+    // inner span first used to move the cursor and skip the enclosing email,
+    // leaving the rest of the address in the draft. Keep the outer span.
+    let mut spans: Vec<(usize, usize, String)> = raw
+        .iter()
+        .filter(|(start, end, _)| {
+            !raw.iter().any(|(other_start, other_end, _)| {
+                *other_start <= *start
+                    && *end <= *other_end
+                    && (*other_start < *start || *end < *other_end)
+            })
+        })
+        .cloned()
         .collect();
     spans.sort_by(|a, b| b.0.cmp(&a.0));
     let mut out = text.to_string();
@@ -235,6 +249,21 @@ mod tests {
         let redacted = redact_pii("user@example.com").unwrap();
         assert_eq!(redacted, "u***@example.com");
         assert!(!redacted.contains("user@example.com"));
+    }
+
+    #[test]
+    fn enclosing_email_is_masked_when_a_phone_sits_inside_it() {
+        let input = "write contact555-123-4567@example.com today";
+        let redacted = redact_pii(input).unwrap();
+        assert_eq!(redacted, "write c***@example.com today");
+        assert!(!redacted.contains("555-123-4567"));
+        assert!(!redacted.contains("contact555"));
+    }
+
+    #[test]
+    fn separate_email_and_phone_are_both_masked() {
+        let redacted = redact_pii("user@example.com or 555-123-4567").unwrap();
+        assert_eq!(redacted, "u***@example.com or ***-***-4567");
     }
 
     #[test]
