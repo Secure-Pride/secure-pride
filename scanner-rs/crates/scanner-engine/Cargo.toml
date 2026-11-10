@@ -1,0 +1,11 @@
+[package]
+name = "scanner-engine"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+scanner-core = { version = "0.1.0", path = "../scanner-core" }
+scanner-rules = { version = "0.1.0", path = "../scanner-rules" }
+scanner-semantic = { version = "0.1.0", path = "../scanner-semantic" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"

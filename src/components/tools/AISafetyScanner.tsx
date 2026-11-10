@@ -112,63 +112,45 @@ export default function AISafetyScanner() {
   const needsReview = result
     ? scanSummary(result) !== "No matching patterns detected"
     : false;
+  const resultClass = !result
+    ? ""
+    : result.blocked
+      ? "scanner-result scanner-result--withhold"
+      : needsReview
+        ? "scanner-result scanner-result--review"
+        : "scanner-result scanner-result--clear";
 
   return (
-    <main className="mx-auto max-w-[960px] px-6 py-12 text-text-primary">
-      <p
-        className="mb-3 font-mono text-sm"
-        style={{ color: "var(--sp-brass-light)" }}
-      >
-        Manual text check · Hosted on Cloudflare
-      </p>
-      <h1 className="font-heading text-4xl normal-case leading-tight tracking-normal">
-        Check a draft before you share.
-      </h1>
-      <p className="mt-4 max-w-3xl text-text-secondary">
-        Looks for known personal-data, credential, and prompt-injection
-        patterns. It cannot establish that text is safe or protect your
-        organization as a whole.
-      </p>
-      <aside
-        aria-labelledby="processing-title"
-        className="my-8 rounded-lg border border-dark-borderGlow bg-dark-surface p-5"
-      >
-        <h2
-          id="processing-title"
-          className="font-heading text-xl normal-case tracking-normal"
-          style={{ color: "var(--sp-brass-light)" }}
-        >
-          Before you submit
-        </h2>
-        <p id="processing-notice" className="mt-2 text-text-secondary">
+    <div className="scanner">
+      <aside className="scanner-plate" aria-labelledby="processing-title">
+        <h2 id="processing-title">Before you submit</h2>
+        <p id="processing-notice">
           Your text goes to our Cloudflare-hosted API. Do not submit real client
           records, passwords, health information, or identity details. Start
           with the invented example below.
         </p>
-        <p className="mt-3 text-sm text-text-secondary">
+        <p>
           The application logs scan metadata, not submitted text. Hosting
           retention and processing locations remain unverified.{" "}
-          <a href="/privacy" className="underline underline-offset-4">
-            Read privacy and processing
-          </a>
-          .
+          <a href="/privacy/">Read privacy and processing</a>.
         </p>
       </aside>
 
       <form
+        className="scanner-form"
         onSubmit={(event) => {
           event.preventDefault();
           void runScan();
         }}
       >
-        <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-          <label htmlFor="scanInput" className="font-semibold">
+        <div className="scanner-form__row">
+          <label htmlFor="scanInput" className="k-label">
             Text to check
           </label>
           <button
             type="button"
             onClick={() => changeInput(EXAMPLE)}
-            className="min-h-[44px] rounded-md border border-dark-borderGlow px-4 text-sm hover:bg-dark-elevated"
+            className="k-button k-button--ghost-light"
           >
             Use invented example
           </button>
@@ -180,65 +162,47 @@ export default function AISafetyScanner() {
           maxLength={INPUT_LIMIT}
           rows={9}
           aria-describedby="processing-notice scan-hint"
-          className="w-full resize-y rounded-lg border border-dark-borderGlow bg-dark-surface p-4 font-mono text-sm text-text-primary placeholder:text-text-secondary"
+          className="scanner-field"
           placeholder="Use example text you are authorized to share…"
         />
-        <p id="scan-hint" className="mt-2 text-sm text-text-secondary">
+        <p id="scan-hint" className="scanner-hint">
           {text.length.toLocaleString()} / {INPUT_LIMIT.toLocaleString()}{" "}
           characters. Editing the text clears prior results.
         </p>
-        <div className="my-5 flex flex-wrap gap-3">
+        <div className="actions">
           <button
             type="submit"
             disabled={!text.trim() || busy}
             aria-busy={busy}
-            className="min-h-[44px] rounded-md px-6 py-3 font-semibold text-dark-bg disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ background: "var(--sp-brass-light)" }}
+            className="k-button k-button--opal"
           >
             {busy ? "Checking…" : "Run text check"}
           </button>
           <button
             type="button"
             onClick={() => changeInput("")}
-            className="min-h-[44px] rounded-md border border-dark-borderGlow px-6 py-3"
+            className="k-button k-button--ghost-light"
           >
             Clear
           </button>
         </div>
       </form>
-      <div
-        role="status"
-        aria-live="polite"
-        aria-atomic="true"
-        className="text-text-secondary"
-      >
+      <p className="scanner-status" role="status" aria-live="polite" aria-atomic="true">
         {busy
           ? "Checking this submission…"
           : result
             ? scanSummary(result)
             : "No current scan result."}
-      </div>
+      </p>
       {error && (
-        <p
-          role="alert"
-          className="mt-4 rounded-lg border border-dark-borderGlow bg-dark-surface p-4"
-        >
+        <p role="alert" className="scanner-alert">
           {error}
         </p>
       )}
       {result && (
-        <section
-          aria-labelledby="results-title"
-          className="mt-6 rounded-lg border border-dark-borderGlow bg-dark-surface p-5"
-        >
-          <h2
-            id="results-title"
-            className="font-heading text-2xl normal-case tracking-normal"
-            style={{ color: "var(--sp-brass-highlight)" }}
-          >
-            {scanSummary(result)}
-          </h2>
-          <p className="mt-3 text-text-secondary">
+        <section className={resultClass} aria-labelledby="results-title">
+          <h2 id="results-title">{scanSummary(result)}</h2>
+          <p>
             {result.blocked
               ? "The scanner recommends withholding this submission. It has not blocked another app or AI provider; you control what happens next."
               : needsReview
@@ -246,45 +210,37 @@ export default function AISafetyScanner() {
                 : NO_MATCH_GUIDANCE}
           </p>
           {!result.blocked && !needsReview && (
-            <p className="mt-2 text-sm text-text-secondary">
+            <p>
               Why no match is not clearance:{" "}
               {NO_MATCH_SCENARIOS.map((id, index) => (
                 <span key={id}>
                   {index > 0 && " · "}
-                  <a
-                    href={`/threat-model/scenarios/${id.toLowerCase()}/`}
-                    className="underline underline-offset-4"
-                  >
+                  <a href={`/threat-model/scenarios/${id.toLowerCase()}/`}>
                     threat scenario {id}
                   </a>
                 </span>
               ))}
             </p>
           )}
-          <ul className="mt-4 space-y-3 list-none p-0">
+          <ul className="scanner-findings">
             {findings.map((finding, index) => (
-              <li
-                key={`${finding.name}-${index}`}
-                className="rounded-md border border-dark-border p-4"
-              >
-                <p className="font-semibold">
+              <li key={`${finding.name}-${index}`} className="scanner-finding">
+                <p className="scanner-finding__name">
                   {finding.name}{" "}
-                  <span className="text-sm text-text-secondary">
+                  <span className="scanner-finding__kind">
                     · {finding.kind === "block" ? "Withhold" : "Review"}
                   </span>
                 </p>
-                <p className="mt-1 text-sm text-text-secondary">
-                  {finding.detail}
-                </p>
+                <p className="scanner-finding__detail">{finding.detail}</p>
               </li>
             ))}
           </ul>
           {draft !== null && (
-            <div className="mt-6">
-              <label htmlFor="redactedDraft" className="block font-semibold">
+            <div className="scanner-draft">
+              <label htmlFor="redactedDraft" className="k-label">
                 Redacted draft — review before sharing
               </label>
-              <p className="my-2 text-sm text-text-secondary">
+              <p>
                 The original input above is unchanged. Review this version for
                 missed details. Nothing is sent to an AI provider automatically.
               </p>
@@ -293,22 +249,22 @@ export default function AISafetyScanner() {
                 readOnly
                 value={draft}
                 rows={6}
-                className="w-full resize-y rounded-md border border-dark-borderGlow bg-dark-bg p-4 font-mono text-sm"
+                className="scanner-field"
               />
               <button
                 type="button"
                 onClick={() => void copyDraft()}
-                className="mt-3 min-h-[44px] rounded-md border border-dark-borderGlow px-5 py-3"
+                className="k-button k-button--ghost-light"
               >
                 Copy redacted draft
               </button>
-              <p role="status" className="mt-2 text-sm text-text-secondary">
+              <p className="scanner-hint" role="status">
                 {copyNotice}
               </p>
             </div>
           )}
         </section>
       )}
-    </main>
+    </div>
   );
 }

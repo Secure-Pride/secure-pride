@@ -8,8 +8,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 scanner-core = { version = "0.1.0", path = "../scanner-core" }
-scanner-rules = { version = "0.1.0", path = "../scanner-rules" }
-scanner-semantic = { version = "0.1.0", path = "../scanner-semantic" }
+scanner-engine = { version = "0.1.0", path = "../scanner-engine" }
 serde = { version = "1.0.229", features = ["derive"] }
 serde_json = "1.0.151"
 worker = "0.8.5"

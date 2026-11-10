@@ -33,6 +33,8 @@ Significant decisions are recorded in [decisions/](decisions/).
 - [DECISION-010](decisions/DECISION-010.md): The heraldic heart-lock shield is the canonical mark
 - [DECISION-011](decisions/DECISION-011.md): Make the threat model the centre of the public site
 - [DECISION-012](decisions/DECISION-012.md): Serve the Content-Security-Policy, with build-time hashes
+- [DECISION-013](decisions/DECISION-013.md): Ship the Rust scanner on the public scan route
+- [DECISION-014](decisions/DECISION-014.md): Scanner page uses the porcelain and charcoal site
 
 ## Threat Model
 

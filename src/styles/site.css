@@ -1,8 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════
    Site shell — public pages (header, footer, surfaces, controls).
    Page content patterns live in site-content.css; the home vessel in
-   vessel.css. Tokens: site-tokens.css. Scoped under .site so the
-   scanner tool's existing styles are untouched.
+   vessel.css. Tokens: site-tokens.css.    Scoped under .site. The scanner tool uses these surfaces too.
    ═══════════════════════════════════════════════════════════════ */
 @import '@fontsource/shippori-mincho-b1/latin-800.css';
 @import './site-tokens.css';
@@ -11,6 +10,7 @@
 @import './site-seam.css';
 @import './site-policy.css';
 @import './site-threat-model.css';
+@import './site-scanner.css';
 
 body.site-body {
   background: var(--charcoal);
