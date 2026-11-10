@@ -434,6 +434,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "scanner-engine"
+version = "0.1.0"
+dependencies = [
+ "scanner-core",
+ "scanner-rules",
+ "scanner-semantic",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "scanner-rules"
 version = "0.1.0"
 dependencies = [
@@ -450,12 +461,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "scanner-wasm"
+version = "0.1.0"
+dependencies = [
+ "scanner-engine",
+ "wasm-bindgen",
+]
+
+[[package]]
 name = "scanner-worker"
 version = "0.1.0"
 dependencies = [
  "scanner-core",
- "scanner-rules",
- "scanner-semantic",
+ "scanner-engine",
  "serde",
  "serde_json",
  "worker",

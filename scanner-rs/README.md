@@ -7,11 +7,10 @@ classifier all ran and found nothing (`scanner-core/src/policy.rs`).
 
 ## Status
 
-Built and passing locally. **Not deployed, not wired into the live
-`/api/scan` route.** The existing TypeScript scanner (`functions/_lib/dlp/`)
-keeps serving production traffic until this is deployed to staging and
-passes the fixture suite there — see DECISION-003 and the respec
-(`prompt-scanner-rust-respec.md`) section 8 for the deployment order.
+The public `/api/scan` route runs this engine as WASM
+(`scanner-wasm`, loaded by `functions/api/scan.ts`). See
+`docs/decisions/DECISION-013.md`. The `scanner-worker` crate is still the
+dedicated Workers entrypoint and is not deployed to its own hostname.
 
 ## Layout
 
@@ -36,8 +35,13 @@ passes the fixture suite there — see DECISION-003 and the respec
 ```bash
 cd scanner-rs
 cargo test --workspace                                          # unit + fixture tests
+bash scripts/build-wasm.sh                                      # refresh functions/_lib/scanner/pkg
 cargo build --target wasm32-unknown-unknown --release -p scanner-worker
 ```
+
+`scripts/build-wasm.sh` writes the module the Pages Function imports. Commit
+`functions/_lib/scanner/pkg` with the source change. The site README holds
+the current page snapshots.
 
 Deploying requires `worker-build` and an authenticated `wrangler` — neither
 was available in the environment this was built in, so staging deploy and

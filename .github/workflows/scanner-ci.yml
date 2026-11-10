@@ -4,11 +4,13 @@ on:
   pull_request:
     paths:
       - 'scanner-rs/**'
+      - 'functions/_lib/scanner/**'
       - '.github/workflows/scanner-ci.yml'
   push:
     branches: [main]
     paths:
       - 'scanner-rs/**'
+      - 'functions/_lib/scanner/**'
   schedule:
     - cron: '0 6 * * *'
   workflow_dispatch:
@@ -32,7 +34,7 @@ jobs:
 
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
-          toolchain: stable
+          toolchain: 1.99.1
           targets: wasm32-unknown-unknown
 
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -51,6 +53,14 @@ jobs:
 
       - name: cargo build --target wasm32-unknown-unknown --release
         run: cargo build --target wasm32-unknown-unknown --release -p scanner-worker
+
+      # The public route ships functions/_lib/scanner/pkg, not a build of
+      # scanner-worker. Rebuild that package and fail if it drifted.
+      - name: Rebuild the Pages WASM package
+        run: bash scripts/build-wasm.sh
+
+      - name: Fail if the committed Pages WASM package drifted
+        run: git diff --exit-code -- ../functions/_lib/scanner/pkg
 
   # Deploys a preview Worker and runs the Promptfoo adversarial suite
   # against it. Requires CLOUDFLARE_API_TOKEN / CLOUDFLARE_ACCOUNT_ID
