@@ -6,6 +6,11 @@ compatibility_date = "2026-08-10"
 main = ".worker-build/index.js"
 workers_dev = true
 
+# A new Worker turns Workers Logs on unless this is set. Scan requests
+# stay out of that store. See DECISION-015.
+[observability]
+enabled = false
+
 [assets]
 directory = "./dist"
 binding = "ASSETS"

@@ -31,7 +31,7 @@ For someone operating under elevated exposure:
 | Static distribution | Self-contained build for containerized local use | Docker serves the static build only |
 | Security development controls | Contribution rules, AI-development guidance, architecture decisions, and release procedures | Version-controlled documentation |
 
-> **Scope boundary:** `/api/scan` and `/api/health` run in the Worker, not in the Docker image. `npm run deploy` builds the site, compiles `functions/`, and runs `wrangler deploy`.
+> **Scope boundary:** `/api/scan` and `/api/health` run in the Worker, not in the Docker image. `npm run dev` starts Astro only. `npm run deploy` builds the site, compiles `functions/`, and runs `wrangler deploy`.
 
 ## Scanner
 
@@ -95,6 +95,14 @@ npm install
 npm run dev
 npm run build
 npm run check
+```
+
+`npm run dev` starts the Astro server. It does not run `/api/scan` or `/api/health`. To run the Worker and the built site together:
+
+```bash
+npm run build
+npm run build:worker
+npx wrangler dev
 ```
 
 For the static container:

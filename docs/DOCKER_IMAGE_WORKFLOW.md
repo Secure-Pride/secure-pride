@@ -98,9 +98,15 @@ docker run -p 8080:8080 secure-pride
 # open http://localhost:8080
 ```
 
-Note: Cloudflare Pages Functions (`/api/scan`, `/api/health`) are not
-included in the Docker image — they run on the CF runtime. For full-stack
-local dev use `npx wrangler pages dev`.
+Note: `/api/scan` and `/api/health` are not included in the Docker image.
+They run in the Worker. `npm run dev` starts Astro only. To run the Worker
+and the built site together:
+
+```bash
+npm run build
+npm run build:worker
+npx wrangler dev
+```
 
 ---
 

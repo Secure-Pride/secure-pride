@@ -28,12 +28,14 @@ Static requests, including the hashed CSP in `dist/_headers`, are served by the 
 
 `NODE_VERSION` is not a runtime variable. It was a Pages build hint and is not read by the functions.
 
-Workers Logs and traces stay off. `/api/scan` receives drafts. The audit line is still the existing `console.log` of hashed actor, classifications, and length, and it does not include the submitted text. Turning on request logging would store those drafts.
+Workers Logs and traces stay off. A newly created Worker enables Workers Logs unless the config says otherwise, and an invocation log includes the request. `wrangler.toml` sets `[observability] enabled = false`, which also leaves logs disabled. `/api/scan` receives drafts. The audit line is still the existing `console.log` of hashed actor, classifications, and length, and it does not include the submitted text.
 
 `SP_AUDIT_SALT` is not set by this change. The function already hashes with its built-in salt when the binding is absent. A production salt, if one was set on Pages, has to be added as a Worker secret by someone who already holds it. It is not written into the repo.
 
-The Pages project is not deleted. Rollback is to point the two CNAMEs back at `secure-pride.pages.dev`.
+The Pages project is not deleted. Rollback is not a CNAME change by itself. Remove the Worker custom domains for both hostnames, then point `securepride.org` and `www.securepride.org` back at `secure-pride.pages.dev`. A Pages custom domain becomes inactive when its DNS record points somewhere else, and requests fail until that domain is active again, so reactivate both Pages custom domains after the records point back. Rollback is complete only after both hostnames serve the Pages deployment.
 
 ## Verification
 
-`npm run build && npm run build:worker`, then `wrangler deploy`. On the Worker URL, `/tools/scanner/` is the porcelain page and `POST /api/scan` with `{"text":"Hello"}` returns `engine: "scanner-rs"`. After that check, attach `securepride.org` and `www.securepride.org` as custom domains.
+`npm run build && npm run build:worker`, then `wrangler deploy`. On the Worker URL, `/tools/scanner/` is the porcelain page and `POST /api/scan` with `{"text":"Hello"}` returns `engine: "scanner-rs"`. Read the deployed Worker settings and confirm observability is disabled before any hostname moves.
+
+Cloudflare will not attach a Worker custom domain to a hostname that already has a CNAME. Both hostnames currently CNAME to `secure-pride.pages.dev`. Delete those two records, then attach `securepride.org` and `www.securepride.org` as custom domains. The public site does not answer on those hostnames between the deletion and the new records becoming active. Confirm the Worker URL before deleting the records.
