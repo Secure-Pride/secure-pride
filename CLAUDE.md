@@ -34,7 +34,7 @@ npm run check    # Astro build + tsc validation (run before commit)
 ```
 
 ## Project State
-- **Hosting**: Cloudflare Pages + DNS — domain: securepride.org
+- **Hosting**: Cloudflare Worker `secure-pride` (static assets + `/api/*`) — domain: securepride.org. Rollback is DECISION-015: remove the Worker domains, point DNS back at `secure-pride.pages.dev`, and confirm both Pages custom domains are active.
 - **Repo**: `Secure-Pride/secure-pride` (org monorepo since 2026-10-21; `mazze93/secure-pride` redirects) / canonical local: `~/Secure-Pride/secure-pride`
 - **Cloudflare**: `_headers` and `_redirects` exist; Pages deployment status — verify in dashboard.
 ## Workflow

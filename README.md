@@ -26,12 +26,12 @@ For someone operating under elevated exposure:
 
 | Surface | What it provides | Runtime / boundary |
 | --- | --- | --- |
-| [Secure Pride web platform](https://securepride.org) | Public project entry point, documentation, and security resources | Astro on Cloudflare Pages |
-| [AI Safety Scanner](https://securepride.org/tools/scanner) | A manual check for known personal-data, credential, and prompt-injection patterns. A no-match is not clearance. | Rust engine as WASM on the Cloudflare Pages `/api/scan` route |
+| [Secure Pride web platform](https://securepride.org) | Public project entry point, documentation, and security resources | Astro on the `secure-pride` Worker |
+| [AI Safety Scanner](https://securepride.org/tools/scanner) | A manual check for known personal-data, credential, and prompt-injection patterns. A no-match is not clearance. | Rust engine as WASM on the Worker `/api/scan` route |
 | Static distribution | Self-contained build for containerized local use | Docker serves the static build only |
 | Security development controls | Contribution rules, AI-development guidance, architecture decisions, and release procedures | Version-controlled documentation |
 
-> **Scope boundary:** Cloudflare Pages Functions, including `/api/scan` and `/api/health`, are not bundled into the Docker image. Use `npx wrangler pages dev` for full-stack local development.
+> **Scope boundary:** `/api/scan` and `/api/health` run in the Worker, not in the Docker image. `npm run dev` starts Astro only. `npm run deploy` builds the site, compiles `functions/`, and runs `wrangler deploy`.
 
 ## Scanner
 
@@ -88,13 +88,21 @@ A stated risk should produce a concrete engineering constraint, a guardrail, and
 
 ## Run locally
 
-Built with [Astro](https://astro.build) and deployed to Cloudflare Pages.
+Built with [Astro](https://astro.build) and deployed as the `secure-pride` Worker.
 
 ```bash
 npm install
 npm run dev
 npm run build
 npm run check
+```
+
+`npm run dev` starts the Astro server. It does not run `/api/scan` or `/api/health`. To run the Worker and the built site together:
+
+```bash
+npm run build
+npm run build:worker
+npx wrangler dev
 ```
 
 For the static container:

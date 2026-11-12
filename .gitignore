@@ -22,6 +22,7 @@ Thumbs.db
 node_modules/
 .wrangler/
 dist/
+.worker-build/
 .astro/
 .cache/
 

@@ -1,6 +1,21 @@
+# The public site is a Worker with static assets. Pages Functions in
+# functions/ are compiled to .worker-build before deploy. See DECISION-015.
+# Compatibility date stays 2026-08-10 so the function runtime does not move.
 name = "secure-pride"
 compatibility_date = "2026-08-10"
-pages_build_output_dir = "dist"
+main = ".worker-build/index.js"
+workers_dev = true
 
-[vars]
-NODE_VERSION = "22"
+# A new Worker turns Workers Logs on unless this is set. Scan requests
+# stay out of that store. See DECISION-015.
+[observability]
+enabled = false
+
+[assets]
+directory = "./dist"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+# Static files, including dist/_headers, are served by the asset layer.
+# Only the API routes run the compiled Pages Functions.
+run_worker_first = [ "/api/*" ]
