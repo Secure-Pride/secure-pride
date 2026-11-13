@@ -28,14 +28,14 @@ DECISION-015 said the function would hash with its built-in salt when the bindin
 **API headers and body cap**
 
 - Apply a shared header helper on every `/api/*` response, including errors and 404/405, rather than setting headers only on success paths.
-- Reject `/api/scan` bodies over 100 KiB. If `Content-Length` is present and too large, return 413 without reading. If it is missing (chunked), read with the same byte cap.
+- Reject an `/api/scan` body before JSON parse when it is larger than a 50,000-character draft in its longest `JSON.stringify` form. If `Content-Length` is present and too large, return 413 without reading. If it is missing (chunked), read with the same byte cap. A flat 100 KiB ceiling was the first proposal. It rejects a 50,000-character CJK draft (about 150 KB), which the page still accepts and then reports as a generic failure. DECISION-013 already requires a draft under the character cap to be scanned when its UTF-8 encoding is longer.
 
 ## Decision
 
 1. Publish `public/.well-known/security.txt` (RFC 9116) with the GitHub private advisory URL as the first Contact field, the email address as the second, and a link to `/security/`. RFC 9116 treats the first contact as preferred, which matches the security policy.
 2. Remove the public default audit salt. `hashActor` requires a salt. `logScan` writes a line only when `SP_AUDIT_SALT` is set. The public `/api/scan` route always uses the actor id `anonymous` and ignores any client-supplied `actor_id`.
 3. Every `/api/*` response, including errors and 404/405, sets `Cache-Control: no-store`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: DENY`, `Cross-Origin-Resource-Policy: same-origin`, and `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`. If a handler throws, the middleware returns a generic 500 JSON error with those headers and does not include the exception text.
-4. `/api/scan` rejects a body larger than 100 KiB with a generic 413 JSON error before parsing JSON.
+4. `/api/scan` rejects a body larger than 300,034 bytes with a generic 413 JSON error before parsing JSON. That size is 50,000 characters at 6 bytes each (`\u00XX`, the longest `JSON.stringify` escape) plus the 34-byte envelope `{"text":"","actor_id":"anonymous"}`. A 50,000-character CJK draft is about 150 KB and is still scanned.
 5. The privacy page describes the Rust scanner (`scanner-rs`) and the salt-dependent audit line.
 
 `SP_AUDIT_SALT` is still not stored in the repository. It must be set as a Worker secret by the founder (`npx wrangler secret put SP_AUDIT_SALT`). This change does not set that secret or deploy.

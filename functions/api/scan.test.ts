@@ -89,6 +89,13 @@ describe("POST /api/scan", () => {
     }
   });
 
+  it("scans a 50,000-character CJK draft", async () => {
+    const payload = JSON.stringify({ text: "字".repeat(50_000), actor_id: "anonymous" });
+    const response = await onRequestPost(context(post(payload)) as never);
+    expect(response.status).toBe(200);
+    expect(scanJsonMock).toHaveBeenCalledWith("字".repeat(50_000));
+  });
+
   it("returns 413 when Content-Length is over the cap, before parsing JSON", async () => {
     const request = new Request("https://securepride.org/api/scan", {
       method: "POST",

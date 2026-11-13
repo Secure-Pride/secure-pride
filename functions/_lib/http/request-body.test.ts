@@ -13,6 +13,18 @@ function requestWithLength(body: BodyInit | null, length: string | null, extra: 
   });
 }
 
+describe("MAX_SCAN_BODY_BYTES", () => {
+  it("fits a 50,000-character CJK draft and the longest JSON.stringify form", () => {
+    const cjk = JSON.stringify({ text: "字".repeat(50_000), actor_id: "anonymous" });
+    const worst = JSON.stringify({ text: "\u0001".repeat(50_000), actor_id: "anonymous" });
+    const cjkBytes = new TextEncoder().encode(cjk).byteLength;
+    const worstBytes = new TextEncoder().encode(worst).byteLength;
+    expect(cjkBytes).toBeGreaterThan(100 * 1024);
+    expect(cjkBytes).toBeLessThanOrEqual(MAX_SCAN_BODY_BYTES);
+    expect(worstBytes).toBe(MAX_SCAN_BODY_BYTES);
+  });
+});
+
 describe("readBodyCapped", () => {
   it("accepts a small JSON body with Content-Length", async () => {
     const payload = '{"text":"hello"}';

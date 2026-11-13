@@ -74,6 +74,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return jsonError("text must be a non-empty string", 400);
   }
   // JavaScript string length (UTF-16 code units). The Rust engine uses the same count.
+  // MAX_SCAN_BODY_BYTES is sized so this many characters still fit as UTF-8 or as JSON escapes.
   if (body.text.length > 50_000) {
     return jsonError("Input exceeds maximum length of 50,000 characters", 400);
   }

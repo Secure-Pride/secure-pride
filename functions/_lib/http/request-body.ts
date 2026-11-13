@@ -1,5 +1,25 @@
-/** Maximum accepted POST body for /api/scan, in bytes (100 KiB). */
-export const MAX_SCAN_BODY_BYTES = 100 * 1024;
+/** Character cap applied after JSON parse, in JavaScript string length. */
+const MAX_SCAN_TEXT_CHARS = 50_000;
+
+/**
+ * Longest JSON.stringify encoding of one JavaScript character.
+ * A control character becomes \u00XX (6 bytes). A CJK character is 3 UTF-8 bytes.
+ */
+const MAX_JSON_BYTES_PER_CHAR = 6;
+
+/** Bytes in {"text":"","actor_id":"anonymous"}, the envelope the public page sends. */
+const SCAN_JSON_ENVELOPE_BYTES = new TextEncoder().encode(
+  JSON.stringify({ text: "", actor_id: "anonymous" }),
+).byteLength;
+
+/**
+ * Maximum accepted POST body for /api/scan, in bytes.
+ * Fits a 50,000-character draft in its longest JSON.stringify form, plus the
+ * public envelope. A larger body is rejected before JSON.parse.
+ * See DECISION-016 and DECISION-013.
+ */
+export const MAX_SCAN_BODY_BYTES =
+  MAX_SCAN_TEXT_CHARS * MAX_JSON_BYTES_PER_CHAR + SCAN_JSON_ENVELOPE_BYTES;
 
 export type CappedBody =
   | { ok: true; bytes: Uint8Array }
