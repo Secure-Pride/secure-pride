@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { hashActor } from "../_lib/dlp/audit.js";
 import { API_SECURITY_HEADERS } from "../_lib/http/api-headers.js";
 import { MAX_SCAN_BODY_BYTES } from "../_lib/http/request-body.js";
 
@@ -79,6 +80,7 @@ describe("POST /api/scan", () => {
       expect(log).toHaveBeenCalledTimes(1);
       const logged = JSON.parse(log.mock.calls[0][0] as string) as { actor_hash: string };
       expect(logged.actor_hash).toMatch(/^[0-9a-f]{16}$/);
+      expect(logged.actor_hash).toBe(await hashActor(PUBLIC_SCAN_ACTOR_ID, "production-salt"));
       const raw = log.mock.calls[0][0] as string;
       expect(raw).not.toContain("attacker");
       expect(raw).not.toContain("example.com");
