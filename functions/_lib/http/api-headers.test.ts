@@ -55,4 +55,22 @@ describe("api middleware", () => {
     expect(response.status).toBe(405);
     expect(response.headers.get("Cache-Control")).toBe("no-store");
   });
+
+  it("returns a generic 500 with headers when next() throws", async () => {
+    const context = {
+      next: async () => {
+        throw new Error("stream failed: secret draft text");
+      },
+    };
+    const response = await onRequest(context as never);
+    const raw = await response.text();
+    expect(response.status).toBe(500);
+    expect(JSON.parse(raw)).toEqual({ detail: "Request failed" });
+    expect(raw).not.toContain("secret draft");
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(response.headers.get("X-Content-Type-Options")).toBe("nosniff");
+    expect(response.headers.get("Content-Security-Policy")).toBe(
+      "default-src 'none'; frame-ancestors 'none'",
+    );
+  });
 });

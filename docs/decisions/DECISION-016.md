@@ -34,7 +34,7 @@ DECISION-015 said the function would hash with its built-in salt when the bindin
 
 1. Publish `public/.well-known/security.txt` (RFC 9116) with the GitHub private advisory URL as the first Contact field, the email address as the second, and a link to `/security/`. RFC 9116 treats the first contact as preferred, which matches the security policy.
 2. Remove the public default audit salt. `hashActor` requires a salt. `logScan` writes a line only when `SP_AUDIT_SALT` is set. The public `/api/scan` route always uses the actor id `anonymous` and ignores any client-supplied `actor_id`.
-3. Every `/api/*` response, including errors and 404/405, sets `Cache-Control: no-store`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: DENY`, `Cross-Origin-Resource-Policy: same-origin`, and `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`.
+3. Every `/api/*` response, including errors and 404/405, sets `Cache-Control: no-store`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`, `X-Frame-Options: DENY`, `Cross-Origin-Resource-Policy: same-origin`, and `Content-Security-Policy: default-src 'none'; frame-ancestors 'none'`. If a handler throws, the middleware returns a generic 500 JSON error with those headers and does not include the exception text.
 4. `/api/scan` rejects a body larger than 100 KiB with a generic 413 JSON error before parsing JSON.
 5. The privacy page describes the Rust scanner (`scanner-rs`) and the salt-dependent audit line.
 
