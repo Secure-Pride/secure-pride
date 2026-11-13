@@ -8,10 +8,11 @@ describe("security.txt", () => {
   it("is present in public/.well-known with the required RFC 9116 fields", () => {
     expect(existsSync(source)).toBe(true);
     const body = readFileSync(source, "utf8");
-    expect(body).toContain("Contact: mailto:security@securepride.org");
-    expect(body).toContain(
+    const contacts = body.split("\n").filter((line) => line.startsWith("Contact:"));
+    expect(contacts[0]).toBe(
       "Contact: https://github.com/Secure-Pride/secure-pride/security/advisories/new",
     );
+    expect(contacts[1]).toBe("Contact: mailto:security@securepride.org");
     expect(body).toContain("Policy: https://securepride.org/security/");
     expect(body).toContain("Canonical: https://securepride.org/.well-known/security.txt");
     expect(body).toContain("Preferred-Languages: en");
