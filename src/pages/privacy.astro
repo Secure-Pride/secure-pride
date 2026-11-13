@@ -1,5 +1,5 @@
 ---
-/** Privacy and processing. Content unchanged from 2026-10-02; new shell only. */
+/** Privacy and processing. Scanner and audit wording updated 2026-11-13. */
 import PageShell from '../layouts/PageShell.astro';
 import { routeFor } from '../lib/site/nav';
 
@@ -18,7 +18,7 @@ const sections = [
     id: 'processing',
     title: 'Scanner processing',
     paragraphs: [
-      'The current TypeScript scanner checks text against known patterns. Its request handler does not send the text to an external AI model. The application does not intentionally save the submitted text to a database or include it in its audit log.',
+      'The public scanner is scanner-rs, a Rust rules and heuristics engine compiled to WebAssembly. It checks text against known patterns. Its request handler does not send the text to an external AI model. The application does not intentionally save the submitted text to a database or include it in its audit log.',
       'Text and results are held in the page’s memory while you use it. Clear removes the displayed input and results; it does not delete hosting logs or undo a request already received. Copying a redacted draft places it on your device’s clipboard, which may sync across devices.',
     ],
   },
@@ -26,7 +26,7 @@ const sections = [
     id: 'audit',
     title: 'Application audit metadata',
     paragraphs: [
-      'Each scan reaching the engine emits a structured log event. It includes a trace identifier, timestamp, hashed actor identifier, input length, detected data categories, injection severity, and policy action. The public interface uses an anonymous actor identifier.',
+      'The public interface always treats the caller as anonymous. When a production audit salt is set, each scan reaching the engine emits a structured log event with a trace identifier, timestamp, hashed actor identifier, input length, detected data categories, injection severity, and policy action. If that salt is not set, no hashed-actor audit line is written.',
       'These events exclude the submitted text, but their categories can still reveal sensitive context. A hashed identifier is not a guarantee of anonymity.',
     ],
   },
@@ -53,7 +53,7 @@ const sections = [
   route={route}
   documentTitle="Privacy and processing — Secure Pride"
   description="Where scanner text goes, what the application logs, and which hosting details remain unverified."
-  eyebrow="Notice · Updated October 2, 2026"
+  eyebrow="Notice · Updated November 13, 2026"
   heading="Privacy and processing"
   lede="This notice describes the current public scanner and contact surface."
 >

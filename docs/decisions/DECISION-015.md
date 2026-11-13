@@ -30,7 +30,7 @@ Static requests, including the hashed CSP in `dist/_headers`, are served by the 
 
 Workers Logs and traces stay off. A newly created Worker enables Workers Logs unless the config says otherwise, and an invocation log includes the request. `wrangler.toml` sets `[observability] enabled = false`, which also leaves logs disabled. `/api/scan` receives drafts. The audit line is still the existing `console.log` of hashed actor, classifications, and length, and it does not include the submitted text.
 
-`SP_AUDIT_SALT` is not set by this change. The function already hashes with its built-in salt when the binding is absent. A production salt, if one was set on Pages, has to be added as a Worker secret by someone who already holds it. It is not written into the repo.
+`SP_AUDIT_SALT` is not set by this change. A production salt, if one was set on Pages, has to be added as a Worker secret by someone who already holds it. It is not written into the repo. DECISION-016 later removed the built-in default salt: if the secret is missing, the scan still runs and no hashed-actor audit line is written.
 
 The Pages project is not deleted. Rollback is not a CNAME change by itself. Remove the Worker custom domains for both hostnames, then point `securepride.org` and `www.securepride.org` back at `secure-pride.pages.dev`. A Pages custom domain becomes inactive when its DNS record points somewhere else, and requests fail until that domain is active again, so reactivate both Pages custom domains after the records point back. Rollback is complete only after both hostnames serve the Pages deployment.
 
