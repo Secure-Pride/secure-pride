@@ -69,6 +69,10 @@ describe('_headers template', () => {
     }
   });
 
+  it('includes browsing-topics in Permissions-Policy', () => {
+    expect(rendered).toMatch(/Permissions-Policy: .*browsing-topics=\(\)/);
+  });
+
   it('starts the HSTS ramp at 30 days, apex only, until the decision record moves it', () => {
     expect(rendered).toMatch(/^  Strict-Transport-Security: max-age=2592000$/m);
   });

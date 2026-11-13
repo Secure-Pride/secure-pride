@@ -6,6 +6,12 @@ import {
   Severity,
   type DataClassification as Classification,
 } from "../_lib/dlp/types.js";
+import { jsonError, withApiHeaders } from "../_lib/http/api-headers.js";
+import {
+  decodeBodyUtf8,
+  MAX_SCAN_BODY_BYTES,
+  readBodyCapped,
+} from "../_lib/http/request-body.js";
 import { parsePublicScan, type PublicScan } from "../_lib/scanner/public-scan.js";
 import { scanJson } from "../_lib/scanner/runtime.js";
 
@@ -48,33 +54,31 @@ function actionOf(scan: PublicScan): ScanAction {
   return ScanAction.LOG_ONLY;
 }
 
-export const onRequestPost: PagesFunction<Env> = async (context) => {
-  let body: ScanRequestBody;
+/** Public scans always use this actor id. Client-supplied actor_id is ignored. */
+export const PUBLIC_SCAN_ACTOR_ID = "anonymous";
 
+export const onRequestPost: PagesFunction<Env> = async (context) => {
+  const capped = await readBodyCapped(context.request, MAX_SCAN_BODY_BYTES);
+  if (!capped.ok) {
+    return jsonError("Request body is too large", 413);
+  }
+
+  let body: ScanRequestBody;
   try {
-    body = (await context.request.json()) as ScanRequestBody;
+    body = JSON.parse(decodeBodyUtf8(capped.bytes)) as ScanRequestBody;
   } catch {
-    return Response.json({ detail: "Invalid JSON body" }, { status: 400 });
+    return jsonError("Invalid JSON body", 400);
   }
 
   if (typeof body.text !== "string" || body.text.length === 0) {
-    return Response.json(
-      { detail: "text must be a non-empty string" },
-      { status: 400 }
-    );
+    return jsonError("text must be a non-empty string", 400);
   }
   // JavaScript string length (UTF-16 code units). The Rust engine uses the same count.
   if (body.text.length > 50_000) {
-    return Response.json(
-      { detail: "Input exceeds maximum length of 50,000 characters" },
-      { status: 400 }
-    );
+    return jsonError("Input exceeds maximum length of 50,000 characters", 400);
   }
   if (body.text.includes("\x00")) {
-    return Response.json(
-      { detail: "Input contains null bytes" },
-      { status: 400 }
-    );
+    return jsonError("Input contains null bytes", 400);
   }
 
   let scan: PublicScan | null = null;
@@ -84,14 +88,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     scan = null;
   }
   if (!scan) {
-    return Response.json({ detail: "Scanner failed closed" }, { status: 500 });
+    return jsonError("Scanner failed closed", 500);
   }
 
   const traceId = crypto.randomUUID();
-  const actorId = typeof body.actor_id === "string" ? body.actor_id : "anonymous";
   await logScan({
     traceId,
-    actorId,
+    actorId: PUBLIC_SCAN_ACTOR_ID,
     classificationsFound: classificationsOf(scan),
     injectionDetected: scan.injection_count > 0,
     maxSeverity: maxSeverity(scan),
@@ -102,17 +105,19 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     salt: context.env.SP_AUDIT_SALT,
   });
 
-  return Response.json({
-    trace_id: traceId,
-    blocked: scan.blocked,
-    action: scan.action,
-    ...(scan.masked_text !== undefined && { masked_text: scan.masked_text }),
-    injection_count: scan.injection_count,
-    injections: scan.injections,
-    pii_count: scan.pii_count,
-    pii_matches: scan.pii_matches,
-    policy_violations: scan.policy_violations,
-    engine: scan.engine,
-    versions: scan.versions,
-  });
+  return withApiHeaders(
+    Response.json({
+      trace_id: traceId,
+      blocked: scan.blocked,
+      action: scan.action,
+      ...(scan.masked_text !== undefined && { masked_text: scan.masked_text }),
+      injection_count: scan.injection_count,
+      injections: scan.injections,
+      pii_count: scan.pii_count,
+      pii_matches: scan.pii_matches,
+      policy_violations: scan.policy_violations,
+      engine: scan.engine,
+      versions: scan.versions,
+    }),
+  );
 };
