@@ -8,6 +8,10 @@ Operational standards for AI-assisted development.
 - **[COPILOT-INSTRUCTIONS-README.md](COPILOT-INSTRUCTIONS-README.md)**: How to use the charter
 - **[QUICK-REFERENCE.md](QUICK-REFERENCE.md)**: One-page cheat sheet
 
+## Deployment
+
+- [GitHub-to-Worker deployment runbook](DEPLOYMENT.md): build settings, release verification, known configuration gaps, and rollback.
+
 ## Brand & Design
 
 Brand voice, design system, and documentation templates in [brand/](brand/).
@@ -35,6 +39,7 @@ Significant decisions are recorded in [decisions/](decisions/).
 - [DECISION-012](decisions/DECISION-012.md): Serve the Content-Security-Policy, with build-time hashes
 - [DECISION-013](decisions/DECISION-013.md): Ship the Rust scanner on the public scan route
 - [DECISION-014](decisions/DECISION-014.md): Scanner page uses the porcelain and charcoal site
+- [DECISION-015](decisions/DECISION-015.md): Serve the public site from a Worker; GitHub Builds setup recorded on 2026-11-14
 
 ## Threat Model
 

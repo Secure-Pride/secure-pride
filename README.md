@@ -115,6 +115,17 @@ docker run -p 8080:8080 secure-pride
 Published image: `ghcr.io/secure-pride/secure-pride` (releases before 2026-10-21: `ghcr.io/mazze93/secure-pride`). Release, scan-gate, and
 publish pipeline: [docs/DOCKER_IMAGE_WORKFLOW.md](docs/DOCKER_IMAGE_WORKFLOW.md).
 
+## Deploy from GitHub
+
+Cloudflare Workers Builds is connected to `Secure-Pride/secure-pride`.
+Merges to `main` trigger `npm run build && npm run build:worker`, followed
+by `npx wrangler deploy`. Both `securepride.org` and `www.securepride.org`
+are attached to the `secure-pride` Worker. Preview builds are disabled.
+
+See the [deployment runbook](docs/DEPLOYMENT.md) for the configured settings,
+release checks, credential scope, known gaps, and rollback. The runbook records the setup baseline; verify the build result and deployed
+version after each merge.
+
 ## Contribution gate
 
 A change is not ready to merge unless it:
