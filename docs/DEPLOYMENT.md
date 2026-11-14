@@ -106,22 +106,48 @@ including `SP_AUDIT_SALT`. The scanner therefore uses its source-defined
 fallback salt. This does not block deployment. Do not enable persistent
 logging to compensate, and do not copy an unknown Pages secret.
 
-The production `workers.dev` URL and version preview URLs remain enabled and
-public at setup. Disabling preview **builds** does not disable preview
+The production `workers.dev` URL and version preview URLs were disabled
+in the dashboard after founder approval on 2026-11-14. HTTP probes returned
+404 (Cloudflare code 1042) for both the production Worker hostname and the
+previous version hostname. `workers_dev = false` and `preview_urls = false`
+in Wrangler preserve that setting on later deployments. Disabling preview **builds** does not disable preview
 **URLs**. Review these alternate entry points before relying on zone-scoped
-security rules. If disabling `workers.dev`, also set `workers_dev = false`
-in Wrangler so a later deployment does not restore it.
+security rules. Keep both Wrangler flags false so later deployments do not restore
+alternate public entry points.
 
 ## Observed Cloudflare follow-ups
 
-These are observations from **2026-11-14**, not changes applied by this guide.
+These are observations and approved changes from **2026-11-14**.
 
 | Area | Observed | Next action |
 | --- | --- | --- |
-| Scanner rate limiting | The zone's one available rate-limit rule is used by `Leaked credential check`, matching `cf.waf.credential_check.password_leaked`. No scanner-path rate-limit rule is listed. | Design a limit for `POST /api/scan`, account for shared-IP users, and test alternate hostnames. Review the existing rule before replacing it. |
-| DNSSEC | Dashboard says protected, but both multi-provider DNS and multi-signer DNSSEC are enabled; it also warns these cannot validate on a Cloudflare Registrar domain. | Independently validate the delegation and DNSSEC chain; reconcile these settings with any intentional secondary provider. Preserve DNSSEC. |
+| Scanner rate limiting | `Scanner burst limit` is active: 10 POST requests per 10 seconds per IP, with a 10-second block. Covers `/api/scan` and `/api/scan/` on both production domains. The leaked-password condition was deployed as a separate active Block custom rule before repurposing the rate-limit slot. | A 15-request synthetic burst returned twelve 200 responses identifying `scanner-rs` and three 429 responses (1015). Enforcement is approximate; it is not a strict global quota. Review shared-IP false positives. |
+| DNSSEC | Multi-provider DNS and multi-signer DNSSEC are now off. DNSSEC remains enabled, with the same DS record. Google Public DNS returned `Status: 0` and `AD: true` for NS, DS, and apex A before the change, and for apex/www A afterward. Published NS records name only Cloudflare. | The original warning did not establish a DNS outage. Keep the single-provider configuration unless an intentional secondary-provider design is introduced. |
 | Transport | Certificates active; Always Use HTTPS and TLS 1.3 enabled; minimum TLS 1.2. HSTS is on for one month, without subdomains or preload. | Reconcile the TLS 1.3-only policy with actual client compatibility. Review every subdomain before expanding HSTS. |
 | Build verification | Connection saved; no Git-triggered deployment verified at setup. | Verify the first merge-to-deploy cycle and record the commit, build result, and version. |
+
+## Verification record — 2026-11-14
+
+- Both production hostnames returned the expected health body with HTTP 200.
+- Production and previous-version `workers.dev` hostnames returned HTTP 404,
+  Cloudflare code 1042, after URL disabling.
+- The synthetic scanner burst triggered HTTP 429, Cloudflare code 1015.
+  Successful requests identified the Rust scanner. Fifteen parallel requests
+  took about ten seconds; twelve passed and three were blocked. This is
+  evidence of enforcement, not proof of an exact ten-request ceiling.
+- Initial Python-default-User-Agent HTTP probes were blocked with Cloudflare
+  code 1010. A declared Mozilla-compatible deployment-check User-Agent
+  received the results above. This is a bot-filter limitation, not an outage.
+- Both DNS toggles were confirmed off after reloading the dashboard. UI
+  automation initially reported a state-change error while each save was
+  completing; the persisted values and public DNS responses were then checked.
+- The build token remains broad. TLS minimum and HSTS scope were left
+  unchanged; no unknown subdomain was forced into HSTS.
+
+To undo the scanner limit, edit its threshold or restore its prior expression
+from the historical record. Keep `Block leaked credentials` active while doing
+so. To reopen alternate URLs deliberately, change both Wrangler flags and
+review the exposure before deploying. Do not disable DNSSEC as a rollback.
 
 ## Failure and rollback
 

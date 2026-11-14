@@ -64,3 +64,27 @@ Worker settings. Runtime variables and secrets were empty.
 
 See [the deployment runbook](../DEPLOYMENT.md) for release checks, rollback,
 alternate-hostname exposure, and the dated Cloudflare follow-up list.
+
+## Hardening outcome — 2026-11-14
+
+The founder approved the configuration follow-ups. The multi-provider and
+multi-signer DNS options were disabled while DNSSEC stayed enabled. Public
+validation returned authenticated answers before and after; the earlier
+warning was a configuration inconsistency, not a demonstrated outage.
+
+Both alternate Worker URL switches were disabled and verified with HTTP 404
+responses. Wrangler now declares `workers_dev = false` and
+`preview_urls = false` so subsequent deployments preserve the restriction.
+Custom domains remain attached and return healthy responses.
+
+The existing leaked-password condition was first deployed as an active
+Block custom rule. Only after that rule was active was the single rate-limit
+slot repurposed for `POST /api/scan` and `/api/scan/` on both production
+hostnames: 10 requests per 10 seconds per IP, blocked for 10 seconds. This
+keeps credential protection while adding a short scanner burst control.
+The short window limits shared-IP lockout duration. A synthetic burst
+produced 429 responses; counters are approximate, not a strict quota.
+
+The dedicated build token remains account-wide. Its replacement requires a
+separate verified credential migration. Minimum TLS and HSTS scope remain
+unchanged because client and subdomain compatibility have not been assessed.
