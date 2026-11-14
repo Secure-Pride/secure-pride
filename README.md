@@ -123,8 +123,8 @@ by `npx wrangler deploy`. Both `securepride.org` and `www.securepride.org`
 are attached to the `secure-pride` Worker. Preview builds are disabled.
 
 See the [deployment runbook](docs/DEPLOYMENT.md) for the configured settings,
-release checks, credential scope, known gaps, and rollback. The first
-Git-triggered production deployment still needs verification.
+release checks, credential scope, known gaps, and rollback. The runbook records the setup baseline; verify the build result and deployed
+version after each merge.
 
 ## Contribution gate
 
