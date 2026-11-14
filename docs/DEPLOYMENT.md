@@ -162,11 +162,13 @@ Confirm the Node version, repository root, Worker name, entry point,
 and both build commands. Do not report a saved Git connection as a passing
 deployment.
 
-If a released version fails smoke checks, use Cloudflare Deployments to
-roll back to the last known-good version. Re-run health and scanner checks
+If a released version fails smoke checks, first pause automatic builds to
+prevent new builds, then cancel or finish every active and queued build.
+A build already running can otherwise deploy the bad commit again after
+rollback. Only then use Cloudflare Deployments to roll back to the last
+known-good version, and verify the active version and traffic allocation. Re-run health and scanner checks
 on both custom domains. Revert the bad commit through a pull request so a
-later push does not reintroduce it. If necessary, pause automatic builds
-while investigating, then restore them after the correction.
+later push does not reintroduce it. Restore automatic builds only after the correction is ready.
 
 Keep the historical Pages rollback procedure in
 [DECISION-015](decisions/DECISION-015.md) as a separate disaster-recovery
