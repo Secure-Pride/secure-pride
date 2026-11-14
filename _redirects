@@ -1,5 +1,5 @@
-# Force www → apex (pick one canonical form; apex is simpler with Cloudflare Pages)
-# Cloudflare Pages handles HTTPS automatically — no HTTP→HTTPS redirect needed here.
+# Canonical WWW-to-apex fallback for Worker static assets.
+# The zone redirect uses the same method-preserving status for API POSTs.
 
 # Redirect www to apex
-https://www.securepride.org/* https://securepride.org/:splat 301
+https://www.securepride.org/* https://securepride.org/:splat 308

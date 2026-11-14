@@ -88,3 +88,11 @@ produced 429 responses; counters are approximate, not a strict quota.
 The dedicated build token remains account-wide. Its replacement requires a
 separate verified credential migration. Minimum TLS and HSTS scope remain
 unchanged because client and subdomain compatibility have not been assessed.
+
+A follow-up POST check found that the WWW-to-apex redirect used 301, which
+can rewrite POST to GET. The zone rule now uses 308 while retaining its
+path and query behavior. A method-preserving follow returned HTTP 200 from
+the Rust scanner. The repository's static redirect fallback is aligned to
+308 as well. The first save attempt stopped at Cloudflare's proxy warning;
+verification caught the unchanged 301, and the deployment was completed
+before the successful 308 check.

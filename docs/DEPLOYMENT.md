@@ -128,7 +128,8 @@ These are observations and approved changes from **2026-11-14**.
 
 ## Verification record — 2026-11-14
 
-- Both production hostnames returned the expected health body with HTTP 200.
+- Both production hostnames returned the expected health body with HTTP 200
+  (www follows its canonical redirect).
 - Production and previous-version `workers.dev` hostnames returned HTTP 404,
   Cloudflare code 1042, after URL disabling.
 - The synthetic scanner burst triggered HTTP 429, Cloudflare code 1015.
@@ -141,6 +142,11 @@ These are observations and approved changes from **2026-11-14**.
 - Both DNS toggles were confirmed off after reloading the dashboard. UI
   automation initially reported a state-change error while each save was
   completing; the persisted values and public DNS responses were then checked.
+- A POST to www initially received a 301 redirect; a client that rewrote
+  it as GET then failed. The live WWW-to-apex rule now uses 308, with path
+  and query preservation. A manual method-preserving follow returned
+  HTTP 200 with `engine: "scanner-rs"`. The static `_redirects` fallback
+  also declares 308. Use the apex URL directly for scanner API clients.
 - The build token remains broad. TLS minimum and HSTS scope were left
   unchanged; no unknown subdomain was forced into HSTS.
 
