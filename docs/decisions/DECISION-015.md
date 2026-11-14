@@ -39,3 +39,28 @@ The Pages project is not deleted. Rollback is not a CNAME change by itself. Remo
 `npm run build && npm run build:worker`, then `wrangler deploy`. On the Worker URL, `/tools/scanner/` is the porcelain page and `POST /api/scan` with `{"text":"Hello"}` returns `engine: "scanner-rs"`. Read the deployed Worker settings and confirm observability is disabled before any hostname moves.
 
 Cloudflare will not attach a Worker custom domain to a hostname that already has a CNAME. Both hostnames currently CNAME to `secure-pride.pages.dev`. Delete those two records, then attach `securepride.org` and `www.securepride.org` as custom domains. The public site does not answer on those hostnames between the deletion and the new records becoming active. Confirm the Worker URL before deleting the records.
+
+## Outcome update — 2026-11-14
+
+The Cloudflare dashboard now lists `securepride.org` and
+`www.securepride.org` as production custom domains on `secure-pride`.
+The Worker still served manually deployed version `d4add5dc` at setup.
+
+The founder requested GitHub deployment and approved creating Cloudflare's
+automatic build token after its broad account-wide permissions were
+displayed. Workers Builds is now connected to `Secure-Pride/secure-pride`,
+production branch `main`, root `/`. It runs
+`npm run build && npm run build:worker`, then `npx wrangler deploy`.
+Preview builds and build caching are disabled.
+
+This supersedes the earlier connection-specific inability to configure
+Workers Builds. The hosting architecture and compatibility date are
+unchanged. The token is dedicated by name, not Worker-scoped; its scope is
+a recorded trade-off. No token value is stored here.
+
+The connection was saved successfully. A Git-triggered build has not yet
+been verified. Logs, traces, Issues, and Logpush are off in the observed
+Worker settings. Runtime variables and secrets were empty.
+
+See [the deployment runbook](../DEPLOYMENT.md) for release checks, rollback,
+alternate-hostname exposure, and the dated Cloudflare follow-up list.
