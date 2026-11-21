@@ -4,7 +4,10 @@
 name = "secure-pride"
 compatibility_date = "2026-08-10"
 main = ".worker-build/index.js"
-workers_dev = true
+# Production is served only on the custom domains. Keep alternate URLs off
+# in source so a later Wrangler deployment cannot reopen them.
+workers_dev = false
+preview_urls = false
 
 # A new Worker turns Workers Logs on unless this is set. Scan requests
 # stay out of that store. See DECISION-015.
