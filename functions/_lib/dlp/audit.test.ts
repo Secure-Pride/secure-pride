@@ -2,6 +2,18 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { hashActor, logScan } from "./audit.js";
 import { DataClassification, ScanAction, Severity } from "./types.js";
 
+const baseParams = {
+  traceId: "trace-1",
+  actorId: "user@org.com",
+  classificationsFound: [DataClassification.PII],
+  injectionDetected: false,
+  maxSeverity: null,
+  policyAction: ScanAction.MASK_AND_ALLOW,
+  piiTypesFound: ["email"],
+  inputLength: 42,
+  blocked: false,
+};
+
 describe("hashActor", () => {
   it("is deterministic for the same actor and salt", async () => {
     const a = await hashActor("user@org.com", "salt-1");
@@ -28,14 +40,12 @@ describe("hashActor", () => {
   });
 
   it("returns a 16-character lowercase hex string", async () => {
-    const hash = await hashActor("anonymous");
+    const hash = await hashActor("anonymous", "salt-1");
     expect(hash).toMatch(/^[0-9a-f]{16}$/);
   });
 
-  it("falls back to a default salt when none is provided", async () => {
-    const withDefault = await hashActor("user@org.com");
-    const explicitDefault = await hashActor("user@org.com", "secure-pride-default-salt");
-    expect(withDefault).toBe(explicitDefault);
+  it("requires a salt and has no default fallback", async () => {
+    await expect(hashActor("user@org.com", "")).rejects.toThrow(/salt/i);
   });
 });
 
@@ -50,19 +60,22 @@ describe("logScan", () => {
     logSpy.mockRestore();
   });
 
-  it("emits exactly one console.log line per call", async () => {
-    await logScan({
-      traceId: "trace-1",
-      actorId: "user@org.com",
-      classificationsFound: [DataClassification.PII],
-      injectionDetected: false,
-      maxSeverity: null,
-      policyAction: ScanAction.MASK_AND_ALLOW,
-      piiTypesFound: ["email"],
-      inputLength: 42,
-      blocked: false,
-    });
+  it("emits exactly one console.log line when a salt is provided", async () => {
+    const entry = await logScan({ ...baseParams, salt: "salt-1" });
     expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(entry?.actor_hash).toMatch(/^[0-9a-f]{16}$/);
+  });
+
+  it("writes nothing when the salt is missing", async () => {
+    const entry = await logScan({ ...baseParams });
+    expect(entry).toBeNull();
+    expect(logSpy).not.toHaveBeenCalled();
+  });
+
+  it("writes nothing when the salt is blank", async () => {
+    const entry = await logScan({ ...baseParams, salt: "   " });
+    expect(entry).toBeNull();
+    expect(logSpy).not.toHaveBeenCalled();
   });
 
   it("produces valid JSON matching the original schema field-for-field", async () => {
@@ -76,6 +89,7 @@ describe("logScan", () => {
       piiTypesFound: ["aws_key"],
       inputLength: 128,
       blocked: true,
+      salt: "salt-1",
     });
     const logged = JSON.parse(logSpy.mock.calls[0][0] as string);
 
@@ -96,15 +110,14 @@ describe("logScan", () => {
 
   it("never logs the raw actor id", async () => {
     await logScan({
+      ...baseParams,
       traceId: "trace-3",
       actorId: "jane.doe@example.com",
       classificationsFound: [],
-      injectionDetected: false,
-      maxSeverity: null,
       policyAction: ScanAction.LOG_ONLY,
       piiTypesFound: [],
       inputLength: 10,
-      blocked: false,
+      salt: "salt-1",
     });
     const raw = logSpy.mock.calls[0][0] as string;
     expect(raw).not.toContain("jane.doe");
@@ -113,15 +126,12 @@ describe("logScan", () => {
 
   it("respects a custom salt", async () => {
     await logScan({
+      ...baseParams,
       traceId: "trace-4",
-      actorId: "user@org.com",
       classificationsFound: [],
-      injectionDetected: false,
-      maxSeverity: null,
       policyAction: ScanAction.LOG_ONLY,
       piiTypesFound: [],
       inputLength: 5,
-      blocked: false,
       salt: "custom-salt",
     });
     const logged = JSON.parse(logSpy.mock.calls[0][0] as string);

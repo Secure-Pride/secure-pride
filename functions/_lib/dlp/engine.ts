@@ -126,7 +126,8 @@ export async function scan(
 
   const blocked = action === ScanAction.BLOCK;
 
-  // Audit log — always, for every scan that reaches this point, clean or not.
+  // Audit log, for every scan that reaches this point, clean or not.
+  // logScan writes a line only when a salt is provided.
   await logScan({
     traceId,
     actorId,

@@ -1,0 +1,6 @@
+Contact: https://github.com/Secure-Pride/secure-pride/security/advisories/new
+Contact: mailto:security@securepride.org
+Policy: https://securepride.org/security/
+Canonical: https://securepride.org/.well-known/security.txt
+Preferred-Languages: en
+Expires: 2027-10-13T00:00:00.000Z
