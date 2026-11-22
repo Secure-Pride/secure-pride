@@ -26,7 +26,7 @@ const sections = [
     id: 'audit',
     title: 'Application audit metadata',
     paragraphs: [
-      'The public interface always treats the caller as anonymous. When a production audit salt is set, each scan reaching the engine emits a structured log event with a trace identifier, timestamp, hashed actor identifier, input length, detected data categories, injection severity, and policy action. If that salt is not set, no hashed-actor audit line is written.',
+      'The public interface always treats the caller as anonymous. When a production audit salt is set, each successfully processed scan emits a structured log event with a trace identifier, timestamp, hashed actor identifier, input length, detected data categories, injection severity, and policy action. If that salt is not set, no hashed-actor audit line is written.',
       'These events exclude the submitted text, but their categories can still reveal sensitive context. A hashed identifier is not a guarantee of anonymity.',
     ],
   },
