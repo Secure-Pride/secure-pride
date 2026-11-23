@@ -26,7 +26,7 @@
     "@fontsource/rajdhani": "^5.2.7",
     "@fontsource/shippori-mincho-b1": "^5.3.0",
     "@tailwindcss/vite": "^4.3.4",
-    "astro": "^7.4.7",
+    "astro": "^7.4.13",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tailwindcss": "^4.3.4"
