@@ -322,7 +322,9 @@ We are experts who don't need jargon to prove it.
 
 [Local distribution]: Docker serves the static interface only. Full-stack local development uses Wrangler.
 
-[In development]: The Rust/WASM replacement is not deployed to the public route.
+[Scanner engine]: Rust, compiled to WebAssembly, running on the Cloudflare Worker that serves the site.
+
+[In development]: Community playbooks and deployment templates.
 
 [Contact]: Email hello@securepride.org without client records or sensitive details.`;
 

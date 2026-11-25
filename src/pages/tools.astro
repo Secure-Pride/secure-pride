@@ -70,7 +70,7 @@ const route = routeFor('/tools/');
   </section>
 
   <section class="section section--wide" aria-labelledby="limits-title">
-    <h2 class="section-title" id="limits-title">What the scanner misses</h2>
+    <h2 class="section-title" id="limits-title">What the scanner catches and misses</h2>
     <table class="matrix matrix--compact matrix--limits" role="table">
       <caption class="matrix__caption">
         Tested {SCANNER_LIMITS_TESTED} against the scanner’s pattern engine.
@@ -146,17 +146,27 @@ const route = routeFor('/tools/');
     </div>
   </section>
 
+  <section class="section" aria-labelledby="engine-title">
+    <h2 class="section-title" id="engine-title">What runs the scanner</h2>
+    <div class="k-prose">
+      <p>
+        The scanner engine is written in Rust and compiled to WebAssembly. It
+        runs on the Cloudflare Worker that serves securepride.org, behind the
+        public scanner route. It replaced the first engine, written in
+        TypeScript, in November 2026.
+      </p>
+      <div class="actions">
+        <a class="k-link" href="https://github.com/Secure-Pride/secure-pride/tree/main/scanner-rs">Inspect the scanner source →</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="dev-title">
     <h2 class="section-title" id="dev-title">In development</h2>
     <div class="k-prose">
       <p>
-        The Rust/WASM scanner is built but not deployed to the public scanner
-        route. Community playbooks and deployment templates remain roadmap
-        work.
+        Community playbooks and deployment templates remain roadmap work.
       </p>
-      <div class="actions">
-        <a class="k-link" href="https://github.com/Secure-Pride/secure-pride/tree/main/scanner-rs">Inspect the next scanner →</a>
-      </div>
     </div>
   </section>
 </PageShell>
