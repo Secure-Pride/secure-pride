@@ -1,14 +1,14 @@
 ---
 title: Secure Pride history timeline
 date: 2026-11-25
-version: 1.0.0
+version: 1.1.0
 repo: Secure-Pride/secure-pride
 tags: [secure-pride, history, timeline, evidence-trail]
 ---
 
 # Secure Pride history timeline
 
-A dated record of how Secure Pride got from its first commit to today, with each change in direction and the evidence behind it. Built 2026-11-25 from repository history; nothing here is from memory alone.
+A dated record of how Secure Pride got from its first commit to today, with each change in direction and the evidence behind it. Built 2026-11-25 from repository history; nothing here is from memory alone. v1.1.0 (2026-11-25) adds the founder's reason for the monorepo.
 
 ## How to read this
 
@@ -45,7 +45,7 @@ Eight changes in direction, each with what triggered it.
 | 3 | 2026-08-14 | "This is the product", a live $200/mo tier → pilot-stage honesty | A deck-vs-site audit found the site overclaiming: no paying clients beyond one standing partnership, and a self-host Docker claim whose command did not run the scanner | C `cdb1336`, #47 | [V] |
 | 4 | 2026-08-20 | TypeScript regex engine → Rust/WASM engine, fail-closed by construction | D-002 (scanner series, 2026-07-18) confirmed silent bypasses: zero-width spaces, Cyrillic homoglyphs, paraphrase, card and SSN misfires, all falling through to `PASS`. Found while adversarially testing the audit-logging fix | `decisions/DECISION-002.md`, `decisions/DECISION-003.md`, #49 | [V]; matches the founder's account [F] |
 | 5 | 2026-10-02 | Broad promises (organizational protection, provider integrations, local processing, paid pilot) → only what has shipped | Founder-approved assessment: the homepage promised beyond the shipped surface, the scanner UI hid the masked draft and showed hard-coded assurance percentages | D-006, #67 / C `cdf1ee9` | [V] |
-| 6 | 2026-10-21 | Four separate repos under a personal account → one public monorepo in the `Secure-Pride` org | No reason recorded. #72 says "Directed and owned by Mazze LeCzzare Frazer". This reverses the August Phase 4 journal, which marked a monorepo "Not recommended" and chose a flagship repo with satellites, linked by README edits | #72, C `22d0690`, `docs/journal/PHASE4-STRATEGY.md` | [V] change, cause unknown |
+| 6 | 2026-10-21 | Four separate repos under a personal account → one public monorepo in the `Secure-Pride` org | Separation of the organization from its builder. In the founder's words: the mission "is bigger than any single individual", and keeping development "anchored to my personal github" meant it could not be fully isolated "in a way that guarantees personal data isolation and other sensitive boundaries". The monorepo "allows SP to be the authority in its own wheelhouse" and is "a necessary layer of separation between the organization and its sole builder" (2026-11-25). This reverses the August Phase 4 journal, which marked a monorepo "Not recommended" for a different goal (reading as one offer to funders); the October move answers a governance need that journal did not weigh | #72, C `22d0690`, `docs/journal/PHASE4-STRATEGY.md` | [V] change, [F] cause |
 | 7 | 2026-10-22 | Tools-first site → threat model (*disclosure, coercion, and continuity of care*) at the centre | Founder direction, building on a threat model drafted 2026-10-21 | D-011, #90 / C `f009ed0` | [V] |
 | 8 | 2026-11-10 → 11-13 | Cloudflare Pages → a Cloudflare Worker serving the site and `/api/*` | Pages was still serving the old scanner and its builds could not be read or fixed from the available connection; `main` already held the Rust route | D-015, #108, Worker first upload 2026-11-13 | [V]; matches the founder's account [F] |
 
@@ -156,7 +156,7 @@ The working belief was that several tools "dropped out when Secure Pride became 
 
 ## Open questions
 
-1. **Why the monorepo?** August's strategy argued against it; October did it. The reason is not written down anywhere read.
+1. **Why the monorepo?** Answered by the founder on 2026-11-25 (see shift 6). Not yet recorded in a decision record; #72 is the only artifact.
 2. **Why did Pages stop deploying after 2026-10-22?** D-015 records that Pages builds could not be read (HTTP 403). The build logs were not available.
 3. **Floor Up reader.** No source found on GitHub.
 4. **Two decision-record series collide.** `decisions/DECISION-001` to `003` (scanner, July to August) and `docs/decisions/DECISION-001` to `016` share numbers 001 to 003.
