@@ -1,12 +1,14 @@
 /**
- * What the public scanner's pattern engine catches and misses, as published
- * on /tools/. Each row names a class of input, never the payload itself.
+ * What the public scanner catches and misses, as published on /tools/. Each
+ * row names a class of input, never the payload itself.
  *
- * Source: the founder's red-team run against the live scanner (October 2026)
- * and a local re-run of functions/_lib/dlp/patterns.ts on 2026-10-14.
- * functions/_lib/dlp/published-limits.test.ts replays one payload per row:
- * when a miss starts being caught, that test fails and this list — and the
- * page — must be updated.
+ * Source: a replay of one payload per row against the shipped Rust engine
+ * (functions/_lib/scanner/pkg, the WASM that serves /api/scan) on 2026-11-25.
+ * The October 2026 rows described the retired TypeScript engine, which missed
+ * the translated, look-alike-letter and invisible-character cases.
+ * functions/_lib/scanner/published-limits.test.ts replays the same payloads
+ * against the shipped WASM: when a result changes, that test fails and this
+ * list, and the page, must be updated.
  */
 
 export type LimitResult = 'caught' | 'missed';
@@ -17,13 +19,13 @@ export interface ScannerLimit {
   result: LimitResult;
 }
 
-export const SCANNER_LIMITS_TESTED = 'October 14, 2026';
+export const SCANNER_LIMITS_TESTED = 'November 25, 2026';
 
 export const SCANNER_LIMITS: readonly ScannerLimit[] = [
   { id: 'english-override', input: 'A plain-English instruction to ignore previous instructions', result: 'caught' },
-  { id: 'translated', input: 'The same instruction translated into Spanish', result: 'missed' },
-  { id: 'homoglyph', input: 'The same instruction with look-alike letters from another alphabet', result: 'missed' },
-  { id: 'zero-width', input: 'The same instruction with invisible characters inside the words', result: 'missed' },
+  { id: 'translated', input: 'The same instruction translated into Spanish', result: 'caught' },
+  { id: 'homoglyph', input: 'The same instruction with look-alike letters from another alphabet', result: 'caught' },
+  { id: 'zero-width', input: 'The same instruction with invisible characters inside the words', result: 'caught' },
   { id: 'reworded-concealment', input: 'A reworded instruction to hide something from the user', result: 'missed' },
 ];
 
